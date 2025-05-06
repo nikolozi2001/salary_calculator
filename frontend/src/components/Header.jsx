@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState("GE");
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const toggleLanguage = () => {
     setLanguage(language === "GE" ? "EN" : "GE");
@@ -12,17 +14,50 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Effect to handle clicks outside the dropdown and escape key press
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isMenuOpen && 
+        menuRef.current && 
+        !menuRef.current.contains(event.target) && 
+        buttonRef.current && 
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (isMenuOpen && event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+
+    // Add event listeners
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Clean up event listeners
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
   return (
     <header className="bg-gradient-to-r from-[#012B7C] to-[#1a4db9] text-white py-3 px-4 md:px-6 flex items-center justify-between shadow-md">
       {/* Logo */}
-      <div className="flex items-center space-x-2 transition-transform duration-300 hover:scale-105">
+      <div className="flex items-center transition-transform duration-300 hover:scale-105">
         <img
           src="/src/assets/images/logo-mini.svg"
           alt="Logo"
           className="h-8 md:h-10"
         />
-        
-        {/* Title - now positioned inline with logo for minimalist design */}
+      </div>
+
+      {/* Title - centered in the header */}
+      <div className="flex-grow flex justify-center">
         <h1 className="text-lg md:text-xl font-semibold tracking-wide">
           {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
         </h1>
@@ -40,6 +75,7 @@ const Header = () => {
         
         <div className="relative">
           <button 
+            ref={buttonRef}
             onClick={toggleMenu}
             className="bg-opacity-20 bg-white hover:bg-opacity-30 px-3 py-1 rounded-md text-sm flex items-center justify-between transition-all duration-200 min-w-[120px]"
             aria-expanded={isMenuOpen}
@@ -52,7 +88,10 @@ const Header = () => {
           </button>
           
           {isMenuOpen && (
-            <div className="absolute right-0 mt-1 z-10 bg-white text-gray-800 rounded-md shadow-lg overflow-hidden w-max min-w-[250px] transition-all duration-200 animate-fade-in">
+            <div 
+              ref={menuRef}
+              className="absolute right-0 mt-1 z-10 bg-white text-gray-800 rounded-md shadow-lg overflow-hidden w-max min-w-[250px] transition-all duration-200 animate-fade-in"
+            >
               <div className="py-1">
                 <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-150 flex items-center">
                   <span className="w-5 h-5 mr-2 text-blue-600">📊</span>
