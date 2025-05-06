@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import georgiaMap from "../assets/svg/georgia.svg";
 
 const Dashboard = () => {
   // State for selections
@@ -6,6 +7,26 @@ const Dashboard = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
+  const [hoveredRegion, setHoveredRegion] = useState(null);
+  
+  // Reference to the SVG element
+  const svgRef = useRef(null);
+
+  // Region data with names (English and Georgian) and colors
+  const regionData = {
+    "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#689F38" },
+    "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#FF9800" },
+    "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#3F51B5" },
+    "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#9C27B0" },
+    "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#E91E63" },
+    "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#00BCD4" },
+    "GE-MM": { nameEn: "Mtskheta-Mtianeti", nameGe: "მცხეთა-მთიანეთი", color: "#CDDC39" },
+    "GE-RL": { nameEn: "Racha-Lechkhumi", nameGe: "რაჭა-ლეჩხუმი", color: "#FF5722" },
+    "GE-SJ": { nameEn: "Samtskhe-Javakheti", nameGe: "სამცხე-ჯავახეთი", color: "#795548" },
+    "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#607D8B" },
+    "GE-SZ": { nameEn: "Samegrelo-Zemo Svaneti", nameGe: "სამეგრელო-ზემო სვანეთი", color: "#8BC34A" },
+    "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#FFC107" }
+  };
 
   // Industry sectors
   const industries = [
@@ -24,6 +45,136 @@ const Dashboard = () => {
   // Years for selection
   const years = [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
 
+  // Effect to handle SVG loading and manipulation
+  useEffect(() => {
+    // Function to fetch and process the SVG
+    const loadSvg = async () => {
+      try {
+        const response = await fetch(georgiaMap);
+        const svgText = await response.text();
+        
+        // Create a container for SVG
+        const mapContainer = document.getElementById('georgia-map-container');
+        if (!mapContainer) return;
+        
+        // Insert SVG content
+        mapContainer.innerHTML = svgText;
+        
+        // Get the SVG element
+        const svgElement = mapContainer.querySelector('svg');
+        svgRef.current = svgElement;
+        
+        if (svgElement) {
+          // Set SVG attributes
+          svgElement.setAttribute('width', '100%');
+          svgElement.setAttribute('height', 'auto');
+          
+          // Add styles for regions
+          const style = document.createElement('style');
+          style.textContent = `
+            path {
+              fill: #e5e5e5;
+              stroke: white;
+              stroke-width: 1;
+              transition: all 0.3s ease;
+              cursor: pointer;
+              opacity: 0.8;
+            }
+            path:hover {
+              opacity: 1;
+              stroke-width: 2;
+              stroke: #333;
+              filter: brightness(1.1);
+            }
+            path.selected {
+              stroke-width: 3;
+              stroke: #333;
+              filter: none;
+              opacity: 1;
+            }
+            .region-label {
+              font-family: 'Arial', sans-serif;
+              font-size: 14px;
+              font-weight: bold;
+              fill: white;
+              text-anchor: middle;
+              pointer-events: none;
+            }
+          `;
+          
+          svgElement.appendChild(style);
+          
+          // Apply colors to regions and add event listeners
+          const paths = svgElement.querySelectorAll('path');
+          paths.forEach(path => {
+            const id = path.getAttribute('id');
+            if (id && regionData[id]) {
+              // Apply color
+              path.setAttribute('fill', regionData[id].color);
+              
+              // Add title for tooltip
+              const title = path.querySelector('title');
+              if (title) {
+                title.textContent = regionData[id].nameGe;
+              }
+              
+              // Add event listeners
+              path.addEventListener('click', () => handleRegionClick(id));
+              path.addEventListener('mouseenter', () => handleRegionHover(id));
+              path.addEventListener('mouseleave', () => setHoveredRegion(null));
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load or process the SVG:", error);
+      }
+    };
+    
+    loadSvg();
+    
+    // Cleanup function
+    return () => {
+      const mapContainer = document.getElementById('georgia-map-container');
+      if (mapContainer) {
+        mapContainer.innerHTML = '';
+      }
+    };
+  }, []); // Empty dependency array means this runs once on component mount
+
+  // Effect to update selected/hovered state
+  useEffect(() => {
+    if (!svgRef.current) return;
+    
+    const paths = svgRef.current.querySelectorAll('path');
+    paths.forEach(path => {
+      const id = path.getAttribute('id');
+      
+      // Handle selected state
+      if (id === selectedRegion) {
+        path.classList.add('selected');
+      } else {
+        path.classList.remove('selected');
+      }
+      
+      // Handle hover state
+      if (id === hoveredRegion) {
+        path.setAttribute('filter', 'brightness(1.2)');
+      } else {
+        path.setAttribute('filter', '');
+      }
+    });
+  }, [selectedRegion, hoveredRegion]);
+
+  // Function to handle region click
+  const handleRegionClick = (id) => {
+    setSelectedRegion(selectedRegion === id ? null : id);
+  };
+
+  // Function to handle region hover
+  const handleRegionHover = (id) => {
+    setHoveredRegion(id);
+  };
+
   return (
     <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-sm">
       {/* Header */}
@@ -38,18 +189,46 @@ const Dashboard = () => {
           <h2 className="text-lg font-medium mb-4 text-gray-700 border-b pb-2">
             რეგიონი
           </h2>
-          <div className="relative group cursor-pointer">
-            <img 
-              src="/map-placeholder.png" 
-              alt="Georgia Map" 
-              className="w-full h-auto transition-all duration-300 group-hover:opacity-90" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-800/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+          <div className="relative group">
+            <div id="georgia-map-container" className="w-full h-auto transition-all duration-300 group-hover:opacity-90"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-800/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end pointer-events-none">
               <p className="text-white p-3 text-sm w-full text-center">
                 აირჩიეთ რეგიონი რუკაზე
               </p>
             </div>
           </div>
+          
+          {/* Selected Region Information */}
+          {selectedRegion && regionData[selectedRegion] && (
+            <div className="mt-4 p-3 border-t border-gray-100">
+              <div className="flex items-center">
+                <div 
+                  className="w-4 h-4 rounded-full mr-2" 
+                  style={{ backgroundColor: regionData[selectedRegion].color }}
+                ></div>
+                <h3 className="text-lg font-medium text-gray-800">{regionData[selectedRegion].nameGe}</h3>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">{regionData[selectedRegion].nameEn}</p>
+              <div className="mt-3 flex justify-between items-center">
+                <span className="text-xs bg-blue-50 text-blue-600 py-1 px-2 rounded-full">
+                  არჩეულია
+                </span>
+                <button 
+                  onClick={() => setSelectedRegion(null)}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                >
+                  გაუქმება
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Region Hover Information */}
+          {hoveredRegion && hoveredRegion !== selectedRegion && regionData[hoveredRegion] && (
+            <div className="mt-2 text-sm text-gray-500 animate-fade-in">
+              {regionData[hoveredRegion].nameGe}
+            </div>
+          )}
         </div>
 
         {/* Info/Instructions Card */}
