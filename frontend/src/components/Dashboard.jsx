@@ -176,7 +176,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-sm">
+    <div className="p-8 mx-auto bg-gray-50 rounded-xl shadow-sm container-fluid">
       {/* Header */}
       <h1 className="text-2xl font-light mb-8 text-center text-gray-700 border-b pb-4">
         ხელფასების კალკულატორი
