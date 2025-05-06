@@ -183,14 +183,14 @@ const Dashboard = () => {
       </h1>
 
       {/* Main Content */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Map Section - Interactive Region Selection */}
-        <div className="bg-white p-6 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Map Section - Interactive Region Selection (Making it much bigger) */}
+        <div className="bg-white p-6 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md md:col-span-8">
           <h2 className="text-lg font-medium mb-4 text-gray-700 border-b pb-2">
             რეგიონი
           </h2>
           <div className="relative group">
-            <div id="georgia-map-container" className="w-full h-auto transition-all duration-300 group-hover:opacity-90"></div>
+            <div id="georgia-map-container" className="w-full h-[500px] transition-all duration-300 group-hover:opacity-90"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-gray-800/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end pointer-events-none">
               <p className="text-white p-3 text-sm w-full text-center">
                 აირჩიეთ რეგიონი რუკაზე
@@ -231,43 +231,46 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Info/Instructions Card */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg shadow-sm flex items-center">
-          <div className="space-y-4">
-            <div className="inline-block bg-white p-2 rounded-full shadow-sm mb-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <p className="text-gray-700 text-sm leading-relaxed">
-              ხელფასების კალკულატორი საჭიროებს რეგიონის, საქმიანობის სახის, სქესისა და წლის არჩევას ანგარიშისთვის.
-            </p>
-            <button className="mt-4 px-4 py-2 bg-indigo-500 text-white text-sm rounded-md shadow-sm hover:bg-indigo-600 transition-colors duration-300">
-              დაწყება
-            </button>
-          </div>
-        </div>
-
-        {/* Activity Selector */}
-        <div className="bg-white p-6 rounded-lg shadow-sm overflow-hidden">
-          <h2 className="text-lg font-medium mb-4 text-gray-700 border-b pb-2">
-            საქმიანობის სახე
-          </h2>
-          <div className="max-h-72 overflow-y-auto pr-2 -mr-2 space-y-1">
-            {industries.map((industry, idx) => (
-              <div 
-                key={idx}
-                onClick={() => setSelectedActivity(industry)}
-                className={`p-3 rounded-md cursor-pointer transition-all duration-200 flex items-center gap-2 ${
-                  selectedActivity === industry 
-                  ? "bg-indigo-100 text-indigo-700" 
-                  : "hover:bg-gray-100"
-                }`}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-                <span className="text-sm">{industry}</span>
+        {/* Right panel with info and activity selection */}
+        <div className="md:col-span-4 space-y-8">
+          {/* Info/Instructions Card */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg shadow-sm">
+            <div className="space-y-4">
+              <div className="inline-block bg-white p-2 rounded-full shadow-sm mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-            ))}
+              <p className="text-gray-700 text-sm leading-relaxed">
+                ხელფასების კალკულატორი საჭიროებს რეგიონის, საქმიანობის სახის, სქესისა და წლის არჩევას ანგარიშისთვის.
+              </p>
+              <button className="mt-4 px-4 py-2 bg-indigo-500 text-white text-sm rounded-md shadow-sm hover:bg-indigo-600 transition-colors duration-300">
+                დაწყება
+              </button>
+            </div>
+          </div>
+
+          {/* Activity Selector */}
+          <div className="bg-white p-6 rounded-lg shadow-sm overflow-hidden">
+            <h2 className="text-lg font-medium mb-4 text-gray-700 border-b pb-2">
+              საქმიანობის სახე
+            </h2>
+            <div className="max-h-72 overflow-y-auto pr-2 -mr-2 space-y-1">
+              {industries.map((industry, idx) => (
+                <div 
+                  key={idx}
+                  onClick={() => setSelectedActivity(industry)}
+                  className={`p-3 rounded-md cursor-pointer transition-all duration-200 flex items-center gap-2 ${
+                    selectedActivity === industry 
+                    ? "bg-indigo-100 text-indigo-700" 
+                    : "hover:bg-gray-100"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                  <span className="text-sm">{industry}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
