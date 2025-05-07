@@ -5,11 +5,11 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       <Header />
-      <main className="py-6 flex-grow">
+      <div className="flex-grow overflow-hidden">
         <Dashboard />
-      </main>
+      </div>
       <Footer />
     </div>
   );
