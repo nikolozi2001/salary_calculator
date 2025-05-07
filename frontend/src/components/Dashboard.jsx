@@ -2,6 +2,29 @@ import React, { useState, useRef, useEffect } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import CircularYearSelector from "../components/CircularYearSelector";
 
+// Import all activity icons
+import educationIcon from "../assets/icons/education.png";
+import manufacturingIcon from "../assets/icons/manufacturing.png";
+import electricityIcon from "../assets/icons/electricity.png";
+import tradeIcon from "../assets/icons/trade.png";
+import constructionIcon from "../assets/icons/construction.png";
+import realEstateIcon from "../assets/icons/real-estate.png";
+import miningIcon from "../assets/icons/mining.png";
+import hotelsIcon from "../assets/icons/hotels.png";
+import financialIcon from "../assets/icons/financial.png";
+import publicIcon from "../assets/icons/public.png";
+import agroIcon from "../assets/icons/agro.png";
+import transportIcon from "../assets/icons/transport.png";
+import healthIcon from "../assets/icons/health.png";
+import waterIcon from "../assets/icons/water.png";
+import informationIcon from "../assets/icons/information.png";
+import professionalIcon from "../assets/icons/Professional.png";
+import administrativeIcon from "../assets/icons/Administrative.png";
+import artsIcon from "../assets/icons/Arts.png";
+import otherIcon from "../assets/icons/Other.png";
+import maleIcon from "../assets/icons/male.png";
+import femaleIcon from "../assets/icons/female.png";
+
 const Dashboard = () => {
   // State for selections
   const [selectedRegion, setSelectedRegion] = useState(null);
@@ -179,6 +202,23 @@ const Dashboard = () => {
               if (title) {
                 title.textContent = regionData[id].nameGe;
               }
+
+              // Add region labels - new addition for better UX
+              const bbox = path.getBBox();
+              const labelX = bbox.x + bbox.width / 2;
+              const labelY = bbox.y + bbox.height / 2;
+
+              const label = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "text"
+              );
+              label.setAttribute("class", "region-label");
+              label.setAttribute("x", labelX);
+              label.setAttribute("y", labelY);
+              label.textContent = regionData[id].nameGe;
+
+              // Insert label after the path
+              path.parentNode.insertBefore(label, path.nextSibling);
 
               // Add event listeners
               path.addEventListener("click", () => handleRegionClick(id));
@@ -446,7 +486,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/education.png"
+                  src={educationIcon}
                   alt="Education"
                 />
                 <div className="text-xs text-gray-700">განათლება</div>
@@ -479,7 +519,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/manufacturing.png"
+                  src={manufacturingIcon}
                   alt="Manufacturing"
                 />
                 <div className="text-xs text-gray-700">
@@ -517,7 +557,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/electricity.png"
+                  src={electricityIcon}
                   alt="Electricity"
                 />
                 <div className="text-xs text-gray-700">
@@ -554,11 +594,7 @@ const Dashboard = () => {
                 }
                 data-id="G"
               >
-                <img
-                  className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/trade.png"
-                  alt="Trade"
-                />
+                <img className="w-5 h-5 mr-2" src={tradeIcon} alt="Trade" />
                 <div className="text-xs text-gray-700">
                   საბითუმო და საცალო ვაჭრობა
                 </div>
@@ -590,7 +626,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/construction.png"
+                  src={constructionIcon}
                   alt="Construction"
                 />
                 <div className="text-xs text-gray-700">მშენებლობა</div>
@@ -626,7 +662,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/real-estate.png"
+                  src={realEstateIcon}
                   alt="Real Estate"
                 />
                 <div className="text-xs text-gray-700">
@@ -663,11 +699,7 @@ const Dashboard = () => {
                 }
                 data-id="B"
               >
-                <img
-                  className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/mining.png"
-                  alt="Mining"
-                />
+                <img className="w-5 h-5 mr-2" src={miningIcon} alt="Mining" />
                 <div className="text-xs text-gray-700">
                   სამთომოპოვებითი მრეწველობა
                 </div>
@@ -702,11 +734,7 @@ const Dashboard = () => {
                 }
                 data-id="I"
               >
-                <img
-                  className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/hotels.png"
-                  alt="Hotels"
-                />
+                <img className="w-5 h-5 mr-2" src={hotelsIcon} alt="Hotels" />
                 <div className="text-xs text-gray-700">
                   განთავსება და საკვების მიწოდება
                 </div>
@@ -740,7 +768,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/financial.png"
+                  src={financialIcon}
                   alt="Financial"
                 />
                 <div className="text-xs text-gray-700">
@@ -779,7 +807,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/public.png"
+                  src={publicIcon}
                   alt="Public Administration"
                 />
                 <div className="text-xs text-gray-700">
@@ -815,7 +843,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/agro.png"
+                  src={agroIcon}
                   alt="Agriculture"
                 />
                 <div className="text-xs text-gray-700">
@@ -823,7 +851,7 @@ const Dashboard = () => {
                 </div>
                 {selectedActivity === "სოფლის, სატყეო და თევზის მეურნეობა" && (
                   <div className="ml-auto">
-                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify_center">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-2 w-2 text-white"
@@ -850,7 +878,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/transport.png"
+                  src={transportIcon}
                   alt="Transport"
                 />
                 <div className="text-xs text-gray-700">
@@ -888,7 +916,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/health.png"
+                  src={healthIcon}
                   alt="Healthcare"
                 />
                 <div className="text-xs text-gray-700">
@@ -927,7 +955,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/water.png"
+                  src={waterIcon}
                   alt="Water Supply"
                 />
                 <div className="text-xs text-gray-700">
@@ -963,7 +991,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/information.png"
+                  src={informationIcon}
                   alt="Information"
                 />
                 <div className="text-xs text-gray-700">
@@ -1001,7 +1029,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/Professional.png"
+                  src={professionalIcon}
                   alt="Professional"
                 />
                 <div className="text-xs text-gray-700">
@@ -1040,7 +1068,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/Administrative.png"
+                  src={administrativeIcon}
                   alt="Administrative"
                 />
                 <div className="text-xs text-gray-700">
@@ -1074,11 +1102,7 @@ const Dashboard = () => {
                 }
                 data-id="R"
               >
-                <img
-                  className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/Arts.png"
-                  alt="Arts"
-                />
+                <img className="w-5 h-5 mr-2" src={artsIcon} alt="Arts" />
                 <div className="text-xs text-gray-700">
                   ხელოვნება, გართობა და დასვენება
                 </div>
@@ -1109,7 +1133,7 @@ const Dashboard = () => {
               >
                 <img
                   className="w-5 h-5 mr-2"
-                  src="/src/assets/icons/Other.png"
+                  src={otherIcon}
                   alt="Other Services"
                 />
                 <div className="text-xs text-gray-700">
@@ -1231,28 +1255,7 @@ const Dashboard = () => {
                       : "bg-gray-100"
                   }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-6 w-6 ${
-                      selectedGender === "female"
-                        ? "text-pink-600"
-                        : "text-gray-400"
-                    }`}
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 3a7 7 0 107 7c0-3.86-3.14-7-7-7zm0 11a4 4 0 110-8 4 4 0 010 8z"
-                      clipRule="evenodd"
-                    />
-                    <path
-                      d="M10 15v2m0 0h2m-2 0H8"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <img className="w-6 h-6" src={femaleIcon} alt="Female Icon" />
                 </div>
                 <span
                   className={`text-sm transition-all duration-200 ${
@@ -1278,28 +1281,7 @@ const Dashboard = () => {
                     selectedGender === "male" ? "bg-blue-500/20" : "bg-gray-100"
                   }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-6 w-6 ${
-                      selectedGender === "male"
-                        ? "text-blue-600"
-                        : "text-gray-400"
-                    }`}
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 3a7 7 0 100 14 7 7 0 000-14zm0 11a4 4 0 110-8 4 4 0 010 8z"
-                      clipRule="evenodd"
-                    />
-                    <path
-                      d="M15 3l-2 2m0 0V3m0 2h2"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <img className="w-6 h-6" src={maleIcon} alt="Male Icon" />
                 </div>
                 <span
                   className={`text-sm transition-all duration-200 ${
