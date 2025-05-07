@@ -21,12 +21,36 @@ const Dashboard = () => {
     "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#818CF8" },
     "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#A78BFA" },
     "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#FB7185" },
-    "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#67E8F9" },
-    "GE-MM": { nameEn: "Mtskheta-Mtianeti", nameGe: "მცხეთა-მთიანეთი", color: "#BEF264" },
-    "GE-RL": { nameEn: "Racha-Lechkhumi", nameGe: "რაჭა-ლეჩხუმი", color: "#FDBA74" },
-    "GE-SJ": { nameEn: "Samtskhe-Javakheti", nameGe: "სამცხე-ჯავახეთი", color: "#A1A1AA" },
-    "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#94A3B8" },
-    "GE-SZ": { nameEn: "Samegrelo-Zemo Svaneti", nameGe: "სამეგრელო-ზემო სვანეთი", color: "#86EFAC" },
+    "GE-KK": {
+      nameEn: "Kvemo Kartli",
+      nameGe: "ქვემო ქართლი",
+      color: "#67E8F9",
+    },
+    "GE-MM": {
+      nameEn: "Mtskheta-Mtianeti",
+      nameGe: "მცხეთა-მთიანეთი",
+      color: "#BEF264",
+    },
+    "GE-RL": {
+      nameEn: "Racha-Lechkhumi",
+      nameGe: "რაჭა-ლეჩხუმი",
+      color: "#FDBA74",
+    },
+    "GE-SJ": {
+      nameEn: "Samtskhe-Javakheti",
+      nameGe: "სამცხე-ჯავახეთი",
+      color: "#A1A1AA",
+    },
+    "GE-SK": {
+      nameEn: "Shida Kartli",
+      nameGe: "შიდა ქართლი",
+      color: "#94A3B8",
+    },
+    "GE-SZ": {
+      nameEn: "Samegrelo-Zemo Svaneti",
+      nameGe: "სამეგრელო-ზემო სვანეთი",
+      color: "#86EFAC",
+    },
     "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#FCD34D" },
   };
 
@@ -56,7 +80,13 @@ const Dashboard = () => {
     } else if (selectedYear && selectedGender && activeStepIndex === 2) {
       setTimeout(() => setActiveStepIndex(3), 300);
     }
-  }, [selectedRegion, selectedActivity, selectedYear, selectedGender, activeStepIndex]);
+  }, [
+    selectedRegion,
+    selectedActivity,
+    selectedYear,
+    selectedGender,
+    activeStepIndex,
+  ]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
@@ -78,9 +108,17 @@ const Dashboard = () => {
         svgRef.current = svgElement;
 
         if (svgElement) {
-          // Set SVG attributes
+          // Set SVG attributes for proper scaling
           svgElement.setAttribute("width", "100%");
-          svgElement.setAttribute("height", "auto");
+          svgElement.setAttribute("height", "100%");
+          svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+          // Make sure the viewBox is set properly to prevent trimming
+          if (!svgElement.getAttribute("viewBox")) {
+            const bbox = svgElement.getBBox();
+            const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
+            svgElement.setAttribute("viewBox", viewBox);
+          }
 
           // Add styles for regions
           const style = document.createElement("style");
@@ -194,34 +232,32 @@ const Dashboard = () => {
   };
 
   // Check if all selections are made
-  const allSelectionsComplete = selectedRegion && selectedActivity && selectedYear && selectedGender;
+  const allSelectionsComplete =
+    selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8 font-['Inter',sans-serif]">
       {/* Header */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-9xl mx-auto">
         <div className="flex justify-between items-center mb-12">
           <h1 className="text-3xl font-extralight text-gray-800 tracking-tight">
-            ხელფასების <span className="text-blue-600 font-normal">კალკულატორი</span>
+            ხელფასების{" "}
+            <span className="text-blue-600 font-normal">კალკულატორი</span>
           </h1>
-          
+
           {/* Progress Steps */}
           <div className="hidden md:flex items-center space-x-1">
             {[0, 1, 2, 3].map((step, index) => (
               <div key={index} className="flex items-center">
-                <div 
+                <div
                   className={`h-2 w-2 rounded-full transition-all duration-500 ${
-                    activeStepIndex >= step 
-                      ? "bg-blue-500" 
-                      : "bg-gray-200"
+                    activeStepIndex >= step ? "bg-blue-500" : "bg-gray-200"
                   }`}
                 ></div>
                 {index < 3 && (
-                  <div 
+                  <div
                     className={`h-[1px] w-8 transition-all duration-500 ${
-                      activeStepIndex > step 
-                        ? "bg-blue-500" 
-                        : "bg-gray-200"
+                      activeStepIndex > step ? "bg-blue-500" : "bg-gray-200"
                     }`}
                   ></div>
                 )}
@@ -233,69 +269,131 @@ const Dashboard = () => {
         {/* Main Content - New Card Design */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Side - Map */}
-          <div className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-7 transition-all duration-500 transform ${activeStepIndex === 0 ? "scale-100 opacity-100" : "scale-[0.98] opacity-90"}`}>
+          <div
+            className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${
+              activeStepIndex === 0
+                ? "scale-100 opacity-100"
+                : "scale-[0.98] opacity-90"
+            }`}
+          >
             <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">1</span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+                1
+              </span>
               აირჩიეთ რეგიონი
             </h2>
-            
+
             <div className="relative overflow-hidden rounded-xl group">
-              {/* Map Container */}
+              {/* Map Container - Improved sizing for better display */}
               <div
                 id="georgia-map-container"
-                className="w-full aspect-[4/3] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                className="w-80 h-[280px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
 
             {/* Selected Region Information */}
             {selectedRegion && regionData[selectedRegion] && (
-              <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: regionData[selectedRegion].color }}
+                    className="w-6 h-6 rounded-full flex items-center justify-center"
+                    style={{
+                      backgroundColor: regionData[selectedRegion].color,
+                    }}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3 text-white"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-gray-800">
+                    <h3 className="text-sm font-medium text-gray-800">
                       {regionData[selectedRegion].nameGe}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500">
                       {regionData[selectedRegion].nameEn}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedRegion(null)}
-                  className="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
+                  className="p-1.5 rounded-full hover:bg-gray-200 transition-colors duration-200"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 011.414 0L10 8.586l4.293-4.293a1 1 111.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </button>
               </div>
             )}
           </div>
 
+          {/* Pinned Note - Side by side with map and activity */}
+          <div className="lg:col-span-4">
+            <div className="relative h-full bg-amber-50 rounded-2xl p-6 shadow-sm border border-amber-100 flex flex-col justify-center">
+              {/* Pushpin */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="w-8 h-8 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
+                  <div className="w-4 h-4 bg-blue-300 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Note Content */}
+              <div className="pt-3 text-center text-gray-600 font-light">
+                <p className="text-sm mb-1">ხელფასების კალკულატორი</p>
+                <p className="text-sm mb-1">წარმოგიდგენთ დაქირავებით</p>
+                <p className="text-sm mb-1">დასაქმებულთა საშუალო თვიური</p>
+                <p className="text-sm mb-1">
+                  ნომინალური ხელფასის განაწილებების
+                </p>
+                <p className="text-sm mb-1">პორტალს. გთხოვთ, აირჩიეთ</p>
+                <p className="text-sm text-blue-500 font-medium">
+                  რეგიონი, საქმიანობის სახე, სქესი და
+                </p>
+                <p className="text-sm mb-1">წელი</p>
+              </div>
+            </div>
+          </div>
+
           {/* Right Side - Activity Selection */}
-          <div className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-5 transition-all duration-500 transform ${activeStepIndex === 1 ? "scale-100 opacity-100" : (activeStepIndex > 1 ? "scale-[0.98] opacity-90" : "scale-[0.95] opacity-80")}`}>
+          <div
+            className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${
+              activeStepIndex === 1
+                ? "scale-100 opacity-100"
+                : activeStepIndex > 1
+                ? "scale-[0.98] opacity-90"
+                : "scale-[0.95] opacity-80"
+            }`}
+          >
             <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">2</span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+                2
+              </span>
               აირჩიეთ საქმიანობის სახე
             </h2>
-            
+
             <div className="max-h-96 overflow-y-auto pr-2 space-y-1">
               {industries.map((industry, idx) => (
                 <div
                   key={idx}
                   onClick={() => setSelectedActivity(industry)}
-                  className={`p-4 rounded-xl cursor-pointer transition-all duration-200 flex items-center gap-3 ${
+                  className={`p-3 rounded-xl cursor-pointer transition-all duration-200 flex items-center gap-3 ${
                     selectedActivity === industry
                       ? "bg-blue-50 border border-blue-200"
                       : "hover:bg-gray-50 border border-transparent"
@@ -303,14 +401,31 @@ const Dashboard = () => {
                 >
                   {selectedActivity === industry ? (
                     <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3 text-white"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                   ) : (
                     <div className="w-5 h-5 rounded-full border border-gray-300"></div>
                   )}
-                  <span className={`${selectedActivity === industry ? "text-blue-700" : "text-gray-700"}`}>{industry}</span>
+                  <span
+                    className={`text-sm ${
+                      selectedActivity === industry
+                        ? "text-blue-700"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    {industry}
+                  </span>
                 </div>
               ))}
             </div>
@@ -320,9 +435,17 @@ const Dashboard = () => {
         {/* Bottom Selectors */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Year Selector */}
-          <div className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${activeStepIndex >= 2 ? "scale-100 opacity-100" : "scale-[0.95] opacity-80"}`}>
+          <div
+            className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${
+              activeStepIndex >= 2
+                ? "scale-100 opacity-100"
+                : "scale-[0.95] opacity-80"
+            }`}
+          >
             <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">3</span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+                3
+              </span>
               აირჩიეთ წელი
             </h2>
             <div className="flex justify-center">
@@ -335,9 +458,17 @@ const Dashboard = () => {
           </div>
 
           {/* Gender Selector */}
-          <div className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${activeStepIndex >= 2 ? "scale-100 opacity-100" : "scale-[0.95] opacity-80"}`}>
+          <div
+            className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${
+              activeStepIndex >= 2
+                ? "scale-100 opacity-100"
+                : "scale-[0.95] opacity-80"
+            }`}
+          >
             <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">4</span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+                4
+              </span>
               აირჩიეთ სქესი
             </h2>
             <div className="flex justify-center gap-8">
@@ -349,12 +480,20 @@ const Dashboard = () => {
                     : "hover:bg-gray-50"
                 }`}
               >
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
-                  selectedGender === "female" ? "bg-pink-500/20" : "bg-gray-100"
-                }`}>
+                <div
+                  className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
+                    selectedGender === "female"
+                      ? "bg-pink-500/20"
+                      : "bg-gray-100"
+                  }`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-8 w-8 ${selectedGender === "female" ? "text-pink-600" : "text-gray-400"}`}
+                    className={`h-8 w-8 ${
+                      selectedGender === "female"
+                        ? "text-pink-600"
+                        : "text-gray-400"
+                    }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -371,7 +510,13 @@ const Dashboard = () => {
                     />
                   </svg>
                 </div>
-                <span className={`transition-all duration-200 ${selectedGender === "female" ? "text-pink-600 font-medium" : "text-gray-500"}`}>
+                <span
+                  className={`transition-all duration-200 ${
+                    selectedGender === "female"
+                      ? "text-pink-600 font-medium"
+                      : "text-gray-500"
+                  }`}
+                >
                   ქალი
                 </span>
               </div>
@@ -384,12 +529,18 @@ const Dashboard = () => {
                     : "hover:bg-gray-50"
                 }`}
               >
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
-                  selectedGender === "male" ? "bg-blue-500/20" : "bg-gray-100"
-                }`}>
+                <div
+                  className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
+                    selectedGender === "male" ? "bg-blue-500/20" : "bg-gray-100"
+                  }`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-8 w-8 ${selectedGender === "male" ? "text-blue-600" : "text-gray-400"}`}
+                    className={`h-8 w-8 ${
+                      selectedGender === "male"
+                        ? "text-blue-600"
+                        : "text-gray-400"
+                    }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -406,7 +557,13 @@ const Dashboard = () => {
                     />
                   </svg>
                 </div>
-                <span className={`transition-all duration-200 ${selectedGender === "male" ? "text-blue-600 font-medium" : "text-gray-500"}`}>
+                <span
+                  className={`transition-all duration-200 ${
+                    selectedGender === "male"
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-500"
+                  }`}
+                >
                   კაცი
                 </span>
               </div>
@@ -415,14 +572,29 @@ const Dashboard = () => {
         </div>
 
         {/* Action Button - Animated and responsive to selections */}
-        <div className={`mt-8 flex justify-center transition-all duration-700 transform ${allSelectionsComplete ? "scale-100 opacity-100" : "scale-95 opacity-60"}`}>
-          <button 
+        <div
+          className={`mt-8 flex justify-center transition-all duration-700 transform ${
+            allSelectionsComplete
+              ? "scale-100 opacity-100"
+              : "scale-95 opacity-60"
+          }`}
+        >
+          <button
             className={`px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-xl shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center gap-2 group`}
             disabled={!allSelectionsComplete}
           >
             <span>გაანალიზება</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 010 1.414l-6 6a1 1 01-1.414-1.414L14.586 11H3a1 1 110-2h11.586l-4.293-4.293a1 1 010-1.414z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
         </div>
