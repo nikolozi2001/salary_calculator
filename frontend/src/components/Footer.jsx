@@ -1,6 +1,8 @@
 import React from "react";
+import sakstatLogoGe from "../assets/images/sakstat-logo.svg";
+import sakstatLogoEn from "../assets/images/sakstat-logo-en.png";
 
-const Footer = () => {
+const Footer = ({ language = "GE" }) => {
   const currentYear = new Date().getFullYear();
   
   return (
@@ -12,29 +14,37 @@ const Footer = () => {
           <div className="space-y-1">
             <div className="flex items-center">
               <img
-                src="/src/assets/images/logo-mini.svg"
+                src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
                 alt="Logo"
                 className="h-5 mr-2"
               />
               <h3 className="text-sm font-light text-gray-700">
-                <span className="text-blue-600 font-normal">ხელფასების</span> კალკულატორი
+                {language === "GE" ? (
+                  <><span className="text-blue-600 font-normal">ხელფასების</span> კალკულატორი</>
+                ) : (
+                  <><span className="text-blue-600 font-normal">Salary</span> Calculator</>
+                )}
               </h3>
             </div>
             <p className="text-gray-500 text-xs max-w-xs">
-              საქართველოს შრომის ბაზრის ანალიზის ინსტრუმენტი
+              {language === "GE" 
+                ? "საქართველოს შრომის ბაზრის ანალიზის ინსტრუმენტი"
+                : "Georgian labor market analysis tool"}
             </p>
           </div>
 
           {/* Quick Links - More compact */}
           <div>
-            <h4 className="font-medium text-gray-800 text-xs mb-1">სწრაფი ბმულები</h4>
+            <h4 className="font-medium text-gray-800 text-xs mb-1">
+              {language === "GE" ? "სწრაფი ბმულები" : "Quick Links"}
+            </h4>
             <ul className="space-y-0.5 text-xs">
               <li>
                 <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors duration-200 flex items-center">
                   <svg className="w-2.5 h-2.5 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                   </svg>
-                  მთავარი გვერდი
+                  {language === "GE" ? "მთავარი გვერდი" : "Home"}
                 </a>
               </li>
               <li>
@@ -42,7 +52,7 @@ const Footer = () => {
                   <svg className="w-2.5 h-2.5 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                   </svg>
-                  რეგიონები
+                  {language === "GE" ? "რეგიონები" : "Regions"}
                 </a>
               </li>
               <li>
@@ -50,7 +60,7 @@ const Footer = () => {
                   <svg className="w-2.5 h-2.5 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                   </svg>
-                  პროფესიები
+                  {language === "GE" ? "პროფესიები" : "Professions"}
                 </a>
               </li>
             </ul>
@@ -58,7 +68,9 @@ const Footer = () => {
 
           {/* Contact Info - Minimized */}
           <div>
-            <h4 className="font-medium text-gray-800 text-xs mb-1">კონტაქტი</h4>
+            <h4 className="font-medium text-gray-800 text-xs mb-1">
+              {language === "GE" ? "კონტაქტი" : "Contact"}
+            </h4>
             <div className="space-y-0.5 text-xs">
               <p className="flex items-center text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,10 +104,16 @@ const Footer = () => {
         
         {/* Copyright Section - Simplified */}
         <div className="border-t border-gray-200 mt-2 pt-2 flex justify-between items-center text-xs">
-          <p className="text-gray-500">© {currentYear} ხელფასების კალკულატორი</p>
+          <p className="text-gray-500">
+            © {currentYear} {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
+          </p>
           <div className="flex space-x-4">
-            <a href="#" className="text-xs text-gray-500 hover:text-blue-600 transition-colors duration-200">პირობები</a>
-            <a href="#" className="text-xs text-gray-500 hover:text-blue-600 transition-colors duration-200">კონფიდენციალურობა</a>
+            <a href="#" className="text-xs text-gray-500 hover:text-blue-600 transition-colors duration-200">
+              {language === "GE" ? "პირობები" : "Terms"}
+            </a>
+            <a href="#" className="text-xs text-gray-500 hover:text-blue-600 transition-colors duration-200">
+              {language === "GE" ? "კონფიდენციალურობა" : "Privacy"}
+            </a>
           </div>
         </div>
       </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import sakstatLogoGe from "../assets/images/sakstat-logo.svg";
+import sakstatLogoEn from "../assets/images/sakstat-logo-en.png";
 
-const Header = () => {
+const Header = ({ language = "GE", setLanguage }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("GE");
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -47,10 +48,10 @@ const Header = () => {
 
   return (
     <header className="bg-gradient-to-r from-[#012B7C] to-[#1a4db9] text-white py-1.5 px-3 flex items-center justify-between shadow-md">
-      {/* Logo - Smaller */}
+      {/* Logo - Use appropriate logo based on language */}
       <div className="flex items-center transition-transform duration-300 hover:scale-105">
         <img
-          src="/src/assets/images/logo-mini.svg"
+          src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
           alt="Logo"
           className="h-6"
         />
