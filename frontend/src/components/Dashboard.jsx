@@ -372,64 +372,359 @@ const Dashboard = () => {
           </div>
 
           {/* Right Side - Activity Selection */}
-          <div
-            className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${
-              activeStepIndex === 1
-                ? "scale-100 opacity-100"
-                : activeStepIndex > 1
-                ? "scale-[0.98] opacity-90"
-                : "scale-[0.95] opacity-80"
-            }`}
-          >
+          <div className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${activeStepIndex === 1 ? "scale-100 opacity-100" : (activeStepIndex > 1 ? "scale-[0.98] opacity-90" : "scale-[0.95] opacity-80")}`}>
             <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
-                2
-              </span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">2</span>
               აირჩიეთ საქმიანობის სახე
             </h2>
-
-            <div className="max-h-96 overflow-y-auto pr-2 space-y-1">
-              {industries.map((industry, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setSelectedActivity(industry)}
-                  className={`p-3 rounded-xl cursor-pointer transition-all duration-200 flex items-center gap-3 ${
-                    selectedActivity === industry
-                      ? "bg-blue-50 border border-blue-200"
-                      : "hover:bg-gray-50 border border-transparent"
-                  }`}
-                >
-                  {selectedActivity === industry ? (
+            
+            <div className="max-h-[380px] overflow-y-auto pr-2 space-y-0.5">
+              <div 
+                className={`flex items-center p-2.5 border rounded-t-lg cursor-pointer transition-all duration-200 ${selectedActivity === "განათლება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("განათლება")}
+                data-id="P"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/education.png" alt="Education" />
+                <div className="text-sm text-gray-700">განათლება</div>
+                {selectedActivity === "განათლება" && (
+                  <div className="ml-auto">
                     <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3 text-white"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z"
-                          clipRule="evenodd"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
-                  ) : (
-                    <div className="w-5 h-5 rounded-full border border-gray-300"></div>
-                  )}
-                  <span
-                    className={`text-sm ${
-                      selectedActivity === industry
-                        ? "text-blue-700"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {industry}
-                  </span>
-                </div>
-              ))}
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "დამამუშავებელი მრეწველობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("დამამუშავებელი მრეწველობა")}
+                data-id="C"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/manufacturing.png" alt="Manufacturing" />
+                <div className="text-sm text-gray-700">დამამუშავებელი მრეწველობა</div>
+                {selectedActivity === "დამამუშავებელი მრეწველობა" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება")}
+                data-id="D"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/electricity.png" alt="Electricity" />
+                <div className="text-sm text-gray-700">ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება</div>
+                {selectedActivity === "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი")}
+                data-id="G"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/trade.png" alt="Trade" />
+                <div className="text-sm text-gray-700">საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი</div>
+                {selectedActivity === "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "მშენებლობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("მშენებლობა")}
+                data-id="F"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/construction.png" alt="Construction" />
+                <div className="text-sm text-gray-700">მშენებლობა</div>
+                {selectedActivity === "მშენებლობა" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("უძრავ ქონებასთან დაკავშირებული საქმიანობები")}
+                data-id="L"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/real-estate.png" alt="Real Estate" />
+                <div className="text-sm text-gray-700">უძრავ ქონებასთან დაკავშირებული საქმიანობები</div>
+                {selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება")}
+                data-id="B"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/mining.png" alt="Mining" />
+                <div className="text-sm text-gray-700">სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება</div>
+                {selectedActivity === "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები")}
+                data-id="I"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/hotels.png" alt="Hotels" />
+                <div className="text-sm text-gray-700">განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები</div>
+                {selectedActivity === "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Continue with remaining items... */}
+              <div 
+                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "საფინანსო და სადაზღვევო საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("საფინანსო და სადაზღვევო საქმიანობები")}
+                data-id="K"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/financial.png" alt="Financial" />
+                <div className="text-sm text-gray-700">საფინანსო და სადაზღვევო საქმიანობები</div>
+                {selectedActivity === "საფინანსო და სადაზღვევო საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება")}
+                data-id="O"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/public.png" alt="Public Administration" />
+                <div className="text-sm text-gray-700">სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება</div>
+                {selectedActivity === "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "სოფლის, სატყეო და თევზის მეურნეობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("სოფლის, სატყეო და თევზის მეურნეობა")}
+                data-id="A"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/agro.png" alt="Agriculture" />
+                <div className="text-sm text-gray-700">სოფლის, სატყეო და თევზის მეურნეობა</div>
+                {selectedActivity === "სოფლის, სატყეო და თევზის მეურნეობა" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Add the remaining industry options */}
+              <div 
+                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ტრანსპორტირება და დასაწყობება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ტრანსპორტირება და დასაწყობება")}
+                data-id="H"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/transport.png" alt="Transport" />
+                <div className="text-sm text-gray-700">ტრანსპორტირება და დასაწყობება</div>
+                {selectedActivity === "ტრანსპორტირება და დასაწყობება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ჯანდაცვა და სოციალური მომსახურების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ჯანდაცვა და სოციალური მომსახურების საქმიანობები")}
+                data-id="Q"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/health.png" alt="Healthcare" />
+                <div className="text-sm text-gray-700">ჯანდაცვა და სოციალური მომსახურების საქმიანობები</div>
+                {selectedActivity === "ჯანდაცვა და სოციალური მომსახურების საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები")}
+                data-id="E"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/water.png" alt="Water Supply" />
+                <div className="text-sm text-gray-700">წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები</div>
+                {selectedActivity === "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ინფორმაცია და კომუნიკაცია" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ინფორმაცია და კომუნიკაცია")}
+                data-id="J"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/information.png" alt="Information" />
+                <div className="text-sm text-gray-700">ინფორმაცია და კომუნიკაცია</div>
+                {selectedActivity === "ინფორმაცია და კომუნიკაცია" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები")}
+                data-id="M"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Professional.png" alt="Professional" />
+                <div className="text-sm text-gray-700">პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები</div>
+                {selectedActivity === "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები")}
+                data-id="N"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Administrative.png" alt="Administrative" />
+                <div className="text-sm text-gray-700">ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები</div>
+                {selectedActivity === "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ხელოვნება, გართობა და დასვენება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ხელოვნება, გართობა და დასვენება")}
+                data-id="R"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Arts.png" alt="Arts" />
+                <div className="text-sm text-gray-700">ხელოვნება, გართობა და დასვენება</div>
+                {selectedActivity === "ხელოვნება, გართობა და დასვენება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div 
+                className={`flex items-center p-2.5 border-l border-r rounded-b-lg cursor-pointer transition-all duration-200 ${selectedActivity === "სხვა სახის მომსახურება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("სხვა სახის მომსახურება")}
+                data-id="S"
+              >
+                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Other.png" alt="Other Services" />
+                <div className="text-sm text-gray-700">სხვა სახის მომსახურება</div>
+                {selectedActivity === "სხვა სახის მომსახურება" && (
+                  <div className="ml-auto">
+                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
         </div>
 
         {/* Bottom Selectors */}
