@@ -236,11 +236,11 @@ const Dashboard = () => {
     selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8 font-['Inter',sans-serif]">
-      {/* Header */}
-      <div className="max-w-9xl mx-auto">
-        <div className="flex justify-between items-center mb-12">
-          <h1 className="text-3xl font-extralight text-gray-800 tracking-tight">
+    <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-4 font-['Inter',sans-serif] overflow-hidden">
+      {/* Header - Reduced margins */}
+      <div className="max-w-screen-2xl mx-auto">
+        <div className="flex justify-between items-center mb-3">
+          <h1 className="text-2xl font-extralight text-gray-800 tracking-tight">
             ხელფასების{" "}
             <span className="text-blue-600 font-normal">კალკულატორი</span>
           </h1>
@@ -266,44 +266,44 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Main Content - New Card Design */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Main Content - Compact Layout */}
+        <div className="grid grid-cols-12 gap-3">
           {/* Left Side - Map */}
           <div
-            className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${
+            className={`bg-white rounded-xl shadow-sm p-3 col-span-4 transition-all duration-500 transform ${
               activeStepIndex === 0
                 ? "scale-100 opacity-100"
                 : "scale-[0.98] opacity-90"
             }`}
           >
-            <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+            <h2 className="text-lg font-light text-gray-700 mb-2 flex items-center">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs mr-2">
                 1
               </span>
               აირჩიეთ რეგიონი
             </h2>
 
-            <div className="relative overflow-hidden rounded-xl group">
-              {/* Map Container - Improved sizing for better display */}
+            <div className="relative overflow-hidden rounded-lg group">
+              {/* Map Container - Smaller size */}
               <div
                 id="georgia-map-container"
-                className="w-80 h-[280px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                className="w-full h-[200px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
             </div>
 
             {/* Selected Region Information */}
             {selectedRegion && regionData[selectedRegion] && (
-              <div className="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+              <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center"
+                    className="w-4 h-4 rounded-full flex items-center justify-center"
                     style={{
                       backgroundColor: regionData[selectedRegion].color,
                     }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 text-white"
+                      className="h-2 w-2 text-white"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -315,7 +315,7 @@ const Dashboard = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-800">
+                    <h3 className="text-xs font-medium text-gray-800">
                       {regionData[selectedRegion].nameGe}
                     </h3>
                     <p className="text-xs text-gray-500">
@@ -325,11 +325,11 @@ const Dashboard = () => {
                 </div>
                 <button
                   onClick={() => setSelectedRegion(null)}
-                  className="p-1.5 rounded-full hover:bg-gray-200 transition-colors duration-200"
+                  className="p-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-gray-400"
+                    className="h-3 w-3 text-gray-400"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -345,51 +345,49 @@ const Dashboard = () => {
           </div>
 
           {/* Pinned Note - Side by side with map and activity */}
-          <div className="lg:col-span-4">
-            <div className="relative h-full bg-amber-50 rounded-2xl p-6 shadow-sm border border-amber-100 flex flex-col justify-center">
-              {/* Pushpin */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="w-8 h-8 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
-                  <div className="w-4 h-4 bg-blue-300 rounded-full"></div>
+          <div className="col-span-3">
+            <div className="relative h-full bg-amber-50 rounded-xl p-3 shadow-sm border border-amber-100 flex flex-col justify-center">
+              {/* Pushpin - Smaller */}
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                <div className="w-5 h-5 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
+                  <div className="w-2 h-2 bg-blue-300 rounded-full"></div>
                 </div>
               </div>
 
-              {/* Note Content */}
-              <div className="pt-3 text-center text-gray-600 font-light">
-                <p className="text-sm mb-1">ხელფასების კალკულატორი</p>
-                <p className="text-sm mb-1">წარმოგიდგენთ დაქირავებით</p>
-                <p className="text-sm mb-1">დასაქმებულთა საშუალო თვიური</p>
-                <p className="text-sm mb-1">
-                  ნომინალური ხელფასის განაწილებების
+              {/* Note Content - More compact */}
+              <div className="pt-2 text-center text-gray-600 font-light">
+                <p className="text-xs">ხელფასების კალკულატორი</p>
+                <p className="text-xs">წარმოგიდგენთ დაქირავებით</p>
+                <p className="text-xs">დასაქმებულთა საშუალო</p>
+                <p className="text-xs">ნომინალური ხელფასის</p>
+                <p className="text-xs">განაწილებების პორტალს</p>
+                <p className="text-xs text-blue-500 font-medium">
+                  აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი
                 </p>
-                <p className="text-sm mb-1">პორტალს. გთხოვთ, აირჩიეთ</p>
-                <p className="text-sm text-blue-500 font-medium">
-                  რეგიონი, საქმიანობის სახე, სქესი და
-                </p>
-                <p className="text-sm mb-1">წელი</p>
               </div>
             </div>
           </div>
 
-          {/* Right Side - Activity Selection */}
-          <div className={`bg-white rounded-2xl shadow-sm p-6 lg:col-span-4 transition-all duration-500 transform ${activeStepIndex === 1 ? "scale-100 opacity-100" : (activeStepIndex > 1 ? "scale-[0.98] opacity-90" : "scale-[0.95] opacity-80")}`}>
-            <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">2</span>
+          {/* Right Side - Activity Selection - More compact */}
+          <div className={`bg-white rounded-xl shadow-sm p-3 col-span-5 transition-all duration-500 transform ${activeStepIndex === 1 ? "scale-100 opacity-100" : (activeStepIndex > 1 ? "scale-[0.98] opacity-90" : "scale-[0.95] opacity-80")}`}>
+            <h2 className="text-lg font-light text-gray-700 mb-2 flex items-center">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs mr-2">2</span>
               აირჩიეთ საქმიანობის სახე
             </h2>
             
-            <div className="max-h-[380px] overflow-y-auto pr-2 space-y-0.5">
+            <div className="grid grid-cols-2 gap-1 h-[230px] overflow-y-auto pr-1">
+              {/* Activity Items - Convert to grid layout */}
               <div 
-                className={`flex items-center p-2.5 border rounded-t-lg cursor-pointer transition-all duration-200 ${selectedActivity === "განათლება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "განათლება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("განათლება")}
                 data-id="P"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/education.png" alt="Education" />
-                <div className="text-sm text-gray-700">განათლება</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/education.png" alt="Education" />
+                <div className="text-xs text-gray-700">განათლება</div>
                 {selectedActivity === "განათლება" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -398,70 +396,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "დამამუშავებელი მრეწველობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("დამამუშავებელი მრეწველობა")}
-                data-id="C"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/manufacturing.png" alt="Manufacturing" />
-                <div className="text-sm text-gray-700">დამამუშავებელი მრეწველობა</div>
-                {selectedActivity === "დამამუშავებელი მრეწველობა" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება")}
-                data-id="D"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/electricity.png" alt="Electricity" />
-                <div className="text-sm text-gray-700">ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება</div>
-                {selectedActivity === "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი")}
-                data-id="G"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/trade.png" alt="Trade" />
-                <div className="text-sm text-gray-700">საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი</div>
-                {selectedActivity === "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "მშენებლობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "მშენებლობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("მშენებლობა")}
                 data-id="F"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/construction.png" alt="Construction" />
-                <div className="text-sm text-gray-700">მშენებლობა</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/construction.png" alt="Construction" />
+                <div className="text-xs text-gray-700">მშენებლობა</div>
                 {selectedActivity === "მშენებლობა" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -470,16 +414,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("უძრავ ქონებასთან დაკავშირებული საქმიანობები")}
-                data-id="L"
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "დამამუშავებელი მრეწველობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("დამამუშავებელი მრეწველობა")}
+                data-id="C"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/real-estate.png" alt="Real Estate" />
-                <div className="text-sm text-gray-700">უძრავ ქონებასთან დაკავშირებული საქმიანობები</div>
-                {selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" && (
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/manufacturing.png" alt="Manufacturing" />
+                <div className="text-xs text-gray-700">დამამუშავებელი მრეწველობა</div>
+                {selectedActivity === "დამამუშავებელი მრეწველობა" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -488,53 +432,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება")}
-                data-id="B"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/mining.png" alt="Mining" />
-                <div className="text-sm text-gray-700">სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება</div>
-                {selectedActivity === "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები")}
-                data-id="I"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/hotels.png" alt="Hotels" />
-                <div className="text-sm text-gray-700">განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები</div>
-                {selectedActivity === "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Continue with remaining items... */}
-              <div 
-                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "საფინანსო და სადაზღვევო საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "საფინანსო და სადაზღვევო საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("საფინანსო და სადაზღვევო საქმიანობები")}
                 data-id="K"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/financial.png" alt="Financial" />
-                <div className="text-sm text-gray-700">საფინანსო და სადაზღვევო საქმიანობები</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/financial.png" alt="Financial" />
+                <div className="text-xs text-gray-700">საფინანსო საქმიანობები</div>
                 {selectedActivity === "საფინანსო და სადაზღვევო საქმიანობები" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -543,16 +450,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border cursor-pointer transition-all duration-200 ${selectedActivity === "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება")}
-                data-id="O"
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("უძრავ ქონებასთან დაკავშირებული საქმიანობები")}
+                data-id="L"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/public.png" alt="Public Administration" />
-                <div className="text-sm text-gray-700">სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება</div>
-                {selectedActivity === "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება" && (
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/real-estate.png" alt="Real Estate" />
+                <div className="text-xs text-gray-700">უძრავი ქონება</div>
+                {selectedActivity === "უძრავ ქონებასთან დაკავშირებული საქმიანობები" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -561,53 +468,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "სოფლის, სატყეო და თევზის მეურნეობა" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("სოფლის, სატყეო და თევზის მეურნეობა")}
-                data-id="A"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/agro.png" alt="Agriculture" />
-                <div className="text-sm text-gray-700">სოფლის, სატყეო და თევზის მეურნეობა</div>
-                {selectedActivity === "სოფლის, სატყეო და თევზის მეურნეობა" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Add the remaining industry options */}
-              <div 
-                className={`flex items-center p-2.5 border-b border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ტრანსპორტირება და დასაწყობება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("ტრანსპორტირება და დასაწყობება")}
-                data-id="H"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/transport.png" alt="Transport" />
-                <div className="text-sm text-gray-700">ტრანსპორტირება და დასაწყობება</div>
-                {selectedActivity === "ტრანსპორტირება და დასაწყობება" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ჯანდაცვა და სოციალური მომსახურების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "ჯანდაცვა და სოციალური მომსახურების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("ჯანდაცვა და სოციალური მომსახურების საქმიანობები")}
                 data-id="Q"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/health.png" alt="Healthcare" />
-                <div className="text-sm text-gray-700">ჯანდაცვა და სოციალური მომსახურების საქმიანობები</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/health.png" alt="Healthcare" />
+                <div className="text-xs text-gray-700">ჯანდაცვა</div>
                 {selectedActivity === "ჯანდაცვა და სოციალური მომსახურების საქმიანობები" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -616,16 +486,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები")}
-                data-id="E"
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "ტრანსპორტირება და დასაწყობება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                onClick={() => setSelectedActivity("ტრანსპორტირება და დასაწყობება")}
+                data-id="H"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/water.png" alt="Water Supply" />
-                <div className="text-sm text-gray-700">წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები</div>
-                {selectedActivity === "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები" && (
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/transport.png" alt="Transport" />
+                <div className="text-xs text-gray-700">ტრანსპორტი</div>
+                {selectedActivity === "ტრანსპორტირება და დასაწყობება" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -634,16 +504,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ინფორმაცია და კომუნიკაცია" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "ინფორმაცია და კომუნიკაცია" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("ინფორმაცია და კომუნიკაცია")}
                 data-id="J"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/information.png" alt="Information" />
-                <div className="text-sm text-gray-700">ინფორმაცია და კომუნიკაცია</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/information.png" alt="Information" />
+                <div className="text-xs text-gray-700">ინფორმაცია და კომუნიკაცია</div>
                 {selectedActivity === "ინფორმაცია და კომუნიკაცია" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -652,52 +522,16 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები")}
-                data-id="M"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Professional.png" alt="Professional" />
-                <div className="text-sm text-gray-700">პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები</div>
-                {selectedActivity === "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები" ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                onClick={() => setSelectedActivity("ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები")}
-                data-id="N"
-              >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Administrative.png" alt="Administrative" />
-                <div className="text-sm text-gray-700">ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები</div>
-                {selectedActivity === "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები" && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div 
-                className={`flex items-center p-2.5 border-l border-r cursor-pointer transition-all duration-200 ${selectedActivity === "ხელოვნება, გართობა და დასვენება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "ხელოვნება, გართობა და დასვენება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("ხელოვნება, გართობა და დასვენება")}
                 data-id="R"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Arts.png" alt="Arts" />
-                <div className="text-sm text-gray-700">ხელოვნება, გართობა და დასვენება</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/Arts.png" alt="Arts" />
+                <div className="text-xs text-gray-700">ხელოვნება</div>
                 {selectedActivity === "ხელოვნება, გართობა და დასვენება" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -706,39 +540,40 @@ const Dashboard = () => {
               </div>
 
               <div 
-                className={`flex items-center p-2.5 border-l border-r rounded-b-lg cursor-pointer transition-all duration-200 ${selectedActivity === "სხვა სახის მომსახურება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${selectedActivity === "სხვა სახის მომსახურება" ? "bg-blue-50" : "hover:bg-gray-50"}`}
                 onClick={() => setSelectedActivity("სხვა სახის მომსახურება")}
                 data-id="S"
               >
-                <img className="w-8 h-8 mr-3" src="/src/assets/icons/Other.png" alt="Other Services" />
-                <div className="text-sm text-gray-700">სხვა სახის მომსახურება</div>
+                <img className="w-5 h-5 mr-2" src="/src/assets/icons/Other.png" alt="Other Services" />
+                <div className="text-xs text-gray-700">სხვა სახის მომსახურება</div>
                 {selectedActivity === "სხვა სახის მომსახურება" && (
                   <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-2 w-2 text-white" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 011.414-1.414L8 12.586l7.293-7.293a1 1 010 1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
                   </div>
                 )}
               </div>
+              
+              {/* Additional activities would go here in the same grid format */}
             </div>
           </div>
-
         </div>
 
-        {/* Bottom Selectors */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Year Selector */}
+        {/* Bottom Row for Year and Gender Selection */}
+        <div className="mt-3 grid grid-cols-12 gap-3">
+          {/* Year Selector - Smaller and more compact */}
           <div
-            className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${
+            className={`bg-white p-3 rounded-xl shadow-sm col-span-6 transition-all duration-500 transform ${
               activeStepIndex >= 2
                 ? "scale-100 opacity-100"
                 : "scale-[0.95] opacity-80"
             }`}
           >
-            <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+            <h2 className="text-lg font-light text-gray-700 mb-2 flex items-center">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs mr-2">
                 3
               </span>
               აირჩიეთ წელი
@@ -752,31 +587,31 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Gender Selector */}
+          {/* Gender Selector - More compact */}
           <div
-            className={`bg-white p-6 rounded-2xl shadow-sm md:col-span-6 transition-all duration-500 transform ${
+            className={`bg-white p-3 rounded-xl shadow-sm col-span-6 transition-all duration-500 transform ${
               activeStepIndex >= 2
                 ? "scale-100 opacity-100"
                 : "scale-[0.95] opacity-80"
             }`}
           >
-            <h2 className="text-xl font-light text-gray-700 mb-6 flex items-center">
-              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-sm mr-3">
+            <h2 className="text-lg font-light text-gray-700 mb-2 flex items-center">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs mr-2">
                 4
               </span>
               აირჩიეთ სქესი
             </h2>
-            <div className="flex justify-center gap-8">
+            <div className="flex justify-center gap-6">
               <div
                 onClick={() => setSelectedGender("female")}
-                className={`flex flex-col items-center p-4 rounded-xl transition-all duration-300 cursor-pointer ${
+                className={`flex flex-col items-center p-2 rounded-lg transition-all duration-300 cursor-pointer ${
                   selectedGender === "female"
                     ? "bg-gradient-to-br from-pink-100/60 to-pink-50 shadow-sm"
                     : "hover:bg-gray-50"
                 }`}
               >
                 <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
                     selectedGender === "female"
                       ? "bg-pink-500/20"
                       : "bg-gray-100"
@@ -784,7 +619,7 @@ const Dashboard = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-8 w-8 ${
+                    className={`h-6 w-6 ${
                       selectedGender === "female"
                         ? "text-pink-600"
                         : "text-gray-400"
@@ -806,7 +641,7 @@ const Dashboard = () => {
                   </svg>
                 </div>
                 <span
-                  className={`transition-all duration-200 ${
+                  className={`text-sm transition-all duration-200 ${
                     selectedGender === "female"
                       ? "text-pink-600 font-medium"
                       : "text-gray-500"
@@ -818,20 +653,20 @@ const Dashboard = () => {
 
               <div
                 onClick={() => setSelectedGender("male")}
-                className={`flex flex-col items-center p-4 rounded-xl transition-all duration-300 cursor-pointer ${
+                className={`flex flex-col items-center p-2 rounded-lg transition-all duration-300 cursor-pointer ${
                   selectedGender === "male"
                     ? "bg-gradient-to-br from-blue-100/60 to-blue-50 shadow-sm"
                     : "hover:bg-gray-50"
                 }`}
               >
                 <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
                     selectedGender === "male" ? "bg-blue-500/20" : "bg-gray-100"
                   }`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-8 w-8 ${
+                    className={`h-6 w-6 ${
                       selectedGender === "male"
                         ? "text-blue-600"
                         : "text-gray-400"
@@ -853,7 +688,7 @@ const Dashboard = () => {
                   </svg>
                 </div>
                 <span
-                  className={`transition-all duration-200 ${
+                  className={`text-sm transition-all duration-200 ${
                     selectedGender === "male"
                       ? "text-blue-600 font-medium"
                       : "text-gray-500"
@@ -866,22 +701,22 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Action Button - Animated and responsive to selections */}
+        {/* Action Button - More compact */}
         <div
-          className={`mt-8 flex justify-center transition-all duration-700 transform ${
+          className={`mt-3 flex justify-center transition-all duration-700 transform ${
             allSelectionsComplete
               ? "scale-100 opacity-100"
               : "scale-95 opacity-60"
           }`}
         >
           <button
-            className={`px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-xl shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center gap-2 group`}
+            className={`px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-lg shadow hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center gap-2 group text-sm`}
             disabled={!allSelectionsComplete}
           >
             <span>გაანალიზება</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               viewBox="0 0 20 20"
               fill="currentColor"
             >

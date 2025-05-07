@@ -1,9 +1,10 @@
 import React from "react";
 
 const CircularYearSelector = ({ years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016], selectedYear, setSelectedYear }) => {
-  const radius = 100;
-  const innerRadius = 60;
-  const center = 120;
+  // Reduce the size of the component
+  const radius = 80;
+  const innerRadius = 50;
+  const center = 100;
   const angle = 360 / years.length;
 
   const getCoordinates = (angleDeg, r) => {
@@ -53,14 +54,14 @@ const CircularYearSelector = ({ years = [2025, 2024, 2023, 2022, 2021, 2020, 201
             d={d} 
             fill={isSelected ? "#3b82f6" : "#e2e8f0"} 
             className={`transition-all duration-300 ${isSelected 
-              ? 'filter drop-shadow(0 4px 6px rgba(59, 130, 246, 0.3))' 
+              ? 'filter drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3))' 
               : 'hover:fill-blue-100'}`}
           />
           <text
             x={tx}
             y={ty}
             fill={isSelected ? "white" : "#64748b"}
-            fontSize={isSelected ? "14" : "13"}
+            fontSize={isSelected ? "12" : "11"}
             textAnchor="middle"
             dominantBaseline="middle"
             fontWeight={isSelected ? "500" : "400"}
@@ -73,8 +74,8 @@ const CircularYearSelector = ({ years = [2025, 2024, 2023, 2022, 2021, 2020, 201
               d={d} 
               fill="none" 
               stroke="#93c5fd" 
-              strokeWidth="1.5" 
-              strokeDasharray="4 2"
+              strokeWidth="1"
+              strokeDasharray="3 2"
               className="animate-pulse opacity-70"
             />
           )}
@@ -84,8 +85,9 @@ const CircularYearSelector = ({ years = [2025, 2024, 2023, 2022, 2021, 2020, 201
   };
 
   return (
-    <div className="w-64 h-64 mx-auto relative">
-      <svg width="240" height="240" className="drop-shadow-sm">
+    // Reduce the overall width and height
+    <div className="w-48 h-48 mx-auto relative">
+      <svg width="200" height="200" className="drop-shadow-sm">
         <defs>
           <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#f0f9ff" />
@@ -106,18 +108,18 @@ const CircularYearSelector = ({ years = [2025, 2024, 2023, 2022, 2021, 2020, 201
           textAnchor="middle"
           dominantBaseline="middle"
           className="text-center font-light tracking-wide"
-          fontSize="16"
+          fontSize="14"
           fill={selectedYear ? "#3b82f6" : "#94a3b8"}
         >
           {selectedYear || "აირჩიეთ"}
         </text>
         <text
           x={center}
-          y={center + 18}
+          y={center + 15}
           textAnchor="middle"
           dominantBaseline="middle"
           className="text-center font-light"
-          fontSize="13"
+          fontSize="11"
           fill="#94a3b8"
         >
           წელი
