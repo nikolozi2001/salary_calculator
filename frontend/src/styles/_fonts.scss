@@ -21,11 +21,11 @@
 }
 
 // Font variables for available fonts only
-$fontFiraGORegular: "FiraGO Regular", sans-serif;
-$fontFiraGOExtraBold: "FiraGO ExtraBold", sans-serif;
-$fontFiraGOLight: "FiraGO Light", sans-serif;
-$fontFiraGOMedium: "FiraGO Medium", sans-serif;
-$fontNotoSansGeorgianExtraCondensedBold: "NotoSans Georgian ExtraCondensed Bold", sans-serif;
+$fontFiraGORegular: "FiraGO Regular", sans-serif !default;
+$fontFiraGOExtraBold: "FiraGO ExtraBold", sans-serif !default;
+$fontFiraGOLight: "FiraGO Light", sans-serif !default;
+$fontFiraGOMedium: "FiraGO Medium", sans-serif !default;
+$fontNotoSansGeorgianExtraCondensedBold: "NotoSans Georgian ExtraCondensed Bold", sans-serif !default;
 
 // Font utility classes
 .font-fira-regular {
