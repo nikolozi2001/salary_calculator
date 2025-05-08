@@ -1,96 +1,45 @@
-@font-face {
-  font-family: "BPG Nino Mtavruli";
-  src: url("../../fonts/bpg_nino_mtavruli_normal.ttf");
-}
-
-// Import all custom fonts
-@font-face {
-  font-family: "Babuka Mtavruli";
-  src: url("fonts/babuka_mtavruli.ttf") format("truetype");
-}
-@font-face {
-  font-family: "BPG Glaho";
-  src: url("fonts/bpg_glaho.ttf") format("truetype");
-}
-@font-face {
-  font-family: "BPG Nino Mtavruli Bold";
-  src: url("fonts/bpg_nino_mtavruli_bold.ttf") format("truetype");
-  font-weight: bold;
-}
-@font-face {
-  font-family: "BPG Nino Mtavruli";
-  src: url("fonts/bpg_nino_mtavruli_normal.ttf") format("truetype");
-}
-@font-face {
-  font-family: "BPG Paata Caps";
-  src: url("fonts/bpg_paata_caps.otf") format("opentype");
-}
-@font-face {
-  font-family: "BPG Nino Elite";
-  src: url("fonts/bpg-nino-elite-exp-webfont.ttf") format("truetype");
-}
-@font-face {
-  font-family: "DejaVu Sans Condensed";
-  src: url("fonts/dejavu-sans-condensed-webfont.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Eurostile GEO Mtav";
-  src: url("fonts/Eurostile_GEO_Mtav.font.js") format("truetype");
-}
-@font-face {
-  font-family: "FiraGO Bold";
-  src: url("fonts/FiraGO-Bold.ttf") format("truetype");
-  font-weight: bold;
-}
-@font-face {
-  font-family: "FiraGO Bold Italic";
-  src: url("fonts/FiraGO-BoldItalic.ttf") format("truetype");
-  font-style: italic;
-}
-@font-face {
-  font-family: "FiraGO Book";
-  src: url("fonts/FiraGO-Book.ttf") format("truetype");
-}
-@font-face {
-  font-family: "FiraGO Book Italic";
-  src: url("fonts/FiraGO-BookItalic.ttf") format("truetype");
-  font-style: italic;
-}
-@font-face {
-  font-family: "FiraGO Italic";
-  src: url("fonts/FiraGO-Italic.ttf") format("truetype");
-  font-style: italic;
-}
+// Import only fonts that exist in the fonts directory
 @font-face {
   font-family: "FiraGO Regular";
-  src: url("fonts/FiraGO-Regular.ttf") format("truetype");
+  src: url("fonts/FiraGO-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Helvetica Roman";
-  src: url("fonts/helvetica-roman.ttf") format("truetype");
+  font-family: "FiraGO ExtraBold";
+  src: url("fonts/FiraGO-ExtraBold.otf") format("opentype");
+}
+@font-face {
+  font-family: "FiraGO Light";
+  src: url("fonts/FiraGO-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "FiraGO Medium";
+  src: url("fonts/FiraGO-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: "NotoSans Georgian ExtraCondensed Bold";
+  src: url("fonts/NotoSansGeorgian_ExtraCondensed-Bold.ttf") format("truetype");
 }
 
-$fontPoppins: "Poppins", sans-serif;
-$fontBPGNinoMtavruli: "BPG Nino Mtavruli", sans-serif;
-$fontBabukaMtavruli: "Babuka Mtavruli", sans-serif;
-$fontBPGGlaho: "BPG Glaho", sans-serif;
-$fontBPGNinoMtavruliBold: "BPG Nino Mtavruli Bold", sans-serif;
-$fontBPGPaataCaps: "BPG Paata Caps", sans-serif;
-$fontBPGNinoElite: "BPG Nino Elite", sans-serif;
-$fontDejaVuSansCondensed: "DejaVu Sans Condensed", sans-serif;
-$fontEurostileGEOMtav: "Eurostile GEO Mtav", sans-serif;
-$fontFiraGOBold: "FiraGO Bold", sans-serif;
-$fontFiraGOBoldItalic: "FiraGO Bold Italic", sans-serif;
-$fontFiraGOBook: "FiraGO Book", sans-serif;
-$fontFiraGOBookItalic: "FiraGO Book Italic", sans-serif;
-$fontFiraGOItalic: "FiraGO Italic", sans-serif;
+// Font variables for available fonts only
 $fontFiraGORegular: "FiraGO Regular", sans-serif;
-$fontHelveticaRoman: "Helvetica Roman", sans-serif;
+$fontFiraGOExtraBold: "FiraGO ExtraBold", sans-serif;
+$fontFiraGOLight: "FiraGO Light", sans-serif;
+$fontFiraGOMedium: "FiraGO Medium", sans-serif;
+$fontNotoSansGeorgianExtraCondensedBold: "NotoSans Georgian ExtraCondensed Bold", sans-serif;
 
 // Font utility classes
-.font-poppins {
-  font-family: $fontPoppins;
+.font-fira-regular {
+  font-family: $fontFiraGORegular;
 }
-.font-bpg-nino {
-  font-family: $fontBPGNinoMtavruli;
+.font-fira-extrabold {
+  font-family: $fontFiraGOExtraBold;
+}
+.font-fira-light {
+  font-family: $fontFiraGOLight;
+}
+.font-fira-medium {
+  font-family: $fontFiraGOMedium;
+}
+.font-noto-georgian-extracondensed-bold {
+  font-family: $fontNotoSansGeorgianExtraCondensedBold;
 }

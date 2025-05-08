@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import CircularYearSelector from "./CircularYearSelector";
 import { regionsApi } from "../services/api";
@@ -297,20 +297,21 @@ const Dashboard = ({ language = "GE" }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [salaryData, setSalaryData] = useState(null);
+  const [_salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
 
   // Reference to the SVG element
   const svgRef = useRef(null);
 
+  // Function to handle region click
+  const handleRegionClick = useCallback((id) => setSelectedRegion((prev) => (prev === id ? null : id)), []);
+
+  // Function to handle region hover
+  const handleRegionHover = (id) => setHoveredRegion(id);
+
   // Function to handle activity selection with toggle capability
   const handleActivitySelect = (activity) => {
     setSelectedActivity(selectedActivity === activity ? null : activity);
-  };
-
-  // Function to handle region selection with toggle capability
-  const handleRegionSelect = (id) => {
-    setSelectedRegion(selectedRegion === id ? null : id);
   };
 
   // Function to handle year selection with toggle capability
@@ -455,7 +456,7 @@ const Dashboard = ({ language = "GE" }) => {
         mapContainer.innerHTML = "";
       }
     };
-  }, []);
+  }, [handleRegionClick]);
 
   // Effect to update selected/hovered state
   useEffect(() => {
@@ -480,16 +481,6 @@ const Dashboard = ({ language = "GE" }) => {
       }
     });
   }, [selectedRegion, hoveredRegion]);
-
-  // Function to handle region click
-  const handleRegionClick = (id) => {
-    setSelectedRegion(selectedRegion === id ? null : id);
-  };
-
-  // Function to handle region hover
-  const handleRegionHover = (id) => {
-    setHoveredRegion(id);
-  };
 
   // Fetch salary data when all selections are made and user clicks analyze
   const fetchSalaryData = async () => {
@@ -622,7 +613,7 @@ const Dashboard = ({ language = "GE" }) => {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M4.293 4.293a1 1 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      d="M4.293 4.293a1 1 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -806,7 +797,7 @@ const Dashboard = ({ language = "GE" }) => {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 010 1.414l-6 6a1 1 01-1.414-1.414L14.586 11H3a1 1 110-2h11.586l-4.293-4.293a1 1 010-1.414z"
+                    d="M10.293 15.707a1 1 0 010-1.414L13.586 11H3a1 1 110-2h10.586l-3.293-3.293a1 1 011.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z"
                     clipRule="evenodd"
                   />
                 </svg>
