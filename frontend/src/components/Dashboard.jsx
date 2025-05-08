@@ -174,7 +174,7 @@ const activitySectors = [
 // Reusable UI components
 const StepHeading = ({ number, title, selected, onClear }) => (
   <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-sm mr-3">
+    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-sm mr-3 shadow-md">
       {number}
     </span>
     {title}
@@ -182,6 +182,7 @@ const StepHeading = ({ number, title, selected, onClear }) => (
       <button
         onClick={onClear}
         className="ml-2 p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+        aria-label="Clear selection"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -206,17 +207,21 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
     className={`flex items-center p-3 rounded-xl cursor-pointer transition-all duration-300 ${
       isSelected
-        ? "bg-blue-50 border-l-4 border-blue-500 shadow-sm"
+        ? "bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 shadow-sm"
         : "bg-white border-l-4 border-transparent hover:bg-gray-50"
     }`}
     onClick={() => onSelect(activity.name)}
     data-id={activity.id}
   >
-    <img
-      className={`w-5 h-5 mr-3 transition-all duration-300 ${isSelected ? "scale-110" : ""}`}
-      src={activity.icon}
-      alt={activity.shortName}
-    />
+    <div className={`w-8 h-8 rounded-lg mr-3 bg-gray-50 p-1.5 flex items-center justify-center transition-all duration-300 ${
+      isSelected ? "bg-white shadow-sm scale-110" : ""
+    }`}>
+      <img
+        className="w-full h-full object-contain transition-all duration-300"
+        src={activity.icon}
+        alt={activity.shortName}
+      />
+    </div>
     <div className={`text-xs ${isSelected ? "font-medium text-blue-700" : "text-gray-700"}`}>
       {activity.shortName}
     </div>
@@ -224,24 +229,34 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
 );
 
 const GenderSelector = ({ selectedGender, onGenderSelect }) => (
-  <div className="flex justify-center gap-6">
+  <div className="flex justify-center gap-8">
     <div
       onClick={() => onGenderSelect("female")}
       className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "female" ? "shadow-lg scale-105" : "hover:shadow-sm"
+        selectedGender === "female" 
+          ? "shadow-lg scale-105" 
+          : "hover:shadow-sm border border-transparent hover:border-pink-100"
       }`}
     >
       <div
-        className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 transition transform duration-300 ${
-          selectedGender === "female" ? "bg-pink-500/20 scale-110" : "bg-gray-100"
+        className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
+          selectedGender === "female" 
+            ? "bg-gradient-to-br from-pink-100 to-pink-200 scale-110 shadow-inner" 
+            : "bg-gray-50"
         }`}
       >
-        <img className="w-7 h-7" src={femaleIcon} alt="Female Icon" />
+        <img 
+          className={`w-9 h-9 transition-all duration-300 ${
+            selectedGender === "female" ? "scale-110" : ""
+          }`} 
+          src={femaleIcon} 
+          alt="Female Icon" 
+        />
       </div>
       <span
-        className={`text-sm transition-all duration-200 ${
+        className={`text-sm font-medium transition-all duration-200 ${
           selectedGender === "female"
-            ? "text-pink-600 font-medium"
+            ? "text-pink-600"
             : "text-gray-500"
         }`}
       >
@@ -252,20 +267,30 @@ const GenderSelector = ({ selectedGender, onGenderSelect }) => (
     <div
       onClick={() => onGenderSelect("male")}
       className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "male" ? "shadow-lg scale-105" : "hover:shadow-sm"
+        selectedGender === "male" 
+          ? "shadow-lg scale-105" 
+          : "hover:shadow-sm border border-transparent hover:border-blue-100"
       }`}
     >
       <div
-        className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 transition transform duration-300 ${
-          selectedGender === "male" ? "bg-blue-500/20 scale-110" : "bg-gray-100"
+        className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
+          selectedGender === "male" 
+            ? "bg-gradient-to-br from-blue-100 to-blue-200 scale-110 shadow-inner" 
+            : "bg-gray-50"
         }`}
       >
-        <img className="w-7 h-7" src={maleIcon} alt="Male Icon" />
+        <img 
+          className={`w-9 h-9 transition-all duration-300 ${
+            selectedGender === "male" ? "scale-110" : ""
+          }`} 
+          src={maleIcon} 
+          alt="Male Icon" 
+        />
       </div>
       <span
-        className={`text-sm transition-all duration-200 ${
+        className={`text-sm font-medium transition-all duration-200 ${
           selectedGender === "male"
-            ? "text-blue-600 font-medium"
+            ? "text-blue-600"
             : "text-gray-500"
         }`}
       >
@@ -365,31 +390,37 @@ const Dashboard = ({ language = "GE" }) => {
               transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
               cursor: pointer;
               opacity: 0.9;
+              filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05));
             }
             path:hover {
               opacity: 1;
               stroke-width: 1;
               stroke: white;
-              filter: brightness(1.05) saturate(1.2);
+              filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+              transform: translateY(-1px);
             }
             path.selected {
               stroke-width: 1.5;
               stroke: white;
-              filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07));
+              filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
               opacity: 1;
+              transform: translateY(-2px);
             }
             .region-label {
-              font-family: 'Inter', sans-serif;
-              font-size: 12px;
+              font-family: 'FiraGO', sans-serif;
+              font-size: 11px;
+              font-weight: 500;
               fill: white;
               text-anchor: middle;
               pointer-events: none;
               opacity: 0;
-              transition: opacity 0.3s ease;
+              transition: all 0.3s ease;
+              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
             }
             path:hover + .region-label,
             path.selected + .region-label {
               opacity: 1;
+              transform: translateY(-1px);
             }
           `;
 
@@ -507,23 +538,24 @@ const Dashboard = ({ language = "GE" }) => {
     selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 font-sans overflow-auto">
-      {/* Header */}
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-3">
-          {/* Progress Steps */}
-          <div className="hidden md:flex items-center space-x-1">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-6 font-sans overflow-auto">
+      <div className="container mx-auto px-2 md:px-4">
+        {/* Progress Steps */}
+        <div className="flex justify-center mb-6">
+          <div className="hidden md:flex items-center space-x-2 px-4 py-2 bg-white rounded-full shadow-sm">
             {[0, 1, 2, 3].map((step, index) => (
               <div key={index} className="flex items-center">
                 <div
                   className={`h-3 w-3 rounded-full transition-all duration-500 ${
-                    activeStepIndex >= step ? "bg-blue-600" : "bg-gray-300"
+                    activeStepIndex >= step 
+                      ? "bg-gradient-to-r from-blue-600 to-indigo-500 shadow-md" 
+                      : "bg-gray-200"
                   }`}
                 ></div>
                 {index < 3 && (
                   <div
-                    className={`h-[1px] w-8 transition-all duration-500 ${
-                      activeStepIndex > step ? "bg-blue-600" : "bg-gray-300"
+                    className={`h-[2px] w-10 transition-all duration-500 ${
+                      activeStepIndex > step ? "bg-blue-500" : "bg-gray-200"
                     }`}
                   ></div>
                 )}
@@ -532,13 +564,13 @@ const Dashboard = ({ language = "GE" }) => {
           </div>
         </div>
 
-        {/* Main Content - Compact Layout */}
-        <div className="grid grid-cols-12 gap-3">
+        {/* Main Content - Compact Layout with card design */}
+        <div className="grid grid-cols-12 gap-4 md:gap-5">
           {/* Left Side - Map */}
           <div
-            className={`bg-white rounded-xl shadow-sm p-3 col-span-4 transition-all duration-500 transform ${
+            className={`bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-4 transition-all duration-500 transform ${
               activeStepIndex === 0
-                ? "scale-100 opacity-100"
+                ? "scale-100 opacity-100 ring-2 ring-blue-200"
                 : "scale-[0.98] opacity-90"
             }`}
           >
@@ -549,27 +581,27 @@ const Dashboard = ({ language = "GE" }) => {
               onClear={() => setSelectedRegion(null)}
             />
 
-            <div className="relative overflow-hidden rounded-lg group">
+            <div className="relative overflow-hidden rounded-xl group bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner p-2">
               {/* Map Container */}
               <div
                 id="georgia-map-container"
-                className="w-full h-[200px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                className="w-full h-[250px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
             </div>
 
             {/* Selected Region Information */}
             {selectedRegion && regionData[selectedRegion] && (
-              <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="mt-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-100 flex items-center justify-between animate-fadeIn">
+                <div className="flex items-center gap-3">
                   <div
-                    className="w-4 h-4 rounded-full flex items-center justify-center"
+                    className="w-8 h-8 rounded-full flex items-center justify-center shadow-inner"
                     style={{
                       backgroundColor: regionData[selectedRegion].color,
                     }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-2 w-2 text-white"
+                      className="h-4 w-4 text-white drop-shadow"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -581,7 +613,7 @@ const Dashboard = ({ language = "GE" }) => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xs font-medium text-gray-800">
+                    <h3 className="text-sm font-medium text-gray-800">
                       {regionData[selectedRegion].nameGe}
                     </h3>
                     <p className="text-xs text-gray-500">
@@ -591,11 +623,12 @@ const Dashboard = ({ language = "GE" }) => {
                 </div>
                 <button
                   onClick={() => setSelectedRegion(null)}
-                  className="p-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
+                  className="p-1.5 rounded-full hover:bg-gray-200 transition-colors duration-200"
+                  aria-label="Clear region selection"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3 text-gray-400"
+                    className="h-4 w-4 text-gray-400"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -611,54 +644,45 @@ const Dashboard = ({ language = "GE" }) => {
           </div>
 
           {/* Pinned Note */}
-          <div className="col-span-3">
-            <div className="relative h-full bg-amber-50 rounded-xl p-3 shadow-sm border border-amber-100 flex flex-col justify-center">
+          <div className="col-span-12 md:col-span-3">
+            <div className="relative h-full bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 shadow-md border border-amber-100 flex flex-col justify-center">
               {/* Pushpin */}
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                <div className="w-5 h-5 bg-blue-500 rounded-full shadow-md flex items-center justify-center">
-                  <div className="w-2 h-2 bg-blue-300 rounded-full"></div>
+                <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-md flex items-center justify-center">
+                  <div className="w-2.5 h-2.5 bg-blue-300 rounded-full"></div>
                 </div>
               </div>
 
               {/* Note Content */}
-              <div className="pt-2 text-center text-gray-600 font-light">
-                <p className="text-xs">
-                  {language === "GE"
-                    ? "ხელფასების კალკულატორი"
-                    : "Salary Calculator"}
-                </p>
-                <p className="text-xs">
-                  {language === "GE"
-                    ? "წარმოგიდგენთ დაქირავებით"
-                    : "Presents employee"}
-                </p>
-                <p className="text-xs">
-                  {language === "GE"
-                    ? "დასაქმებულთა საშუალო"
-                    : "average nominal"}
-                </p>
-                <p className="text-xs">
-                  {language === "GE" ? "ნომინალური ხელფასის" : "salary"}
-                </p>
-                <p className="text-xs">
-                  {language === "GE"
-                    ? "განაწილებების პორტალს"
-                    : "distribution portal"}
-                </p>
-                <p className="text-xs text-blue-500 font-medium">
-                  {language === "GE"
-                    ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი"
-                    : "Choose region, activity, gender and year"}
-                </p>
+              <div className="pt-4 text-center">
+                <h3 className="text-lg font-semibold mb-2 text-amber-800">
+                  {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
+                </h3>
+                <div className="space-y-2 text-gray-700">
+                  <p className="text-sm">
+                    {language === "GE"
+                      ? "წარმოგიდგენთ დაქირავებით დასაქმებულთა საშუალო ნომინალური ხელფასის განაწილებების პორტალს"
+                      : "Presents employee average nominal salary distribution portal"}
+                  </p>
+                  <div className="pt-3 flex justify-center">
+                    <div className="px-4 py-2 rounded-lg bg-white shadow-sm">
+                      <p className="text-sm text-blue-600 font-medium">
+                        {language === "GE"
+                          ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი"
+                          : "Choose region, activity, gender and year"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right Side - Activity Selection */}
           <div
-            className={`bg-white rounded-xl shadow-sm p-3 col-span-5 transition-all duration-500 transform ${
+            className={`bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-5 transition-all duration-500 transform ${
               activeStepIndex === 1
-                ? "scale-100 opacity-100"
+                ? "scale-100 opacity-100 ring-2 ring-blue-200"
                 : activeStepIndex > 1
                 ? "scale-[0.98] opacity-90"
                 : "scale-[0.95] opacity-80"
@@ -675,7 +699,7 @@ const Dashboard = ({ language = "GE" }) => {
               onClear={() => setSelectedActivity(null)}
             />
 
-            <div className="grid grid-cols-2 gap-1 h-[230px] overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 h-[255px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {/* Activity Items - All industry sectors */}
               {activitySectors.map((activity) => (
                 <ActivityItem
@@ -690,12 +714,12 @@ const Dashboard = ({ language = "GE" }) => {
         </div>
 
         {/* Bottom Row for Year and Gender Selection */}
-        <div className="mt-3 grid grid-cols-12 gap-3">
+        <div className="mt-5 grid grid-cols-12 gap-4 md:gap-5">
           {/* Year Selector */}
           <div
-            className={`bg-white p-3 rounded-xl shadow-sm col-span-6 transition-all duration-500 transform ${
+            className={`bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6 transition-all duration-500 transform ${
               activeStepIndex >= 2
-                ? "scale-100 opacity-100"
+                ? "scale-100 opacity-100 ring-2 ring-blue-200"
                 : "scale-[0.95] opacity-80"
             }`}
           >
@@ -705,7 +729,7 @@ const Dashboard = ({ language = "GE" }) => {
               selected={selectedYear}
               onClear={() => setSelectedYear(null)}
             />
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-2">
               <CircularYearSelector
                 years={years}
                 selectedYear={selectedYear}
@@ -716,9 +740,9 @@ const Dashboard = ({ language = "GE" }) => {
 
           {/* Gender Selector */}
           <div
-            className={`bg-white p-3 rounded-xl shadow-sm col-span-6 transition-all duration-500 transform ${
+            className={`bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6 transition-all duration-500 transform ${
               activeStepIndex >= 2
-                ? "scale-100 opacity-100"
+                ? "scale-100 opacity-100 ring-2 ring-blue-200"
                 : "scale-[0.95] opacity-80"
             }`}
           >
@@ -728,30 +752,32 @@ const Dashboard = ({ language = "GE" }) => {
               selected={selectedGender}
               onClear={() => setSelectedGender(null)}
             />
-            <GenderSelector
-              selectedGender={selectedGender}
-              onGenderSelect={handleGenderSelect}
-            />
+            <div className="mt-4">
+              <GenderSelector
+                selectedGender={selectedGender}
+                onGenderSelect={handleGenderSelect}
+              />
+            </div>
           </div>
         </div>
 
         {/* Action Button */}
         <div
-          className={`mt-3 flex justify-center transition-all duration-700 transform ${
+          className={`mt-8 mb-2 flex justify-center transition-all duration-700 transform ${
             allSelectionsComplete
               ? "scale-100 opacity-100"
               : "scale-95 opacity-60"
           }`}
         >
           <button
-            className={`px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 group text-base`}
+            className={`px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 group text-base font-medium`}
             disabled={!allSelectionsComplete || isLoading}
             onClick={fetchSalaryData}
           >
             {isLoading ? (
               <>
                 <svg
-                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -777,6 +803,20 @@ const Dashboard = ({ language = "GE" }) => {
             ) : (
               <>
                 <span>{language === "GE" ? "გაანალიზება" : "Analyze"}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
               </>
             )}
           </button>
@@ -784,8 +824,22 @@ const Dashboard = ({ language = "GE" }) => {
 
         {/* Error display */}
         {error && (
-          <div className="mt-2 p-2 bg-red-50 text-red-600 text-xs text-center rounded">
-            {error}
+          <div className="mt-4 p-4 bg-red-50 text-red-600 text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn">
+            <div className="flex items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-red-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span>{error}</span>
+            </div>
           </div>
         )}
       </div>

@@ -1,76 +1,55 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 const CircularYearSelector = ({ years, selectedYear, setSelectedYear }) => {
-  const containerRef = useRef(null);
-  
-  useEffect(() => {
-    if (!containerRef.current) return;
+  if (!years || years.length === 0) return null;
 
-    // Get all year items
-    const items = containerRef.current.querySelectorAll(".year-item");
-    const totalItems = items.length;
-    
-    if (totalItems === 0) return;
-
-    // Calculate the angle for each item
-    const angleStep = (2 * Math.PI) / totalItems;
-    const radius = 80; // Smaller radius for more compact layout
-    
-    // Position each item in a circle
-    items.forEach((item, index) => {
-      // Calculate position
-      const angle = index * angleStep;
-      const x = radius * Math.cos(angle);
-      const y = radius * Math.sin(angle);
-      
-      // Apply transforms to position the item
-      item.style.transform = `translate(${x}px, ${y}px)`;
-      
-      // Add event listener
-      item.addEventListener("click", () => {
-        const year = parseInt(item.getAttribute("data-year"));
-        setSelectedYear(year);
-      });
-      
-      // Add keyboard navigation
-      item.setAttribute("tabindex", "0");
-      item.setAttribute("role", "button");
-      item.setAttribute("aria-label", `Select year ${item.getAttribute("data-year")}`);
-      item.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          const year = parseInt(item.getAttribute("data-year"));
-          setSelectedYear(year);
-        }
-      });
-    });
-  }, [years, setSelectedYear]);
+  // Calculate the positioning
+  const radius = 110; // Radius of the circle
+  const centerX = 120; // Center X coordinate
+  const centerY = 120; // Center Y coordinate
+  const totalYears = years.length;
+  const angleStep = (2 * Math.PI) / totalYears;
 
   return (
-    <div className="relative h-[200px] w-[200px] flex items-center justify-center" ref={containerRef}>
+    <div className="relative w-[240px] h-[240px]" aria-label="Year selector">
       {/* Center circle */}
-      <div className="absolute w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-medium z-10">
-        {selectedYear || "წელი"}
-      </div>
-      
-      {/* Years positioned in a circle */}
-      {years.map((year) => (
-        <div
-          key={year}
-          data-year={year}
-          className={`year-item absolute w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all duration-300 cursor-pointer ${
-            selectedYear === year
-              ? "bg-blue-500 text-white shadow-lg shadow-blue-200"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-          aria-selected={selectedYear === year}
-        >
-          {year}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-center shadow-inner">
+        <div className="text-lg font-semibold text-gray-800">
+          {selectedYear || "Year"}
         </div>
-      ))}
-      
-      {/* Background circle - subtle guide */}
-      <div className="absolute w-[160px] h-[160px] rounded-full border border-gray-100"></div>
+      </div>
+
+      {/* Year buttons positioned in a circle */}
+      {years.map((year, index) => {
+        // Calculate position on the circle
+        const angle = index * angleStep - Math.PI / 2; // Start from the top
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+
+        // Is this the selected year?
+        const isSelected = selectedYear === year;
+
+        return (
+          <button
+            key={year}
+            style={{
+              left: `${x}px`,
+              top: `${y}px`,
+              transform: "translate(-50%, -50%)",
+            }}
+            className={`absolute w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+              isSelected
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white scale-110 shadow-lg"
+                : "bg-white hover:bg-gray-100 text-gray-700 shadow-sm hover:shadow hover:scale-105"
+            }`}
+            onClick={() => setSelectedYear(year)}
+            aria-pressed={isSelected}
+            aria-label={`Year ${year}`}
+          >
+            <span className="font-medium">{year}</span>
+          </button>
+        );
+      })}
     </div>
   );
 };

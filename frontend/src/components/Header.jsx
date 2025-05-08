@@ -46,29 +46,31 @@ const Header = ({ language = "GE", setLanguage }) => {
   }, [isMenuOpen]);
 
   return (
-    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md px-6 py-3 flex items-center justify-between ${fontClass}`}>
+    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md px-4 md:px-6 py-3 flex items-center justify-between ${fontClass}`}>
       {/* Logo */}
       <div className="flex items-center gap-3">
         <img
           src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
           alt="Logo"
-          className="h-7 hover:scale-105 transition-transform"
+          className="h-6 md:h-7 hover:scale-105 transition-transform duration-300"
         />
       </div>
 
       {/* Title */}
       <div className="flex-1 flex justify-center">
-        <h1 className="text-xl font-semibold text-gray-800">
+        <h1 className="text-lg md:text-xl font-semibold text-gray-800 transition-colors duration-300">
           {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
         </h1>
       </div>
 
       {/* Right Section */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 md:gap-4">
         {/* Language Toggle */}
         <button
           onClick={toggleLanguage}
-          className="p-1.5 rounded-full hover:bg-gray-100 transition"
+          className={`p-1.5 rounded-full transition-all duration-300 ${
+            language === "GE" ? "bg-blue-50" : "bg-red-50"
+          } hover:bg-gray-100 hover:shadow-sm`}
           aria-label="Toggle language"
         >
           <img
@@ -83,12 +85,17 @@ const Header = ({ language = "GE", setLanguage }) => {
           <button
             ref={buttonRef}
             onClick={toggleMenu}
-            className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1.5 rounded-md shadow-sm transition"
+            className="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-sm px-3 py-2 rounded-md shadow-sm transition-all duration-300 hover:shadow"
             aria-expanded={isMenuOpen}
           >
-            {language === "GE" ? "პროფესიები" : "Professions"}
+            <span className="hidden sm:inline">
+              {language === "GE" ? "პროფესიები" : "Professions"}
+            </span>
+            <span className="sm:hidden">
+              {language === "GE" ? "პროფ." : "Prof."}
+            </span>
             <svg
-              className={`w-4 h-4 transition-transform ${
+              className={`w-4 h-4 transition-transform duration-300 ${
                 isMenuOpen ? "rotate-180" : ""
               }`}
               fill="none"
@@ -107,19 +114,23 @@ const Header = ({ language = "GE", setLanguage }) => {
           {isMenuOpen && (
             <div
               ref={menuRef}
-              className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden animate-fadeIn"
+              className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden animate-fadeIn divide-y divide-gray-100"
             >
-              <button className="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center gap-2">
-                📊
-                {language === "GE"
-                  ? "ხელფასები პროფესიების მიხედვით - 2021"
-                  : "Salaries by Profession - 2021"}
+              <button className="w-full text-left px-4 py-3 text-sm hover:bg-blue-50 transition-colors duration-150 flex items-center gap-3 group">
+                <span className="text-lg group-hover:scale-110 transition-transform duration-300">📊</span>
+                <span className="group-hover:translate-x-1 transition-transform duration-300">
+                  {language === "GE"
+                    ? "ხელფასები პროფესიების მიხედვით - 2021"
+                    : "Salaries by Profession - 2021"}
+                </span>
               </button>
-              <button className="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center gap-2">
-                📈
-                {language === "GE"
-                  ? "ხელფასები პროფესიების მიხედვით - 2017"
-                  : "Salaries by Profession - 2017"}
+              <button className="w-full text-left px-4 py-3 text-sm hover:bg-blue-50 transition-colors duration-150 flex items-center gap-3 group">
+                <span className="text-lg group-hover:scale-110 transition-transform duration-300">📈</span>
+                <span className="group-hover:translate-x-1 transition-transform duration-300">
+                  {language === "GE"
+                    ? "ხელფასები პროფესიების მიხედვით - 2017"
+                    : "Salaries by Profession - 2017"}
+                </span>
               </button>
             </div>
           )}

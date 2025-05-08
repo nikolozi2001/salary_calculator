@@ -7,7 +7,7 @@ const Footer = ({ language = "GE" }) => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className={`${fontClass} bg-white border-t border-gray-200`}>
+    <footer className={`${fontClass} bg-white border-t border-gray-200 mt-auto`}>
       <div className="max-w-7xl mx-auto px-4 py-3">
         {/* Condensed Footer Layout */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 text-sm">

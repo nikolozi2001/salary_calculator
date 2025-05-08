@@ -8,11 +8,11 @@ function App() {
   const [language, setLanguage] = useState("GE");
   
   return (
-    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header language={language} setLanguage={setLanguage} />
-      <div className="flex-grow overflow-hidden">
+      <main className="flex-grow">
         <Dashboard language={language} />
-      </div>
+      </main>
       <Footer language={language} />
     </div>
   );
