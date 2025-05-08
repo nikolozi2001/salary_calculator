@@ -204,34 +204,22 @@ const StepHeading = ({ number, title, selected, onClear }) => (
 
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
-    className={`flex items-center p-3 border-2 rounded-2xl cursor-pointer transition transform duration-300 ${
+    className={`flex items-center p-3 rounded-xl cursor-pointer transition-all duration-300 ${
       isSelected
-        ? "border-blue-500 bg-blue-50 shadow-md scale-105"
-        : "border-transparent hover:border-gray-300 hover:shadow-sm hover:scale-105"
+        ? "bg-blue-50 border-l-4 border-blue-500 shadow-sm"
+        : "bg-white border-l-4 border-transparent hover:bg-gray-50"
     }`}
     onClick={() => onSelect(activity.name)}
     data-id={activity.id}
   >
     <img
-      className="w-5 h-5 mr-2"
+      className={`w-5 h-5 mr-3 transition-all duration-300 ${isSelected ? "scale-110" : ""}`}
       src={activity.icon}
       alt={activity.shortName}
     />
-    <div className="text-xs text-gray-700">{activity.shortName}</div>
-    {isSelected && (
-      <div className="ml-auto">
-        <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-2 w-2 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 011.414 0z" />
-          </svg>
-        </div>
-      </div>
-    )}
+    <div className={`text-xs ${isSelected ? "font-medium text-blue-700" : "text-gray-700"}`}>
+      {activity.shortName}
+    </div>
   </div>
 );
 
@@ -587,7 +575,7 @@ const Dashboard = ({ language = "GE" }) => {
                     >
                       <path
                         fillRule="evenodd"
-                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 000 4z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -789,18 +777,6 @@ const Dashboard = ({ language = "GE" }) => {
             ) : (
               <>
                 <span>{language === "GE" ? "გაანალიზება" : "Analyze"}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.293 15.707a1 1 0 010-1.414L13.586 11H3a1 1 110-2h10.586l-3.293-3.293a1 1 011.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
               </>
             )}
           </button>
