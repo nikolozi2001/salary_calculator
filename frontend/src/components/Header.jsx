@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import sakstatLogoGe from "../assets/images/sakstat-logo.svg";
 import sakstatLogoEn from "../assets/images/sakstat-logo-en.png";
+import georgianFlag from "../assets/images/georgian-flag.svg";
+import britishFlag from "../assets/images/british-flag.svg";
 
 const Header = ({ language = "GE", setLanguage }) => {
+  const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -12,17 +15,16 @@ const Header = ({ language = "GE", setLanguage }) => {
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
   };
 
-  // Effect to handle clicks outside the dropdown and escape key press
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        isMenuOpen && 
-        menuRef.current && 
-        !menuRef.current.contains(event.target) && 
-        buttonRef.current && 
+        isMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        buttonRef.current &&
         !buttonRef.current.contains(event.target)
       ) {
         setIsMenuOpen(false);
@@ -30,79 +32,95 @@ const Header = ({ language = "GE", setLanguage }) => {
     };
 
     const handleKeyDown = (event) => {
-      if (isMenuOpen && event.key === 'Escape') {
+      if (isMenuOpen && event.key === "Escape") {
         setIsMenuOpen(false);
       }
     };
 
-    // Add event listeners
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
-
-    // Clean up event listeners
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMenuOpen]);
 
   return (
-    <header className="sticky top-0 bg-white shadow-sm py-4 px-6 flex items-center justify-between font-sans">
-      {/* Logo - Use appropriate logo based on language */}
-      <div className="flex items-center transition-transform duration-300 hover:scale-110">
+    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md px-6 py-3 flex items-center justify-between ${fontClass}`}>
+      {/* Logo */}
+      <div className="flex items-center gap-3">
         <img
           src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
           alt="Logo"
-          className="h-6"
+          className="h-7 hover:scale-105 transition-transform"
         />
       </div>
 
-      {/* Title - Smaller font */}
-      <div className="flex-grow flex justify-center">
-        <h1 className="text-lg font-semibold text-gray-800">
+      {/* Title */}
+      <div className="flex-1 flex justify-center">
+        <h1 className="text-xl font-semibold text-gray-800">
           {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
         </h1>
       </div>
 
-      {/* Right Controls - More compact */}
-      <div className="flex items-center space-x-2">
-        <button 
+      {/* Right Section */}
+      <div className="flex items-center gap-3">
+        {/* Language Toggle */}
+        <button
           onClick={toggleLanguage}
-          className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition"
-          aria-label="Toggle Language"
+          className="p-1.5 rounded-full hover:bg-gray-100 transition"
+          aria-label="Toggle language"
         >
-          <span className="mr-1 text-xs">🌐</span> {language}
+          <img
+            src={language === "GE" ? georgianFlag : britishFlag}
+            alt="Language flag"
+            className="h-5 w-5"
+          />
         </button>
-        
+
+        {/* Professions Dropdown */}
         <div className="relative">
-          <button 
+          <button
             ref={buttonRef}
             onClick={toggleMenu}
-            className="flex items-center justify-between gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md text-sm transition"
+            className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1.5 rounded-md shadow-sm transition"
             aria-expanded={isMenuOpen}
-            aria-haspopup="true"
           >
-            <span>{language === "GE" ? "პროფესიები" : "Professions"}</span>
-            <svg className={`w-3 h-3 ml-1 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            {language === "GE" ? "პროფესიები" : "Professions"}
+            <svg
+              className={`w-4 h-4 transition-transform ${
+                isMenuOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
             </svg>
           </button>
-          
+
           {isMenuOpen && (
-            <div 
+            <div
               ref={menuRef}
-              className="absolute right-0 mt-2 z-10 bg-white text-gray-800 rounded-lg shadow-lg w-48 py-2"
+              className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden animate-fadeIn"
             >
-              <div className="py-1">
-                <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition flex items-center">
-                  <span className="w-4 h-4 mr-2 text-blue-600">📊</span>
-                  {language === "GE" ? "ხელფასები პროფესიების მიხედვით - 2021" : "Salaries by profession - 2021"}
-                </button>
-                <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition flex items-center">
-                  <span className="w-4 h-4 mr-2 text-blue-600">📈</span>
-                  {language === "GE" ? "ხელფასები პროფესიების მიხედვით - 2017" : "Salaries by profession - 2017"}
-                </button>
-              </div>
+              <button className="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center gap-2">
+                📊
+                {language === "GE"
+                  ? "ხელფასები პროფესიების მიხედვით - 2021"
+                  : "Salaries by Profession - 2021"}
+              </button>
+              <button className="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center gap-2">
+                📈
+                {language === "GE"
+                  ? "ხელფასები პროფესიების მიხედვით - 2017"
+                  : "Salaries by Profession - 2017"}
+              </button>
             </div>
           )}
         </div>

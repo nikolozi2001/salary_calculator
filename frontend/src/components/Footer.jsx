@@ -3,10 +3,11 @@ import sakstatLogoGe from "../assets/images/sakstat-logo.svg";
 import sakstatLogoEn from "../assets/images/sakstat-logo-en.png";
 
 const Footer = ({ language = "GE" }) => {
+  const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-white border-t border-gray-200">
+    <footer className={`${fontClass} bg-white border-t border-gray-200`}>
       <div className="max-w-7xl mx-auto px-4 py-3">
         {/* Condensed Footer Layout */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 text-sm">
