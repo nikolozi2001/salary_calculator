@@ -47,9 +47,9 @@ const Header = ({ language = "GE", setLanguage }) => {
   }, [isMenuOpen]);
 
   return (
-    <header className="bg-gradient-to-r from-[#012B7C] to-[#1a4db9] text-white py-1.5 px-3 flex items-center justify-between shadow-md">
+    <header className="sticky top-0 bg-white shadow-sm py-4 px-6 flex items-center justify-between font-sans">
       {/* Logo - Use appropriate logo based on language */}
-      <div className="flex items-center transition-transform duration-300 hover:scale-105">
+      <div className="flex items-center transition-transform duration-300 hover:scale-110">
         <img
           src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
           alt="Logo"
@@ -59,7 +59,7 @@ const Header = ({ language = "GE", setLanguage }) => {
 
       {/* Title - Smaller font */}
       <div className="flex-grow flex justify-center">
-        <h1 className="text-base font-semibold tracking-wide">
+        <h1 className="text-lg font-semibold text-gray-800">
           {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
         </h1>
       </div>
@@ -68,7 +68,7 @@ const Header = ({ language = "GE", setLanguage }) => {
       <div className="flex items-center space-x-2">
         <button 
           onClick={toggleLanguage}
-          className="bg-opacity-20 bg-white hover:bg-opacity-30 px-2 py-0.5 rounded-full text-xs flex items-center transition-all duration-200"
+          className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm transition"
           aria-label="Toggle Language"
         >
           <span className="mr-1 text-xs">🌐</span> {language}
@@ -78,7 +78,7 @@ const Header = ({ language = "GE", setLanguage }) => {
           <button 
             ref={buttonRef}
             onClick={toggleMenu}
-            className="bg-opacity-20 bg-white hover:bg-opacity-30 px-2 py-0.5 rounded-md text-xs flex items-center justify-between transition-all duration-200 min-w-[100px]"
+            className="flex items-center justify-between gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md text-sm transition"
             aria-expanded={isMenuOpen}
             aria-haspopup="true"
           >
@@ -91,14 +91,14 @@ const Header = ({ language = "GE", setLanguage }) => {
           {isMenuOpen && (
             <div 
               ref={menuRef}
-              className="absolute right-0 mt-1 z-10 bg-white text-gray-800 rounded-md shadow-lg overflow-hidden w-max min-w-[220px] transition-all duration-200 animate-fade-in"
+              className="absolute right-0 mt-2 z-10 bg-white text-gray-800 rounded-lg shadow-lg w-48 py-2"
             >
               <div className="py-1">
-                <button className="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 transition-colors duration-150 flex items-center">
+                <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition flex items-center">
                   <span className="w-4 h-4 mr-2 text-blue-600">📊</span>
                   {language === "GE" ? "ხელფასები პროფესიების მიხედვით - 2021" : "Salaries by profession - 2021"}
                 </button>
-                <button className="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 transition-colors duration-150 flex items-center">
+                <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition flex items-center">
                   <span className="w-4 h-4 mr-2 text-blue-600">📈</span>
                   {language === "GE" ? "ხელფასები პროფესიების მიხედვით - 2017" : "Salaries by profession - 2017"}
                 </button>

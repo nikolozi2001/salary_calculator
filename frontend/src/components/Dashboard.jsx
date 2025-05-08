@@ -33,11 +33,27 @@ const regionData = {
   "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#A78BFA" },
   "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#FB7185" },
   "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#67E8F9" },
-  "GE-MM": { nameEn: "Mtskheta-Mtianeti", nameGe: "მცხეთა-მთიანეთი", color: "#BEF264" },
-  "GE-RL": { nameEn: "Racha-Lechkhumi", nameGe: "რაჭა-ლეჩხუმი", color: "#FDBA74" },
-  "GE-SJ": { nameEn: "Samtskhe-Javakheti", nameGe: "სამცხე-ჯავახეთი", color: "#A1A1AA" },
+  "GE-MM": {
+    nameEn: "Mtskheta-Mtianeti",
+    nameGe: "მცხეთა-მთიანეთი",
+    color: "#BEF264",
+  },
+  "GE-RL": {
+    nameEn: "Racha-Lechkhumi",
+    nameGe: "რაჭა-ლეჩხუმი",
+    color: "#FDBA74",
+  },
+  "GE-SJ": {
+    nameEn: "Samtskhe-Javakheti",
+    nameGe: "სამცხე-ჯავახეთი",
+    color: "#A1A1AA",
+  },
   "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#94A3B8" },
-  "GE-SZ": { nameEn: "Samegrelo-Zemo Svaneti", nameGe: "სამეგრელო-ზემო სვანეთი", color: "#86EFAC" },
+  "GE-SZ": {
+    nameEn: "Samegrelo-Zemo Svaneti",
+    nameGe: "სამეგრელო-ზემო სვანეთი",
+    color: "#86EFAC",
+  },
   "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#FCD34D" },
 };
 
@@ -45,30 +61,120 @@ const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
 
 const activitySectors = [
   { id: "P", name: "განათლება", shortName: "განათლება", icon: educationIcon },
-  { id: "C", name: "დამამუშავებელი მრეწველობა", shortName: "დამამუშავებელი მრეწველობა", icon: manufacturingIcon },
-  { id: "D", name: "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება", shortName: "ელექტროენერგიის, აირის მიწოდება", icon: electricityIcon },
-  { id: "G", name: "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი", shortName: "საბითუმო და საცალო ვაჭრობა", icon: tradeIcon },
-  { id: "F", name: "მშენებლობა", shortName: "მშენებლობა", icon: constructionIcon },
-  { id: "L", name: "უძრავ ქონებასთან დაკავშირებული საქმიანობები", shortName: "უძრავ ქონებასთან დაკავშირებული საქმიანობები", icon: realEstateIcon },
-  { id: "B", name: "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება", shortName: "სამთომოპოვებითი მრეწველობა", icon: miningIcon },
-  { id: "I", name: "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები", shortName: "განთავსება და საკვების მიწოდება", icon: hotelsIcon },
-  { id: "K", name: "საფინანსო და სადაზღვევო საქმიანობები", shortName: "საფინანსო და სადაზღვევო საქმიანობები", icon: financialIcon },
-  { id: "O", name: "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება", shortName: "სახელმწიფო მმართველობა და თავდაცვა", icon: publicIcon },
-  { id: "A", name: "სოფლის, სატყეო და თევზის მეურნეობა", shortName: "სოფლის, სატყეო და თევზის მეურნეობა", icon: agroIcon },
-  { id: "H", name: "ტრანსპორტირება და დასაწყობება", shortName: "ტრანსპორტირება და დასაწყობება", icon: transportIcon },
-  { id: "Q", name: "ჯანდაცვა და სოციალური მომსახურების საქმიანობები", shortName: "ჯანდაცვა და სოციალური მომსახურება", icon: healthIcon },
-  { id: "E", name: "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები", shortName: "წყალმომარაგება და ნარჩენების მართვა", icon: waterIcon },
-  { id: "J", name: "ინფორმაცია და კომუნიკაცია", shortName: "ინფორმაცია და კომუნიკაცია", icon: informationIcon },
-  { id: "M", name: "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები", shortName: "პროფესიული, სამეცნიერო საქმიანობები", icon: professionalIcon },
-  { id: "N", name: "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები", shortName: "ადმინისტრაციული საქმიანობები", icon: administrativeIcon },
-  { id: "R", name: "ხელოვნება, გართობა და დასვენება", shortName: "ხელოვნება, გართობა და დასვენება", icon: artsIcon },
-  { id: "S", name: "სხვა სახის მომსახურება", shortName: "სხვა სახის მომსახურება", icon: otherIcon },
+  {
+    id: "C",
+    name: "დამამუშავებელი მრეწველობა",
+    shortName: "დამამუშავებელი მრეწველობა",
+    icon: manufacturingIcon,
+  },
+  {
+    id: "D",
+    name: "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება",
+    shortName: "ელექტროენერგიის, აირის მიწოდება",
+    icon: electricityIcon,
+  },
+  {
+    id: "G",
+    name: "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი",
+    shortName: "საბითუმო და საცალო ვაჭრობა",
+    icon: tradeIcon,
+  },
+  {
+    id: "F",
+    name: "მშენებლობა",
+    shortName: "მშენებლობა",
+    icon: constructionIcon,
+  },
+  {
+    id: "L",
+    name: "უძრავ ქონებასთან დაკავშირებული საქმიანობები",
+    shortName: "უძრავ ქონებასთან დაკავშირებული საქმიანობები",
+    icon: realEstateIcon,
+  },
+  {
+    id: "B",
+    name: "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება",
+    shortName: "სამთომოპოვებითი მრეწველობა",
+    icon: miningIcon,
+  },
+  {
+    id: "I",
+    name: "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები",
+    shortName: "განთავსება და საკვების მიწოდება",
+    icon: hotelsIcon,
+  },
+  {
+    id: "K",
+    name: "საფინანსო და სადაზღვევო საქმიანობები",
+    shortName: "საფინანსო და სადაზღვევო საქმიანობები",
+    icon: financialIcon,
+  },
+  {
+    id: "O",
+    name: "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება",
+    shortName: "სახელმწიფო მმართველობა და თავდაცვა",
+    icon: publicIcon,
+  },
+  {
+    id: "A",
+    name: "სოფლის, სატყეო და თევზის მეურნეობა",
+    shortName: "სოფლის, სატყეო და თევზის მეურნეობა",
+    icon: agroIcon,
+  },
+  {
+    id: "H",
+    name: "ტრანსპორტირება და დასაწყობება",
+    shortName: "ტრანსპორტირება და დასაწყობება",
+    icon: transportIcon,
+  },
+  {
+    id: "Q",
+    name: "ჯანდაცვა და სოციალური მომსახურების საქმიანობები",
+    shortName: "ჯანდაცვა და სოციალური მომსახურება",
+    icon: healthIcon,
+  },
+  {
+    id: "E",
+    name: "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები",
+    shortName: "წყალმომარაგება და ნარჩენების მართვა",
+    icon: waterIcon,
+  },
+  {
+    id: "J",
+    name: "ინფორმაცია და კომუნიკაცია",
+    shortName: "ინფორმაცია და კომუნიკაცია",
+    icon: informationIcon,
+  },
+  {
+    id: "M",
+    name: "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები",
+    shortName: "პროფესიული, სამეცნიერო საქმიანობები",
+    icon: professionalIcon,
+  },
+  {
+    id: "N",
+    name: "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები",
+    shortName: "ადმინისტრაციული საქმიანობები",
+    icon: administrativeIcon,
+  },
+  {
+    id: "R",
+    name: "ხელოვნება, გართობა და დასვენება",
+    shortName: "ხელოვნება, გართობა და დასვენება",
+    icon: artsIcon,
+  },
+  {
+    id: "S",
+    name: "სხვა სახის მომსახურება",
+    shortName: "სხვა სახის მომსახურება",
+    icon: otherIcon,
+  },
 ];
 
 // Reusable UI components
 const StepHeading = ({ number, title, selected, onClear }) => (
-  <h2 className="text-lg font-light text-gray-700 mb-2 flex items-center">
-    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs mr-2">
+  <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-sm mr-3">
       {number}
     </span>
     {title}
@@ -98,13 +204,19 @@ const StepHeading = ({ number, title, selected, onClear }) => (
 
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
-    className={`flex items-center p-2 border rounded-lg cursor-pointer transition-all duration-200 ${
-      isSelected ? "bg-blue-50" : "hover:bg-gray-50"
+    className={`flex items-center p-3 border-2 rounded-2xl cursor-pointer transition transform duration-300 ${
+      isSelected
+        ? "border-blue-500 bg-blue-50 shadow-md scale-105"
+        : "border-transparent hover:border-gray-300 hover:shadow-sm hover:scale-105"
     }`}
     onClick={() => onSelect(activity.name)}
     data-id={activity.id}
   >
-    <img className="w-5 h-5 mr-2" src={activity.icon} alt={activity.shortName} />
+    <img
+      className="w-5 h-5 mr-2"
+      src={activity.icon}
+      alt={activity.shortName}
+    />
     <div className="text-xs text-gray-700">{activity.shortName}</div>
     {isSelected && (
       <div className="ml-auto">
@@ -115,7 +227,7 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
             fill="currentColor"
             viewBox="0 0 20 20"
           >
-            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 011.414 0z" />
           </svg>
         </div>
       </div>
@@ -127,18 +239,16 @@ const GenderSelector = ({ selectedGender, onGenderSelect }) => (
   <div className="flex justify-center gap-6">
     <div
       onClick={() => onGenderSelect("female")}
-      className={`flex flex-col items-center p-2 rounded-lg transition-all duration-300 cursor-pointer ${
-        selectedGender === "female"
-          ? "bg-gradient-to-br from-pink-100/60 to-pink-50 shadow-sm"
-          : "hover:bg-gray-50"
+      className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
+        selectedGender === "female" ? "shadow-lg scale-105" : "hover:shadow-sm"
       }`}
     >
       <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-          selectedGender === "female" ? "bg-pink-500/20" : "bg-gray-100"
+        className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 transition transform duration-300 ${
+          selectedGender === "female" ? "bg-pink-500/20 scale-110" : "bg-gray-100"
         }`}
       >
-        <img className="w-6 h-6" src={femaleIcon} alt="Female Icon" />
+        <img className="w-7 h-7" src={femaleIcon} alt="Female Icon" />
       </div>
       <span
         className={`text-sm transition-all duration-200 ${
@@ -153,22 +263,22 @@ const GenderSelector = ({ selectedGender, onGenderSelect }) => (
 
     <div
       onClick={() => onGenderSelect("male")}
-      className={`flex flex-col items-center p-2 rounded-lg transition-all duration-300 cursor-pointer ${
-        selectedGender === "male"
-          ? "bg-gradient-to-br from-blue-100/60 to-blue-50 shadow-sm"
-          : "hover:bg-gray-50"
+      className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
+        selectedGender === "male" ? "shadow-lg scale-105" : "hover:shadow-sm"
       }`}
     >
       <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-          selectedGender === "male" ? "bg-blue-500/20" : "bg-gray-100"
+        className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 transition transform duration-300 ${
+          selectedGender === "male" ? "bg-blue-500/20 scale-110" : "bg-gray-100"
         }`}
       >
-        <img className="w-6 h-6" src={maleIcon} alt="Male Icon" />
+        <img className="w-7 h-7" src={maleIcon} alt="Male Icon" />
       </div>
       <span
         className={`text-sm transition-all duration-200 ${
-          selectedGender === "male" ? "text-blue-600 font-medium" : "text-gray-500"
+          selectedGender === "male"
+            ? "text-blue-600 font-medium"
+            : "text-gray-500"
         }`}
       >
         კაცი
@@ -182,14 +292,14 @@ const Dashboard = ({ language = "GE" }) => {
   // State for selections
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(2023);
+  const [selectedYear, setSelectedYear] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
-  
+
   // Reference to the SVG element
   const svgRef = useRef(null);
 
@@ -383,22 +493,28 @@ const Dashboard = ({ language = "GE" }) => {
 
   // Fetch salary data when all selections are made and user clicks analyze
   const fetchSalaryData = async () => {
-    if (!selectedRegion || !selectedActivity || !selectedYear || !selectedGender) {
+    if (
+      !selectedRegion ||
+      !selectedActivity ||
+      !selectedYear ||
+      !selectedGender
+    ) {
       return;
     }
-    
+
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Here you would make an API call with the selected parameters
       // For now, we'll use the regions API as a placeholder
-      const data = await regionsApi.getByRegionId(selectedRegion.replace('GE-', ''));
+      const data = await regionsApi.getByRegionId(
+        selectedRegion.replace("GE-", "")
+      );
       setSalaryData(data);
-      
+
       // Navigate to results view or show results modal
-      console.log('Analysis data:', data);
-      
+      console.log("Analysis data:", data);
     } catch (err) {
       console.error("Failed to fetch salary data:", err);
       setError("Failed to fetch salary data. Please try again.");
@@ -412,30 +528,23 @@ const Dashboard = ({ language = "GE" }) => {
     selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-4 font-['Inter',sans-serif] overflow-hidden">
+    <div className="min-h-screen bg-gray-100 p-6 font-sans overflow-auto">
       {/* Header */}
-      <div className="max-w-screen-2xl mx-auto">
+      <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-3">
-          <h1 className="text-2xl font-extralight text-gray-800 tracking-tight">
-            {language === "GE" ? "ხელფასების" : "Salary"}{" "}
-            <span className="text-blue-600 font-normal">
-              {language === "GE" ? "კალკულატორი" : "Calculator"}
-            </span>
-          </h1>
-
           {/* Progress Steps */}
           <div className="hidden md:flex items-center space-x-1">
             {[0, 1, 2, 3].map((step, index) => (
               <div key={index} className="flex items-center">
                 <div
-                  className={`h-2 w-2 rounded-full transition-all duration-500 ${
-                    activeStepIndex >= step ? "bg-blue-500" : "bg-gray-200"
+                  className={`h-3 w-3 rounded-full transition-all duration-500 ${
+                    activeStepIndex >= step ? "bg-blue-600" : "bg-gray-300"
                   }`}
                 ></div>
                 {index < 3 && (
                   <div
                     className={`h-[1px] w-8 transition-all duration-500 ${
-                      activeStepIndex > step ? "bg-blue-500" : "bg-gray-200"
+                      activeStepIndex > step ? "bg-blue-600" : "bg-gray-300"
                     }`}
                   ></div>
                 )}
@@ -454,11 +563,11 @@ const Dashboard = ({ language = "GE" }) => {
                 : "scale-[0.98] opacity-90"
             }`}
           >
-            <StepHeading 
-              number={1} 
+            <StepHeading
+              number={1}
               title={language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
               selected={selectedRegion}
-              onClear={() => setSelectedRegion(null)} 
+              onClear={() => setSelectedRegion(null)}
             />
 
             <div className="relative overflow-hidden rounded-lg group">
@@ -534,14 +643,32 @@ const Dashboard = ({ language = "GE" }) => {
 
               {/* Note Content */}
               <div className="pt-2 text-center text-gray-600 font-light">
-                <p className="text-xs">{language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}</p>
-                <p className="text-xs">{language === "GE" ? "წარმოგიდგენთ დაქირავებით" : "Presents employee"}</p>
-                <p className="text-xs">{language === "GE" ? "დასაქმებულთა საშუალო" : "average nominal"}</p>
-                <p className="text-xs">{language === "GE" ? "ნომინალური ხელფასის" : "salary"}</p>
-                <p className="text-xs">{language === "GE" ? "განაწილებების პორტალს" : "distribution portal"}</p>
+                <p className="text-xs">
+                  {language === "GE"
+                    ? "ხელფასების კალკულატორი"
+                    : "Salary Calculator"}
+                </p>
+                <p className="text-xs">
+                  {language === "GE"
+                    ? "წარმოგიდგენთ დაქირავებით"
+                    : "Presents employee"}
+                </p>
+                <p className="text-xs">
+                  {language === "GE"
+                    ? "დასაქმებულთა საშუალო"
+                    : "average nominal"}
+                </p>
+                <p className="text-xs">
+                  {language === "GE" ? "ნომინალური ხელფასის" : "salary"}
+                </p>
+                <p className="text-xs">
+                  {language === "GE"
+                    ? "განაწილებების პორტალს"
+                    : "distribution portal"}
+                </p>
                 <p className="text-xs text-blue-500 font-medium">
-                  {language === "GE" 
-                    ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი" 
+                  {language === "GE"
+                    ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი"
                     : "Choose region, activity, gender and year"}
                 </p>
               </div>
@@ -558,16 +685,20 @@ const Dashboard = ({ language = "GE" }) => {
                 : "scale-[0.95] opacity-80"
             }`}
           >
-            <StepHeading 
-              number={2} 
-              title={language === "GE" ? "აირჩიეთ საქმიანობის სახე" : "Choose Activity"}
+            <StepHeading
+              number={2}
+              title={
+                language === "GE"
+                  ? "აირჩიეთ საქმიანობის სახე"
+                  : "Choose Activity"
+              }
               selected={selectedActivity}
-              onClear={() => setSelectedActivity(null)} 
+              onClear={() => setSelectedActivity(null)}
             />
 
             <div className="grid grid-cols-2 gap-1 h-[230px] overflow-y-auto pr-1">
               {/* Activity Items - All industry sectors */}
-              {activitySectors.map(activity => (
+              {activitySectors.map((activity) => (
                 <ActivityItem
                   key={activity.id}
                   activity={activity}
@@ -589,11 +720,11 @@ const Dashboard = ({ language = "GE" }) => {
                 : "scale-[0.95] opacity-80"
             }`}
           >
-            <StepHeading 
-              number={3} 
+            <StepHeading
+              number={3}
               title={language === "GE" ? "აირჩიეთ წელი" : "Choose Year"}
               selected={selectedYear}
-              onClear={() => setSelectedYear(null)} 
+              onClear={() => setSelectedYear(null)}
             />
             <div className="flex justify-center">
               <CircularYearSelector
@@ -612,13 +743,13 @@ const Dashboard = ({ language = "GE" }) => {
                 : "scale-[0.95] opacity-80"
             }`}
           >
-            <StepHeading 
-              number={4} 
+            <StepHeading
+              number={4}
               title={language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
               selected={selectedGender}
-              onClear={() => setSelectedGender(null)} 
+              onClear={() => setSelectedGender(null)}
             />
-            <GenderSelector 
+            <GenderSelector
               selectedGender={selectedGender}
               onGenderSelect={handleGenderSelect}
             />
@@ -634,17 +765,35 @@ const Dashboard = ({ language = "GE" }) => {
           }`}
         >
           <button
-            className={`px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-lg shadow hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center gap-2 group text-sm`}
+            className={`px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-500 text-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 group text-base`}
             disabled={!allSelectionsComplete || isLoading}
             onClick={fetchSalaryData}
           >
             {isLoading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
-                <span>{language === "GE" ? "დამუშავება..." : "Processing..."}</span>
+                <span>
+                  {language === "GE" ? "დამუშავება..." : "Processing..."}
+                </span>
               </>
             ) : (
               <>
@@ -665,7 +814,7 @@ const Dashboard = ({ language = "GE" }) => {
             )}
           </button>
         </div>
-        
+
         {/* Error display */}
         {error && (
           <div className="mt-2 p-2 bg-red-50 text-red-600 text-xs text-center rounded">
