@@ -1,27 +1,28 @@
 import React from "react";
 import sakstatLogoGe from "../../assets/images/sakstat-logo.svg";
 import sakstatLogoEn from "../../assets/images/sakstat-logo-en.png";
-import { Link } from "react-router-dom";
 import "./Footer.scss";
 import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 import { Tooltip, Fade } from "@mui/material";
 
 const Footer = ({ language = "GE" }) => {
-  const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const currentYear = new Date().getFullYear();
   return (
-    <footer className={`footer ${fontClass}`}>
-
+    <footer className="footer">
       <div className="footer-content">
-        <img 
-          src={language === "GE" ? sakstatLogoGe : sakstatLogoEn} 
-          alt={language === "GE" ? "საქსტატის ლოგო" : "Geostat logo"} 
-          className="footer-logo" 
-        />        <p className="footer-text font-bpg-nino-mtavruli">
-          {language === "GE" 
+        <img
+          src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
+          alt={language === "GE" ? "საქსტატის ლოგო" : "Geostat logo"}
+          className="footer-logo"
+        />        <p className="footer-text">
+          {language === "GE"
             ? "საქართველოს სტატისტიკის ეროვნული სამსახური - საქსტატი"
-            : "National Statistics Office of Georgia - Geostat"
-          }
+            : "National Statistics Office of Georgia - Geostat"}
+          <span className="footer-text2">
+            {language === "GE"
+              ? "საქართველოს შრომის ბაზრის ანალიზის ინსტრუმენტი"
+              : "Georgian labor market analysis tool"}
+          </span>
         </p>
       </div>
 
@@ -76,7 +77,8 @@ const Footer = ({ language = "GE" }) => {
       </div>
 
       <p className="copyright">
-        © {currentYear} {language === "GE" ? "ყველა უფლება დაცულია" : "All rights reserved"}
+        © {currentYear}{" "}
+        {language === "GE" ? "ყველა უფლება დაცულია" : "All rights reserved"}
       </p>
     </footer>
   );

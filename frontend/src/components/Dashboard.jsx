@@ -378,60 +378,56 @@ const Dashboard = ({ language = "GE" }) => {
             const bbox = svgElement.getBBox();
             const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
             svgElement.setAttribute("viewBox", viewBox);
-          }
-
-          // Add styles
+          }          // Add styles
           const style = document.createElement("style");
           style.textContent = `
-            path {
-              fill: #f1f5f9;
-              stroke: white;
-              stroke-width: 0.5;
-              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-              cursor: pointer;
-              opacity: 0.9;
-              filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05));
+            #georgia-map-container svg path {
+              fill: #f1f5f9 !important;
+              stroke: white !important;
+              stroke-width: 0.5 !important;
+              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+              cursor: pointer !important;
+              opacity: 0.9 !important;
+              filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05)) !important;
             }
-            path:hover {
-              opacity: 1;
-              stroke-width: 1;
-              stroke: white;
-              filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
-              transform: translateY(-1px);
+            #georgia-map-container svg path:hover {
+              opacity: 1 !important;
+              stroke-width: 1 !important;
+              stroke: white !important;
+              filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1)) !important;
+              transform: translateY(-1px) !important;
             }
-            path.selected {
-              stroke-width: 1.5;
-              stroke: white;
-              filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-              opacity: 1;
-              transform: translateY(-2px);
+            #georgia-map-container svg path.selected {
+              stroke-width: 1.5 !important;
+              stroke: white !important;
+              filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) !important;
+              opacity: 1 !important;
+              transform: translateY(-2px) !important;
+            }            #georgia-map-container svg .region-label {
+              font-family: 'FiraGO', sans-serif !important;
+              font-size: 11px !important;
+              font-weight: 500 !important;
+              fill: white !important;
+              text-anchor: middle !important;
+              pointer-events: none !important;
+              opacity: 0 !important;
+              transition: all 0.3s ease !important;
+              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) !important;
             }
-            .region-label {
-              font-family: 'FiraGO', sans-serif;
-              font-size: 11px;
-              font-weight: 500;
-              fill: white;
-              text-anchor: middle;
-              pointer-events: none;
-              opacity: 0;
-              transition: all 0.3s ease;
-              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-            }
-            path:hover + .region-label,
-            path.selected + .region-label {
-              opacity: 1;
-              transform: translateY(-1px);
+            #georgia-map-container svg path:hover + .region-label,
+            #georgia-map-container svg path.selected + .region-label {
+              opacity: 1 !important;
+              transform: translateY(-1px) !important;
             }
           `;
 
-          svgElement.appendChild(style);
-
-          // Apply colors to regions and add event listeners
+          svgElement.appendChild(style);          // Apply colors to regions and add event listeners
           const paths = svgElement.querySelectorAll("path");
           paths.forEach((path) => {
             const id = path.getAttribute("id");
             if (id && regionData[id]) {
               path.setAttribute("fill", regionData[id].color);
+              path.style.fill = regionData[id].color;  // Add inline style as well for higher specificity
 
               const title = path.querySelector("title");
               if (title) {
@@ -476,7 +472,6 @@ const Dashboard = ({ language = "GE" }) => {
       }
     };
   }, [handleRegionClick]);
-
   // Effect to update selected/hovered state
   useEffect(() => {
     if (!svgRef.current) return;
@@ -488,15 +483,40 @@ const Dashboard = ({ language = "GE" }) => {
       // Handle selected state
       if (id === selectedRegion) {
         path.classList.add("selected");
+        // For additional specificity, add inline style as well
+        if (id && regionData[id]) {
+          path.style.fill = regionData[id].color;
+          path.style.strokeWidth = "1.5px";
+          path.style.stroke = "white";
+          path.style.filter = "drop-shadow(0 4px 3px rgb(0 0 0 / 0.1))";
+          path.style.opacity = "1";
+          path.style.transform = "translateY(-2px)";
+        }
       } else {
         path.classList.remove("selected");
+        // Reset inline styles when not selected
+        if (id && regionData[id]) {
+          path.style.fill = regionData[id].color;
+          path.style.strokeWidth = "0.5px";
+          path.style.stroke = "white";
+          path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
+          path.style.opacity = "0.9";
+          path.style.transform = "";
+        }
       }
 
       // Handle hover state
       if (id === hoveredRegion) {
-        path.setAttribute("filter", "brightness(1.1) saturate(1.2)");
-      } else {
-        path.removeAttribute("filter");
+        path.style.filter = "brightness(1.1) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))";
+        path.style.transform = "translateY(-1px)";
+        path.style.opacity = "1";
+        path.style.strokeWidth = "1px";
+      } else if (id !== selectedRegion) {
+        // Only remove these styles if not the selected region
+        path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
+        path.style.transform = "";
+        path.style.opacity = "0.9";
+        path.style.strokeWidth = "0.5px";
       }
     });
   }, [selectedRegion, hoveredRegion]);
