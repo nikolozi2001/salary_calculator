@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import sakstatLogoGe from "../assets/images/sakstat-logo.svg";
-import sakstatLogoEn from "../assets/images/sakstat-logo-en.png";
-import georgianFlag from "../assets/images/georgian-flag.svg";
-import britishFlag from "../assets/images/british-flag.svg";
+import { Link } from "react-router-dom";
+import sakstatLogoGe from "../../assets/images/sakstat-logo.svg";
+import sakstatLogoEn from "../../assets/images/sakstat-logo-en.png";
+import georgianFlag from "../../assets/images/georgian-flag.svg";
+import britishFlag from "../../assets/images/british-flag.svg";
 
 const Header = ({ language = "GE", setLanguage }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
@@ -46,14 +47,15 @@ const Header = ({ language = "GE", setLanguage }) => {
   }, [isMenuOpen]);
 
   return (
-    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md px-4 md:px-6 py-3 flex items-center justify-between ${fontClass}`}>
-      {/* Logo */}
+    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md px-4 md:px-6 py-3 flex items-center justify-between ${fontClass}`}>      {/* Logo with Link to Home */}
       <div className="flex items-center gap-3">
-        <img
-          src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
-          alt="Logo"
-          className="h-6 md:h-7 hover:scale-105 transition-transform duration-300"
-        />
+        <Link to="/" aria-label="Home">
+          <img
+            src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
+            alt="Logo"
+            className="h-6 md:h-7 hover:scale-105 transition-transform duration-300 cursor-pointer"
+          />
+        </Link>
       </div>
 
       {/* Title */}
