@@ -1,4 +1,7 @@
-// Simple footer styles
+@use "../../styles/variables" as *;
+
+$fontBPGNinoMtavruliNormal: "BPG Nino Mtavruli", sans-serif;
+$fontFiraGO: "FiraGO Regular", sans-serif;
 
 .footer {
   width: 100%;
@@ -30,7 +33,7 @@
       color: #64748b;
       font-weight: bold;
       font-size: 1rem;
-      
+
       .footer-text2 {
         display: block;
         font-weight: normal;

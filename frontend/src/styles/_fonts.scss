@@ -28,6 +28,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "BPG Nino Mtavruli Normal";
+  src: url("../styles/fonts/bpg-nino-mtavruli-webfont.ttf") format("truetype");
+  // src: url("../styles/fonts/bpg-nino-mtavruli-webfont.woff") format("woff");
+
+}
+
 // Font variables for available fonts only
 $fontFiraGORegular: "FiraGO Regular", sans-serif !default;
 $fontFiraGOExtraBold: "FiraGO ExtraBold", sans-serif !default;
@@ -35,6 +42,7 @@ $fontFiraGOLight: "FiraGO Light", sans-serif !default;
 $fontFiraGOMedium: "FiraGO Medium", sans-serif !default;
 $fontNotoSansGeorgianExtraCondensedBold: "NotoSans Georgian ExtraCondensed Bold", sans-serif !default;
 $fontBPGNinoMtavruli: "BPG Nino Mtavruli", sans-serif !default;
+$fontBPGNinoMtavruliNormal: "BPG Nino Mtavruli Normal", sans-serif !default;
 
 // Font utility classes
 .font-fira-regular {
