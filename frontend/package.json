@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.0",
     "@tailwindcss/vite": "^4.1.5",
     "axios": "^1.6.2",
+    "bpg-nino-mtavruli": "^1.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0"
