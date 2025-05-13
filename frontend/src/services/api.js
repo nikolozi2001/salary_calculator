@@ -89,14 +89,14 @@ export const dataApi = {
       let resolvedRegionId = regionId;
       let resolvedBusiness = business;
       
-      // If only year is provided, use default values for Samegrelo-Zemo Svaneti region and Education sector
+      // If only year is provided, use default values for Georgia (All) and All Activities
       if (year && !regionId && !business) {
-        resolvedRegionId = "38"; // Samegrelo-Zemo Svaneti
-        resolvedBusiness = "M";  // Education
+        resolvedRegionId = "0"; // Georgia (All)
+        resolvedBusiness = "AA";  // All Activities
       }
-      // If year and region are provided but no business, use Education sector as default
+      // If year and region are provided but no business, use All Activities as default
       else if (year && regionId && !business) {
-        resolvedBusiness = "M"; // Education
+        resolvedBusiness = "AA"; // All Activities
       }
       
       // Make the API request with resolved parameters

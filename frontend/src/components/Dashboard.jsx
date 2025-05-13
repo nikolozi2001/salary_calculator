@@ -369,14 +369,13 @@ const Dashboard = ({ language = "GE" }) => {
     activeStepIndex,
   ]);  // Effect to automatically update salary data when selections change
   useEffect(() => {
-    const updateSalaryInfo = async () => {
-      // Case 1: Only selectedYear is provided
+    const updateSalaryInfo = async () => {      // Case 1: Only selectedYear is provided
       if (selectedYear && !selectedRegion && !selectedActivity) {
         try {
           // Default to regionId="0" (Georgia) and activityId="AA" (All activities)
           const totalSalaryValue = await dataApi.getTotalSalary(
             selectedYear,
-            "0", // Georgia
+            "0", // Georgia (All)
             "AA"  // All activities
           );
           setTotalSalary(totalSalaryValue);
@@ -802,49 +801,47 @@ const Dashboard = ({ language = "GE" }) => {
                   <div className="w-2.5 h-2.5 bg-blue-300 rounded-full"></div>
                 </div>
               </div>
-              {/* Note Content */}{" "}              <div className="pt-4 text-center">
-                {selectedYear && !selectedRegion && !selectedActivity ? (
-                  // Case 1: Only year is selected - show Samegrelo-Zemo Svaneti + Education as default
+              {/* Note Content */}{" "}              <div className="pt-4 text-center">                {selectedYear && !selectedRegion && !selectedActivity ? (
+                  // Case 1: Only year is selected - show Georgia + All Activities as default
                   (() => {
-                    // Use Samegrelo-Zemo Svaneti region information
-                    const geCode = "GE-SZ"; // Samegrelo-Zemo Svaneti
-                    const educationActivity = activitySectors.find(activity => activity.id === "AA");
+                    // All Georgia
+                    const allGeorgiaActivity = activitySectors.find(activity => activity.id === "AA");
                     
                     return (
                       <>
                         <h3
                           className="text-lg font-semibold mb-2"
-                          style={{ color: regionData[geCode].color }}
+                          style={{ color: "#4A80F0" }} // Blue color for Georgia
                         >
                           {language === "GE"
-                            ? regionData[geCode].nameGe
-                            : regionData[geCode].nameEn}
+                            ? "საქართველო"
+                            : "Georgia"}
                         </h3>
                         <div className="space-y-2 text-gray-700">
                           <p className="text-sm">
                             {language === "GE"
-                              ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
-                              : `${regionData[geCode].nameEn} region salary statistics`}
+                              ? "საქართველოს ხელფასების სტატისტიკა"
+                              : "Georgia salary statistics"}
                           </p>
                           <div className="pt-3 flex justify-center">
                             <div
                               className="px-4 py-2 rounded-lg bg-white shadow-sm"
                               style={{
-                                borderLeft: `3px solid ${regionData[geCode].color}`,
+                                borderLeft: `3px solid #4A80F0`,
                               }}
                             >
                               <p className="text-sm font-medium text-gray-700">
                                 {language === "GE"
-                                  ? `რეგიონი: ${regionData[geCode].nameGe}`
-                                  : `Region: ${regionData[geCode].nameEn}`}
+                                  ? `რეგიონი: საქართველო (ყველა)`
+                                  : `Region: Georgia (All)`}
                               </p>
                               
                               {selectedYear && totalSalary !== null && (
                                 <div className="mt-3 pt-3 border-t border-amber-100">
                                   <p className="text-sm font-medium text-gray-700">
                                     {language === "GE"
-                                      ? `წელი: ${selectedYear}, საქმიანობის სახე: ${educationActivity ? educationActivity.shortName : "განათლება"}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
-                                      : `Year: ${selectedYear}, Business sector: ${educationActivity ? educationActivity.shortName : "Education"}, Average salary: `}
+                                      ? `წელი: ${selectedYear}, საქმიანობის სახე: ${allGeorgiaActivity ? allGeorgiaActivity.shortName : "საქართველო (ყველა)"}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
+                                      : `Year: ${selectedYear}, Business sector: ${allGeorgiaActivity ? allGeorgiaActivity.shortName : "All Activities"}, Average salary: `}
                                     <span className="font-bold text-amber-600">
                                       {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
                                     </span>
@@ -861,11 +858,10 @@ const Dashboard = ({ language = "GE" }) => {
                   (() => {
                     // Find GE-XX code corresponding to the numeric ID
                     const geCode = getGeCodeFromRegionId(selectedRegion);
-                    if (geCode && regionData[geCode]) {
-                      // If only region and year are selected (no activity), use Education as default activity
+                    if (geCode && regionData[geCode]) {                      // If only region and year are selected (no activity), use All Activities as default
                       const displayActivity = selectedActivity ? 
                         selectedActivity :
-                        (selectedYear ? activitySectors.find(activity => activity.id === "M")?.shortName : null);
+                        (selectedYear ? activitySectors.find(activity => activity.id === "AA")?.shortName : null);
                       
                       return (
                         <>
@@ -902,9 +898,8 @@ const Dashboard = ({ language = "GE" }) => {
                                 {selectedYear && totalSalary !== null && (
                                   <div className="mt-3 pt-3 border-t border-amber-100">
                                     <p className="text-sm font-medium text-gray-700">
-                                      {language === "GE"
-                                        ? `წელი: ${selectedYear}, საქმიანობის სახე: ${displayActivity || "განათლება"}, საშუალო ხელფასი შეადგენს: `
-                                        : `Year: ${selectedYear}, Business sector: ${displayActivity || "Education"}, Average salary: `}
+                                      {language === "GE"                                        ? `წელი: ${selectedYear}, საქმიანობის სახე: ${displayActivity || "საქართველო (ყველა)"}, საშუალო ხელფასი შეადგენს: `
+                                        : `Year: ${selectedYear}, Business sector: ${displayActivity || "All Activities"}, Average salary: `}
                                       <span className="font-bold text-amber-600">
                                         {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
                                       </span>
