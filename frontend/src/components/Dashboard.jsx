@@ -27,34 +27,34 @@ import femaleIcon from "../assets/icons/female.png";
 
 // Data configuration
 const regionData = {
-  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#94A3B8" },
-  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#F59E0B" },
-  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#818CF8" },
-  "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#A78BFA" },
-  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#FB7185" },
-  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#67E8F9" },
+  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" }, // Grey
+  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#e08d30" }, // Orange
+  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#5f8bd0" }, // Light blue
+  "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#9c6bbd" }, // Purple
+  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#e14b69" }, // Red/Pink
+  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#67dbf9" }, // Cyan
   "GE-MM": {
     nameEn: "Mtskheta-Mtianeti",
     nameGe: "მცხეთა-მთიანეთი",
-    color: "#BEF264",
+    color: "#a6e06c", // Light green
   },
   "GE-RL": {
     nameEn: "Racha-Lechkhumi",
     nameGe: "რაჭა-ლეჩხუმი",
-    color: "#FDBA74",
+    color: "#f3a659", // Pale orange
   },
   "GE-SJ": {
     nameEn: "Samtskhe-Javakheti",
     nameGe: "სამცხე-ჯავახეთი",
-    color: "#A1A1AA",
+    color: "#9c9ca6", // Grey/Purple
   },
-  "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#94A3B8" },
+  "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#7b818c" }, // Grey
   "GE-SZ": {
     nameEn: "Samegrelo-Zemo Svaneti",
     nameGe: "სამეგრელო-ზემო სვანეთი",
-    color: "#86EFAC",
+    color: "#6bd0a0", // Green
   },
-  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#FCD34D" },
+  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#f6cb45" }, // Yellow
 };
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
@@ -382,7 +382,6 @@ const Dashboard = ({ language = "GE" }) => {
           const style = document.createElement("style");
           style.textContent = `
             #georgia-map-container svg path {
-              fill: #f1f5f9 !important;
               stroke: white !important;
               stroke-width: 0.5 !important;
               transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -403,7 +402,7 @@ const Dashboard = ({ language = "GE" }) => {
               filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) !important;
               opacity: 1 !important;
               transform: translateY(-2px) !important;
-            }            #georgia-map-container svg .region-label {
+            }#georgia-map-container svg .region-label {
               font-family: 'FiraGO', sans-serif !important;
               font-size: 11px !important;
               font-weight: 500 !important;
@@ -426,8 +425,9 @@ const Dashboard = ({ language = "GE" }) => {
           paths.forEach((path) => {
             const id = path.getAttribute("id");
             if (id && regionData[id]) {
+              // Set fill color with inline style for highest specificity
               path.setAttribute("fill", regionData[id].color);
-              path.style.fill = regionData[id].color;  // Add inline style as well for higher specificity
+              path.style.fill = regionData[id].color + " !important";
 
               const title = path.querySelector("title");
               if (title) {
@@ -471,38 +471,34 @@ const Dashboard = ({ language = "GE" }) => {
         mapContainer.innerHTML = "";
       }
     };
-  }, [handleRegionClick]);
-  // Effect to update selected/hovered state
+  }, [handleRegionClick]);  // Effect to update selected/hovered state
   useEffect(() => {
     if (!svgRef.current) return;
 
     const paths = svgRef.current.querySelectorAll("path");
     paths.forEach((path) => {
       const id = path.getAttribute("id");
+      if (!id || !regionData[id]) return;
 
       // Handle selected state
       if (id === selectedRegion) {
         path.classList.add("selected");
         // For additional specificity, add inline style as well
-        if (id && regionData[id]) {
-          path.style.fill = regionData[id].color;
-          path.style.strokeWidth = "1.5px";
-          path.style.stroke = "white";
-          path.style.filter = "drop-shadow(0 4px 3px rgb(0 0 0 / 0.1))";
-          path.style.opacity = "1";
-          path.style.transform = "translateY(-2px)";
-        }
+        path.style.fill = regionData[id].color + " !important";  // Maintain original color
+        path.style.strokeWidth = "1.5px";
+        path.style.stroke = "white";
+        path.style.filter = "drop-shadow(0 4px 3px rgb(0 0 0 / 0.1))";
+        path.style.opacity = "1";
+        path.style.transform = "translateY(-2px)";
       } else {
         path.classList.remove("selected");
-        // Reset inline styles when not selected
-        if (id && regionData[id]) {
-          path.style.fill = regionData[id].color;
-          path.style.strokeWidth = "0.5px";
-          path.style.stroke = "white";
-          path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
-          path.style.opacity = "0.9";
-          path.style.transform = "";
-        }
+        // Reset inline styles when not selected, but maintain color
+        path.style.fill = regionData[id].color + " !important";
+        path.style.strokeWidth = "0.5px";
+        path.style.stroke = "white";
+        path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
+        path.style.opacity = "0.9";
+        path.style.transform = "";
       }
 
       // Handle hover state
