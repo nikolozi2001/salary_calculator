@@ -15,7 +15,7 @@ const CircularYearSelector = ({ years, selectedYear, setSelectedYear }) => {
       {/* Center circle */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-center shadow-inner">
         <div className="text-lg font-semibold text-gray-800">
-          {selectedYear || "Year"}
+          {selectedYear || "წელი"}
         </div>
       </div>
 
@@ -44,7 +44,7 @@ const CircularYearSelector = ({ years, selectedYear, setSelectedYear }) => {
             }`}
             onClick={() => setSelectedYear(year)}
             aria-pressed={isSelected}
-            aria-label={`Year ${year}`}
+            aria-label={`წელი ${year}`}
           >
             <span className="font-medium">{year}</span>
           </button>

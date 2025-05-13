@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: "BPG Nino Mtavruli";
-  src: url("../styles/fonts/bpg-nino-mtavruli-webfont.woff2") format("woff2");
+  src: url("fonts/bpg_nino_mtavruli_normal.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -30,9 +30,10 @@
 
 @font-face {
   font-family: "BPG Nino Mtavruli Normal";
-  src: url("../styles/fonts/bpg-nino-mtavruli-webfont.ttf") format("truetype");
-  // src: url("../styles/fonts/bpg-nino-mtavruli-webfont.woff") format("woff");
-
+  src: url("fonts/bpg_nino_mtavruli_normal.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 // Font variables for available fonts only
