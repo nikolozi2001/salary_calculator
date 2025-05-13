@@ -373,11 +373,11 @@ const Dashboard = ({ language = "GE" }) => {
       // Case 1: Only selectedYear is provided
       if (selectedYear && !selectedRegion && !selectedActivity) {
         try {
-          // Default to regionId="38" (Samegrelo-Zemo Svaneti) and activityId="M" (Education)
+          // Default to regionId="0" (Georgia) and activityId="AA" (All activities)
           const totalSalaryValue = await dataApi.getTotalSalary(
             selectedYear,
-            "0", // Samegrelo-Zemo Svaneti
-            "AA"  // Education
+            "0", // Georgia
+            "AA"  // All activities
           );
           setTotalSalary(totalSalaryValue);
           setError(null);
@@ -391,11 +391,11 @@ const Dashboard = ({ language = "GE" }) => {
       // Case 2: Both selectedYear and selectedRegion are provided but no activity
       if (selectedYear && selectedRegion && !selectedActivity) {
         try {
-          // Use the selected region but default to activityId="M" (Education)
+          // Use the selected region but default to activityId="AA" (All activities)
           const totalSalaryValue = await dataApi.getTotalSalary(
             selectedYear,
             selectedRegion,
-            "M"  // Education
+            "AA"  // All activities
           );
           setTotalSalary(totalSalaryValue);
           setError(null);
@@ -808,7 +808,7 @@ const Dashboard = ({ language = "GE" }) => {
                   (() => {
                     // Use Samegrelo-Zemo Svaneti region information
                     const geCode = "GE-SZ"; // Samegrelo-Zemo Svaneti
-                    const educationActivity = activitySectors.find(activity => activity.id === "M");
+                    const educationActivity = activitySectors.find(activity => activity.id === "AA");
                     
                     return (
                       <>
