@@ -77,9 +77,13 @@ router.get('/total/:year/:region/:business', async (req, res) => {
   try {
     const { year, region, business } = req.params;
     
+    // Handle default values on the server side as well, for robustness
+    const resolvedRegion = region || "0"; // Default to 0 (all Georgia)
+    const resolvedBusiness = business || "AA"; // Default to AA (all sectors)
+    
     const [rows] = await pool.query(
       'SELECT total FROM sallarium.data WHERE YEAR = ? AND region = ? AND business = ?', 
-      [year, region, business]
+      [year, resolvedRegion, resolvedBusiness]
     );
     
     if (rows.length === 0) {

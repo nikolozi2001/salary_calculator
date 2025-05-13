@@ -17,9 +17,13 @@ import agroIcon from "../assets/icons/agro.png";
 import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
+// eslint-disable-next-line no-unused-vars
 import informationIcon from "../assets/icons/information.png";
+// eslint-disable-next-line no-unused-vars
 import professionalIcon from "../assets/icons/Professional.png";
+// eslint-disable-next-line no-unused-vars
 import administrativeIcon from "../assets/icons/Administrative.png";
+// eslint-disable-next-line no-unused-vars
 import artsIcon from "../assets/icons/Arts.png";
 import otherIcon from "../assets/icons/Other.png";
 import maleIcon from "../assets/icons/male.png";
@@ -77,24 +81,40 @@ const regionIdMap = {
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
 
 const activitySectors = [
-  { id: "P", name: "განათლება", shortName: "განათლება", icon: educationIcon },
+  { 
+    id: "AA", 
+    name: "საქართველო (ყველა)", 
+    shortName: "საქართველო (ყველა)", 
+    icon: otherIcon 
+  },
   {
-    id: "C",
+    id: "A",
+    name: "სოფლის მეურნეობა. ნადირობა და სატყეო მეურნეობა",
+    shortName: "სოფლის მეურნეობა",
+    icon: agroIcon,
+  },
+  {
+    id: "B",
+    name: "თევზჭერა, მეთევზეობა",
+    shortName: "თევზჭერა, მეთევზეობა",
+    icon: miningIcon,
+  },
+  {
+    id: "C",    name: "სამთომოპოვებითი მრეწველობა",
+    shortName: "სამთომოპოვებითი მრეწველობა",
+    icon: miningIcon,
+  },
+  {
+    id: "D",
     name: "დამამუშავებელი მრეწველობა",
     shortName: "დამამუშავებელი მრეწველობა",
     icon: manufacturingIcon,
   },
   {
-    id: "D",
-    name: "ელექტროენერგიის, აირის, ორთქლის და კონდიცირებული ჰაერის მიწოდება",
-    shortName: "ელექტროენერგიის, აირის მიწოდება",
+    id: "E",
+    name: "ელექტროენერგიის, აირისა და წყლის წარმოება და განაწილება",
+    shortName: "ელექტროენერგია, აირი და წყალი",
     icon: electricityIcon,
-  },
-  {
-    id: "G",
-    name: "საბითუმო და საცალო ვაჭრობა; ავტომობილების და მოტოციკლების რემონტი",
-    shortName: "საბითუმო და საცალო ვაჭრობა",
-    icon: tradeIcon,
   },
   {
     id: "F",
@@ -103,88 +123,56 @@ const activitySectors = [
     icon: constructionIcon,
   },
   {
-    id: "L",
-    name: "უძრავ ქონებასთან დაკავშირებული საქმიანობები",
-    shortName: "უძრავ ქონებასთან დაკავშირებული საქმიანობები",
-    icon: realEstateIcon,
-  },
-  {
-    id: "B",
-    name: "სამთომოპოვებითი მრეწველობა და კარიერების დამუშავება",
-    shortName: "სამთომოპოვებითი მრეწველობა",
-    icon: miningIcon,
-  },
-  {
-    id: "I",
-    name: "განთავსების საშუალებებით უზრუნველყოფის და საკვების მიწოდების საქმიანობები",
-    shortName: "განთავსება და საკვების მიწოდება",
-    icon: hotelsIcon,
-  },
-  {
-    id: "K",
-    name: "საფინანსო და სადაზღვევო საქმიანობები",
-    shortName: "საფინანსო და სადაზღვევო საქმიანობები",
-    icon: financialIcon,
-  },
-  {
-    id: "O",
-    name: "სახელმწიფო მმართველობა და თავდაცვა; სავალდებულო სოციალური უსაფრთხოება",
-    shortName: "სახელმწიფო მმართველობა და თავდაცვა",
-    icon: publicIcon,
-  },
-  {
-    id: "A",
-    name: "სოფლის, სატყეო და თევზის მეურნეობა",
-    shortName: "სოფლის, სატყეო და თევზის მეურნეობა",
-    icon: agroIcon,
+    id: "G",
+    name: "ვაჭრობა; ავტომობილების, საყოფაცხოვრებო ნაწარმისა და პირადი მოხმარების საგნების რემონტი",    shortName: "ვაჭრობა და რემონტი",
+    icon: tradeIcon,
   },
   {
     id: "H",
-    name: "ტრანსპორტირება და დასაწყობება",
-    shortName: "ტრანსპორტირება და დასაწყობება",
+    name: "სასტუმროები და რესტორნები",
+    shortName: "სასტუმროები და რესტორნები",
+    icon: hotelsIcon,
+  },
+  {
+    id: "I",
+    name: "ტრანსპორტი და კავშირგაბმულობა",
+    shortName: "ტრანსპორტი და კავშირგაბმულობა",
     icon: transportIcon,
   },
   {
-    id: "Q",
-    name: "ჯანდაცვა და სოციალური მომსახურების საქმიანობები",
-    shortName: "ჯანდაცვა და სოციალური მომსახურება",
-    icon: healthIcon,
-  },
-  {
-    id: "E",
-    name: "წყალმომარაგება; კანალიზაცია, ნარჩენების მართვა და დაბინძურებისაგან გასუფთავების საქმიანობები",
-    shortName: "წყალმომარაგება და ნარჩენების მართვა",
-    icon: waterIcon,
-  },
-  {
     id: "J",
-    name: "ინფორმაცია და კომუნიკაცია",
-    shortName: "ინფორმაცია და კომუნიკაცია",
-    icon: informationIcon,
+    name: "საფინანსო საქმიანობა",
+    shortName: "საფინანსო საქმიანობა",
+    icon: financialIcon,
+  },
+  {
+    id: "K",
+    name: "ოპერაციები უძრავი ქონებით, იჯარა და მომხმარებლი-სათვის მომსახურების გაწევა",
+    shortName: "უძრავი ქონება და იჯარა",
+    icon: realEstateIcon,
+  },
+  {
+    id: "L",
+    name: "სახელმწიფო მმართველობა",    shortName: "სახელმწიფო მმართველობა",
+    icon: publicIcon,
   },
   {
     id: "M",
-    name: "პროფესიული, სამეცნიერო და ტექნიკური საქმიანობები",
-    shortName: "პროფესიული, სამეცნიერო საქმიანობები",
-    icon: professionalIcon,
+    name: "განათლება",
+    shortName: "განათლება",
+    icon: educationIcon,
   },
   {
     id: "N",
-    name: "ადმინისტრაციული და დამხმარე მომსახურების საქმიანობები",
-    shortName: "ადმინისტრაციული საქმიანობები",
-    icon: administrativeIcon,
+    name: "ჯანმრთელობის დაცვა და სოციალური დახმარება",
+    shortName: "ჯანდაცვა და სოციალური დახმარება",
+    icon: healthIcon,
   },
   {
-    id: "R",
-    name: "ხელოვნება, გართობა და დასვენება",
-    shortName: "ხელოვნება, გართობა და დასვენება",
-    icon: artsIcon,
-  },
-  {
-    id: "S",
-    name: "სხვა სახის მომსახურება",
-    shortName: "სხვა სახის მომსახურება",
-    icon: otherIcon,
+    id: "O",
+    name: "კომუნალური, სოციალური და პერსონალური მომსახურების გაწევა",
+    shortName: "კომუნალური მომსახურება",
+    icon: waterIcon,
   },
 ];
 
@@ -399,14 +387,12 @@ const Dashboard = ({ language = "GE" }) => {
 
         if (!activityId) {
           return;
-        }
-
-        // Get the total salary without requiring the analyze button click
+        }        // Get the total salary without requiring the analyze button click
         try {
           const totalSalaryValue = await dataApi.getTotalSalary(
-            selectedYear, 
-            selectedRegion || "0", 
-            activityId || "AA",
+            selectedYear,
+            selectedRegion,
+            activityId
           );
           setTotalSalary(totalSalaryValue);
           // Clear any previous errors when successful
@@ -603,8 +589,8 @@ const Dashboard = ({ language = "GE" }) => {
     try {
       setIsLoading(true);
       setError(null); 
-      // The selectedRegion is already the numeric ID we need for the API call
-      const regionId = selectedRegion || "0"; // Default to 0 (all Georgia) if no region selected
+      // The selectedRegion is already the numeric ID we need for the API call      // The selectedRegion is already the numeric ID we need for the API call
+      const regionId = selectedRegion; // We'll let our API function handle defaults
 
       // Find the selected activity's ID from activitySectors
       const activityId = activitySectors.find(
@@ -623,8 +609,8 @@ const Dashboard = ({ language = "GE" }) => {
       try {
         // Default to "0" for all Georgia if no region is selected
         const totalSalaryValue = await dataApi.getTotalSalary(
-          selectedYear, 
-          regionId || "0", 
+          selectedYear,
+          regionId,
           activityId
         );
         setTotalSalary(totalSalaryValue);
