@@ -329,7 +329,9 @@ const Dashboard = ({ language = "GE" }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [_salaryData, setSalaryData] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [salaryData, setSalaryData] = useState(null);
+  const [totalSalary, setTotalSalary] = useState(null);
   const [error, setError] = useState(null);
 
   // Reference to the SVG element
@@ -382,6 +384,47 @@ const Dashboard = ({ language = "GE" }) => {
     selectedGender,
     activeStepIndex,
   ]);
+  // Effect to automatically update salary data when selections change
+  useEffect(() => {
+    const updateSalaryInfo = async () => {
+      if (!selectedRegion || !selectedActivity || !selectedYear) {
+        return; // Wait until all required selections are made
+      }
+
+      try {
+        // Find the selected activity's ID from activitySectors
+        const activityId = activitySectors.find(
+          (activity) => activity.name === selectedActivity
+        )?.id;
+
+        if (!activityId) {
+          return;
+        }
+
+        // Get the total salary without requiring the analyze button click
+        try {
+          const totalSalaryValue = await dataApi.getTotalSalary(
+            selectedYear, 
+            selectedRegion || "0", 
+            activityId || "AA",
+          );
+          setTotalSalary(totalSalaryValue);
+          // Clear any previous errors when successful
+          setError(null);
+        } catch (totalError) {
+          console.error("Failed to fetch total salary:", totalError);
+          setTotalSalary(null);
+          
+          // Don't display errors in the automatic update since we're not doing a user-initiated action
+          // Just silently fail
+        }
+      } catch (err) {
+        console.error("Failed to automatically update salary data:", err);
+      }
+    };
+
+    updateSalaryInfo();
+  }, [selectedRegion, selectedActivity, selectedYear]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
@@ -546,8 +589,7 @@ const Dashboard = ({ language = "GE" }) => {
         path.style.strokeWidth = "0.5px";
       }
     });
-  }, [selectedRegion, hoveredRegion]);
-  // Fetch salary data when all selections are made and user clicks analyze
+  }, [selectedRegion, hoveredRegion]);  // Fetch salary data when all selections are made and user clicks analyze
   const fetchSalaryData = async () => {
     if (
       !selectedRegion ||
@@ -560,12 +602,9 @@ const Dashboard = ({ language = "GE" }) => {
 
     try {
       setIsLoading(true);
-      setError(null); // The selectedRegion is already the numeric ID we need for the API call
-      const regionId = selectedRegion;
-
-      if (!regionId) {
-        throw new Error(`No region ID selected`);
-      }
+      setError(null); 
+      // The selectedRegion is already the numeric ID we need for the API call
+      const regionId = selectedRegion || "0"; // Default to 0 (all Georgia) if no region selected
 
       // Find the selected activity's ID from activitySectors
       const activityId = activitySectors.find(
@@ -574,13 +613,32 @@ const Dashboard = ({ language = "GE" }) => {
 
       if (!activityId) {
         throw new Error(`Activity ID not found for ${selectedActivity}`);
-      } // Call the new data API endpoint with year and region
+      } 
+      
+      // Call the data API endpoint with year and region
       const response = await dataApi.getDataByYearAndRegion(
         selectedYear,
         regionId
-      );
-
-      // In the future, you might want to include activity and gender parameters in the API
+      );      // Also fetch the total salary for this specific activity
+      try {
+        // Default to "0" for all Georgia if no region is selected
+        const totalSalaryValue = await dataApi.getTotalSalary(
+          selectedYear, 
+          regionId || "0", 
+          activityId
+        );
+        setTotalSalary(totalSalaryValue);
+      } catch (totalError) {
+        console.error("Failed to fetch total salary:", totalError);
+        setTotalSalary(null);
+        
+        // Show a specific error message for 404 errors (no data found)
+        if (totalError.response && totalError.response.status === 404) {
+          setError(`${language === "GE" ? "მონაცემები არ მოიძებნა" : "No data found"} (${selectedYear}, ${regionId}, ${activityId})`);
+        } else {
+          setError(`${language === "GE" ? "მონაცემების მიღების შეცდომა" : "Error fetching data"}`);
+        }
+      }
 
       setSalaryData(response);
 
@@ -746,8 +804,7 @@ const Dashboard = ({ language = "GE" }) => {
                             {language === "GE"
                               ? regionData[geCode].nameGe
                               : regionData[geCode].nameEn}
-                          </h3>
-                          <div className="space-y-2 text-gray-700">
+                          </h3>                          <div className="space-y-2 text-gray-700">
                             <p className="text-sm">
                               {language === "GE"
                                 ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
@@ -768,7 +825,18 @@ const Dashboard = ({ language = "GE" }) => {
                                     ? "არჩეული რეგიონი"
                                     : "Selected Region"}{" "}
                                   (ID: {selectedRegion})
-                                </p>
+                                </p>                                {selectedActivity && selectedYear && totalSalary !== null && (
+                                  <div className="mt-3 pt-3 border-t border-amber-100">
+                                    <p className="text-sm font-medium text-gray-700">
+                                      {language === "GE"
+                                        ? `წელი: ${selectedYear}, საქმიანობის სახე: ${selectedActivity}, საშუალო ხელფასი შეადგენს: `
+                                        : `Year: ${selectedYear}, Business sector: ${selectedActivity}, Average salary: `}
+                                      <span className="font-bold text-amber-600">
+                                        {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
+                                      </span>
+                                    </p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
