@@ -387,7 +387,34 @@ const Dashboard = ({ language = "GE" }) => {
         return;
       }
       
-      // Case 2: Both selectedYear and selectedRegion are provided but no activity
+      // Case 2: selectedYear and selectedActivity but no region
+      if (selectedYear && !selectedRegion && selectedActivity) {
+        try {
+          // Find the selected activity's ID from activitySectors
+          const activityId = activitySectors.find(
+            (activity) => activity.name === selectedActivity
+          )?.id;
+
+          if (!activityId) {
+            return;
+          }
+          
+          // Default to regionId="0" (Georgia) with the selected activity
+          const totalSalaryValue = await dataApi.getTotalSalary(
+            selectedYear,
+            "0", // Georgia (All)
+            activityId
+          );
+          setTotalSalary(totalSalaryValue);
+          setError(null);
+        } catch (totalError) {
+          console.error("Failed to fetch total salary with default region:", totalError);
+          setTotalSalary(null);
+        }
+        return;
+      }
+      
+      // Case 3: Both selectedYear and selectedRegion are provided but no activity
       if (selectedYear && selectedRegion && !selectedActivity) {
         try {
           // Use the selected region but default to activityId="AA" (All activities)
@@ -854,7 +881,60 @@ const Dashboard = ({ language = "GE" }) => {
                       </>
                     );
                   })()
-                ) : selectedRegion ? (
+                ) : selectedYear && !selectedRegion && selectedActivity ? (
+                  // Case 2: Year and activity are selected but no region - show Georgia with selected activity
+                  (() => {
+                    // Find the selected activity information
+                    const activityInfo = activitySectors.find(activity => activity.name === selectedActivity);
+                    
+                    return (
+                      <>
+                        <h3
+                          className="text-lg font-semibold mb-2"
+                          style={{ color: "#4A80F0" }} // Blue color for Georgia
+                        >
+                          {language === "GE"
+                            ? "საქართველო"
+                            : "Georgia"}
+                        </h3>
+                        <div className="space-y-2 text-gray-700">
+                          <p className="text-sm">
+                            {language === "GE"
+                              ? "საქართველოს ხელფასების სტატისტიკა"
+                              : "Georgia salary statistics"}
+                          </p>
+                          <div className="pt-3 flex justify-center">
+                            <div
+                              className="px-4 py-2 rounded-lg bg-white shadow-sm"
+                              style={{
+                                borderLeft: `3px solid #4A80F0`,
+                              }}
+                            >
+                              <p className="text-sm font-medium text-gray-700">
+                                {language === "GE"
+                                  ? `რეგიონი: საქართველო (ყველა)`
+                                  : `Region: Georgia (All)`}
+                              </p>
+                              
+                              {selectedYear && totalSalary !== null && (
+                                <div className="mt-3 pt-3 border-t border-amber-100">
+                                  <p className="text-sm font-medium text-gray-700">
+                                    {language === "GE"
+                                      ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityInfo ? activityInfo.shortName : selectedActivity}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
+                                      : `Year: ${selectedYear}, Business sector: ${activityInfo ? activityInfo.shortName : selectedActivity}, Average salary: `}
+                                    <span className="font-bold text-amber-600">
+                                      {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
+                                    </span>
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()
+                ) : selectedRegion ?(
                   (() => {
                     // Find GE-XX code corresponding to the numeric ID
                     const geCode = getGeCodeFromRegionId(selectedRegion);

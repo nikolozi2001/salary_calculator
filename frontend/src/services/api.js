@@ -98,9 +98,13 @@ export const dataApi = {
       else if (year && regionId && !business) {
         resolvedBusiness = "AA"; // All Activities
       }
+      // If year and business are provided but no region, use Georgia (All) as default
+      else if (year && !regionId && business) {
+        resolvedRegionId = "0"; // Georgia (All)
+      }
       
       // Make the API request with resolved parameters
-      const response = await api.get(`/data/total/${year}/${resolvedRegionId || "38"}/${resolvedBusiness || "M"}`);
+      const response = await api.get(`/data/total/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}`);
       return response.data.total;
     } catch (error) {
       console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);

@@ -79,8 +79,7 @@ router.get('/total/:year/:region/:business', async (req, res) => {
       // Handle default values on the server side as well, for robustness
     let resolvedRegion = region;
     let resolvedBusiness = business;
-    
-    // If only year is provided (region and business are missing or empty strings)
+      // If only year is provided (region and business are missing or empty strings)
     if (year && (!region || region === '') && (!business || business === '')) {
       resolvedRegion = "0"; // Default to Georgia (All)
       resolvedBusiness = "AA"; // Default to All Activities
@@ -88,6 +87,10 @@ router.get('/total/:year/:region/:business', async (req, res) => {
     // If year and region are provided but business is missing
     else if (year && region && (!business || business === '')) {
       resolvedBusiness = "AA"; // Default to All Activities
+    }
+    // If year and business are provided but region is missing
+    else if (year && (!region || region === '') && business) {
+      resolvedRegion = "0"; // Default to Georgia (All)
     }
     
     const [rows] = await pool.query(
