@@ -25,6 +25,7 @@ import professionalIcon from "../assets/icons/Professional.png";
 import administrativeIcon from "../assets/icons/Administrative.png";
 // eslint-disable-next-line no-unused-vars
 import artsIcon from "../assets/icons/Arts.png";
+// eslint-disable-next-line no-unused-vars
 import otherIcon from "../assets/icons/Other.png";
 import maleIcon from "../assets/icons/male.png";
 import femaleIcon from "../assets/icons/female.png";
@@ -63,7 +64,7 @@ const regionData = {
 
 // Mapping from GE-XX codes to numerical region IDs for database queries
 const regionIdMap = {
-  GE: "0", // საქართველო
+  "GE": "0", // საქართველო
   "GE-TB": "11", // ქ. თბილისი
   "GE-AJ": "15", // აჭარის ა.რ.
   "GE-GU": "23", // გურია
@@ -81,12 +82,7 @@ const regionIdMap = {
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
 
 const activitySectors = [
-  { 
-    id: "AA", 
-    name: "საქართველო (ყველა)", 
-    shortName: "საქართველო (ყველა)", 
-    icon: otherIcon 
-  },
+  
   {
     id: "A",
     name: "სოფლის მეურნეობა. ნადირობა და სატყეო მეურნეობა",
@@ -371,24 +367,58 @@ const Dashboard = ({ language = "GE" }) => {
     selectedYear,
     selectedGender,
     activeStepIndex,
-  ]);
-  // Effect to automatically update salary data when selections change
+  ]);  // Effect to automatically update salary data when selections change
   useEffect(() => {
     const updateSalaryInfo = async () => {
-      if (!selectedRegion || !selectedActivity || !selectedYear) {
-        return; // Wait until all required selections are made
-      }
-
-      try {
-        // Find the selected activity's ID from activitySectors
-        const activityId = activitySectors.find(
-          (activity) => activity.name === selectedActivity
-        )?.id;
-
-        if (!activityId) {
-          return;
-        }        // Get the total salary without requiring the analyze button click
+      // Case 1: Only selectedYear is provided
+      if (selectedYear && !selectedRegion && !selectedActivity) {
         try {
+          // Default to regionId="38" (Samegrelo-Zemo Svaneti) and activityId="M" (Education)
+          const totalSalaryValue = await dataApi.getTotalSalary(
+            selectedYear,
+            "0", // Samegrelo-Zemo Svaneti
+            "AA"  // Education
+          );
+          setTotalSalary(totalSalaryValue);
+          setError(null);
+        } catch (totalError) {
+          console.error("Failed to fetch total salary (default values):", totalError);
+          setTotalSalary(null);
+        }
+        return;
+      }
+      
+      // Case 2: Both selectedYear and selectedRegion are provided but no activity
+      if (selectedYear && selectedRegion && !selectedActivity) {
+        try {
+          // Use the selected region but default to activityId="M" (Education)
+          const totalSalaryValue = await dataApi.getTotalSalary(
+            selectedYear,
+            selectedRegion,
+            "M"  // Education
+          );
+          setTotalSalary(totalSalaryValue);
+          setError(null);
+        } catch (totalError) {
+          console.error("Failed to fetch total salary with default activity:", totalError);
+          setTotalSalary(null);
+        }
+        return;
+      }
+      
+      // Case 3: All selections are provided
+      if (selectedYear && selectedRegion && selectedActivity) {
+        try {
+          // Find the selected activity's ID from activitySectors
+          const activityId = activitySectors.find(
+            (activity) => activity.name === selectedActivity
+          )?.id;
+
+          if (!activityId) {
+            return;
+          }
+
+          // Get the total salary without requiring the analyze button click
           const totalSalaryValue = await dataApi.getTotalSalary(
             selectedYear,
             selectedRegion,
@@ -404,8 +434,6 @@ const Dashboard = ({ language = "GE" }) => {
           // Don't display errors in the automatic update since we're not doing a user-initiated action
           // Just silently fail
         }
-      } catch (err) {
-        console.error("Failed to automatically update salary data:", err);
       }
     };
 
@@ -774,13 +802,71 @@ const Dashboard = ({ language = "GE" }) => {
                   <div className="w-2.5 h-2.5 bg-blue-300 rounded-full"></div>
                 </div>
               </div>
-              {/* Note Content */}{" "}
-              <div className="pt-4 text-center">
-                {selectedRegion ? (
+              {/* Note Content */}{" "}              <div className="pt-4 text-center">
+                {selectedYear && !selectedRegion && !selectedActivity ? (
+                  // Case 1: Only year is selected - show Samegrelo-Zemo Svaneti + Education as default
+                  (() => {
+                    // Use Samegrelo-Zemo Svaneti region information
+                    const geCode = "GE-SZ"; // Samegrelo-Zemo Svaneti
+                    const educationActivity = activitySectors.find(activity => activity.id === "M");
+                    
+                    return (
+                      <>
+                        <h3
+                          className="text-lg font-semibold mb-2"
+                          style={{ color: regionData[geCode].color }}
+                        >
+                          {language === "GE"
+                            ? regionData[geCode].nameGe
+                            : regionData[geCode].nameEn}
+                        </h3>
+                        <div className="space-y-2 text-gray-700">
+                          <p className="text-sm">
+                            {language === "GE"
+                              ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
+                              : `${regionData[geCode].nameEn} region salary statistics`}
+                          </p>
+                          <div className="pt-3 flex justify-center">
+                            <div
+                              className="px-4 py-2 rounded-lg bg-white shadow-sm"
+                              style={{
+                                borderLeft: `3px solid ${regionData[geCode].color}`,
+                              }}
+                            >
+                              <p className="text-sm font-medium text-gray-700">
+                                {language === "GE"
+                                  ? `რეგიონი: ${regionData[geCode].nameGe}`
+                                  : `Region: ${regionData[geCode].nameEn}`}
+                              </p>
+                              
+                              {selectedYear && totalSalary !== null && (
+                                <div className="mt-3 pt-3 border-t border-amber-100">
+                                  <p className="text-sm font-medium text-gray-700">
+                                    {language === "GE"
+                                      ? `წელი: ${selectedYear}, საქმიანობის სახე: ${educationActivity ? educationActivity.shortName : "განათლება"}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
+                                      : `Year: ${selectedYear}, Business sector: ${educationActivity ? educationActivity.shortName : "Education"}, Average salary: `}
+                                    <span className="font-bold text-amber-600">
+                                      {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
+                                    </span>
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()
+                ) : selectedRegion ? (
                   (() => {
                     // Find GE-XX code corresponding to the numeric ID
                     const geCode = getGeCodeFromRegionId(selectedRegion);
                     if (geCode && regionData[geCode]) {
+                      // If only region and year are selected (no activity), use Education as default activity
+                      const displayActivity = selectedActivity ? 
+                        selectedActivity :
+                        (selectedYear ? activitySectors.find(activity => activity.id === "M")?.shortName : null);
+                      
                       return (
                         <>
                           <h3
@@ -790,7 +876,8 @@ const Dashboard = ({ language = "GE" }) => {
                             {language === "GE"
                               ? regionData[geCode].nameGe
                               : regionData[geCode].nameEn}
-                          </h3>                          <div className="space-y-2 text-gray-700">
+                          </h3>
+                          <div className="space-y-2 text-gray-700">
                             <p className="text-sm">
                               {language === "GE"
                                 ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
@@ -811,12 +898,13 @@ const Dashboard = ({ language = "GE" }) => {
                                     ? "არჩეული რეგიონი"
                                     : "Selected Region"}{" "}
                                   (ID: {selectedRegion})
-                                </p>                                {selectedActivity && selectedYear && totalSalary !== null && (
+                                </p>
+                                {selectedYear && totalSalary !== null && (
                                   <div className="mt-3 pt-3 border-t border-amber-100">
                                     <p className="text-sm font-medium text-gray-700">
                                       {language === "GE"
-                                        ? `წელი: ${selectedYear}, საქმიანობის სახე: ${selectedActivity}, საშუალო ხელფასი შეადგენს: `
-                                        : `Year: ${selectedYear}, Business sector: ${selectedActivity}, Average salary: `}
+                                        ? `წელი: ${selectedYear}, საქმიანობის სახე: ${displayActivity || "განათლება"}, საშუალო ხელფასი შეადგენს: `
+                                        : `Year: ${selectedYear}, Business sector: ${displayActivity || "Education"}, Average salary: `}
                                       <span className="font-bold text-amber-600">
                                         {totalSalary.toLocaleString()} {language === "GE" ? "ლარი" : "GEL"}
                                       </span>

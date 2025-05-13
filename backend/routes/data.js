@@ -78,12 +78,22 @@ router.get('/total/:year/:region/:business', async (req, res) => {
     const { year, region, business } = req.params;
     
     // Handle default values on the server side as well, for robustness
-    const resolvedRegion = region || "0"; // Default to 0 (all Georgia)
-    const resolvedBusiness = business || "AA"; // Default to AA (all sectors)
+    let resolvedRegion = region;
+    let resolvedBusiness = business;
+    
+    // If only year is provided (region and business are missing or empty strings)
+    if (year && (!region || region === '') && (!business || business === '')) {
+      resolvedRegion = "38"; // Default to Samegrelo-Zemo Svaneti
+      resolvedBusiness = "M"; // Default to Education
+    }
+    // If year and region are provided but business is missing
+    else if (year && region && (!business || business === '')) {
+      resolvedBusiness = "M"; // Default to Education
+    }
     
     const [rows] = await pool.query(
       'SELECT total FROM sallarium.data WHERE YEAR = ? AND region = ? AND business = ?', 
-      [year, resolvedRegion, resolvedBusiness]
+      [year, resolvedRegion || "38", resolvedBusiness || "M"]
     );
     
     if (rows.length === 0) {

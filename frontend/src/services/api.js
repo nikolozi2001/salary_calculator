@@ -83,26 +83,24 @@ export const dataApi = {
       console.error(`Failed to fetch data for year ${year}, region ${regionId}, and business ${business}:`, error);
       throw error;
     }
-  },
-  getTotalSalary: async (year, regionId, business) => {
+  },  getTotalSalary: async (year, regionId, business) => {
     try {
       // Handle default parameter values based on which parameters are provided
-      // Default values: regionId = "0" (all Georgia), business = "AA" (all sectors)
       let resolvedRegionId = regionId;
       let resolvedBusiness = business;
       
-      // If only year is provided, use default values for region and business
+      // If only year is provided, use default values for Samegrelo-Zemo Svaneti region and Education sector
       if (year && !regionId && !business) {
-        resolvedRegionId = "0";
-        resolvedBusiness = "AA";
+        resolvedRegionId = "38"; // Samegrelo-Zemo Svaneti
+        resolvedBusiness = "M";  // Education
       }
-      // If year and region are provided but no business, use default business
+      // If year and region are provided but no business, use Education sector as default
       else if (year && regionId && !business) {
-        resolvedBusiness = "AA";
+        resolvedBusiness = "M"; // Education
       }
       
       // Make the API request with resolved parameters
-      const response = await api.get(`/data/total/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}`);
+      const response = await api.get(`/data/total/${year}/${resolvedRegionId || "38"}/${resolvedBusiness || "M"}`);
       return response.data.total;
     } catch (error) {
       console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);
