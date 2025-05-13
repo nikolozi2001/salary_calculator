@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import CircularYearSelector from "./CircularYearSelector";
-import { regionsApi } from "../services/api";
+import { dataApi } from "../services/api";
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
 import manufacturingIcon from "../assets/icons/manufacturing.png";
@@ -55,6 +55,22 @@ const regionData = {
     color: "#6bd0a0", // Green
   },
   "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#f6cb45" }, // Yellow
+};
+
+// Mapping from GE-XX codes to numerical region IDs for database queries
+const regionIdMap = {
+  "GE-TB": "11", // ქ. თბილისი
+  "GE-AJ": "15", // აჭარის ა.რ.
+  "GE-GU": "23", // გურია
+  "GE-IM": "26", // იმერეთი
+  "GE-KA": "29", // კახეთი
+  "GE-MM": "32", // მცხეთა-მთიანეთ
+  "GE-RL": "35", // რაჭა-ლეჩხუმი და ქვემო სვანეთი
+  "GE-SZ": "38", // სამეგრელო-ზემო სვანეთი
+  "GE-SJ": "41", // სამცხე-ჯავახეთი
+  "GE-KK": "44", // ქვემო ქართლი
+  "GE-SK": "47", // შიდა ქართლი
+  "GE-AB": "0",  // აფხაზეთი
 };
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
@@ -519,7 +535,6 @@ const Dashboard = ({ language = "GE" }) => {
       }
     });
   }, [selectedRegion, hoveredRegion]);
-
   // Fetch salary data when all selections are made and user clicks analyze
   const fetchSalaryData = async () => {
     if (
@@ -535,15 +550,37 @@ const Dashboard = ({ language = "GE" }) => {
       setIsLoading(true);
       setError(null);
 
-      // Here you would make an API call with the selected parameters
-      // For now, we'll use the regions API as a placeholder
-      const data = await regionsApi.getByRegionId(
-        selectedRegion.replace("GE-", "")
-      );
-      setSalaryData(data);
+      // Get the mapped region ID for the API call
+      const regionId = regionIdMap[selectedRegion];
+      
+      if (!regionId) {
+        throw new Error(`Region ID mapping not found for ${selectedRegion}`);
+      }
+
+      // Find the selected activity's ID from activitySectors
+      const activityId = activitySectors.find(
+        activity => activity.name === selectedActivity
+      )?.id;
+
+      if (!activityId) {
+        throw new Error(`Activity ID not found for ${selectedActivity}`);
+      }      // Call the new data API endpoint with year and region
+      const response = await dataApi.getDataByYearAndRegion(selectedYear, regionId);
+      
+      // In the future, you might want to include activity and gender parameters in the API
+      
+      setSalaryData(response);
 
       // Navigate to results view or show results modal
-      console.log("Analysis data:", data);
+      console.log("Analysis data:", response);
+      console.log("Selected parameters:", {
+        region: selectedRegion,
+        regionId,
+        activity: selectedActivity,
+        activityId,
+        year: selectedYear,
+        gender: selectedGender
+      });
     } catch (err) {
       console.error("Failed to fetch salary data:", err);
       setError("Failed to fetch salary data. Please try again.");

@@ -3,7 +3,7 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
-import regionsRoutes from './routes/regions.js';
+import dataRoutes from './routes/data.js';
 
 // Load environment variables
 dotenv.config();
@@ -46,7 +46,7 @@ app.get('/api', (req, res) => {
 });
 
 // Routes
-app.use('/api/regions', regionsRoutes);
+app.use('/api/data', dataRoutes);
 
 // Start server
 app.listen(PORT, () => {

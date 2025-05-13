@@ -54,31 +54,23 @@ api.interceptors.response.use(
 );
 
 // API methods for regions
-export const regionsApi = {
+export const dataApi = {
   getAll: async () => {
     try {
-      const response = await api.get("/regions");
+      const response = await api.get("/data");
       return response.data;
     } catch (error) {
-      console.error("Failed to fetch regions:", error);
+      console.error("Failed to fetch data:", error);
       throw error;
     }
   },
-  getById: async (id) => {
+ 
+  getDataByYearAndRegion: async (year, regionId) => {
     try {
-      const response = await api.get(`/regions/${id}`);
+      const response = await api.get(`/data/${year}/${regionId}`);
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch region with ID ${id}:`, error);
-      throw error;
-    }
-  },
-  getByRegionId: async (regionId) => {
-    try {
-      const response = await api.get(`/regions/byregion/${regionId}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Failed to fetch data for region ${regionId}:`, error);
+      console.error(`Failed to fetch data for year ${year} and region ${regionId}:`, error);
       throw error;
     }
   },
