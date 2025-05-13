@@ -59,6 +59,7 @@ const regionData = {
 
 // Mapping from GE-XX codes to numerical region IDs for database queries
 const regionIdMap = {
+  GE: "0", // საქართველო
   "GE-TB": "11", // ქ. თბილისი
   "GE-AJ": "15", // აჭარის ა.რ.
   "GE-GU": "23", // გურია
@@ -70,7 +71,7 @@ const regionIdMap = {
   "GE-SJ": "41", // სამცხე-ჯავახეთი
   "GE-KK": "44", // ქვემო ქართლი
   "GE-SK": "47", // შიდა ქართლი
-  "GE-AB": "0",  // აფხაზეთი
+  "GE-AB": "00", // აფხაზეთი
 };
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
@@ -229,16 +230,22 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
     onClick={() => onSelect(activity.name)}
     data-id={activity.id}
   >
-    <div className={`w-8 h-8 rounded-lg mr-3 bg-gray-50 p-1.5 flex items-center justify-center transition-all duration-300 ${
-      isSelected ? "bg-white shadow-sm scale-110" : ""
-    }`}>
+    <div
+      className={`w-8 h-8 rounded-lg mr-3 bg-gray-50 p-1.5 flex items-center justify-center transition-all duration-300 ${
+        isSelected ? "bg-white shadow-sm scale-110" : ""
+      }`}
+    >
       <img
         className="w-full h-full object-contain transition-all duration-300"
         src={activity.icon}
         alt={activity.shortName}
       />
     </div>
-    <div className={`text-xs ${isSelected ? "font-medium text-blue-700" : "text-gray-700"}`}>
+    <div
+      className={`text-xs ${
+        isSelected ? "font-medium text-blue-700" : "text-gray-700"
+      }`}
+    >
       {activity.shortName}
     </div>
   </div>
@@ -249,31 +256,29 @@ const GenderSelector = ({ selectedGender, onGenderSelect }) => (
     <div
       onClick={() => onGenderSelect("female")}
       className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "female" 
-          ? "shadow-lg scale-105" 
+        selectedGender === "female"
+          ? "shadow-lg scale-105"
           : "hover:shadow-sm border border-transparent hover:border-pink-100"
       }`}
     >
       <div
         className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
-          selectedGender === "female" 
-            ? "bg-gradient-to-br from-pink-100 to-pink-200 scale-110 shadow-inner" 
+          selectedGender === "female"
+            ? "bg-gradient-to-br from-pink-100 to-pink-200 scale-110 shadow-inner"
             : "bg-gray-50"
         }`}
       >
-        <img 
+        <img
           className={`w-9 h-9 transition-all duration-300 ${
             selectedGender === "female" ? "scale-110" : ""
-          }`} 
-          src={femaleIcon} 
-          alt="Female Icon" 
+          }`}
+          src={femaleIcon}
+          alt="Female Icon"
         />
       </div>
       <span
         className={`text-sm font-medium transition-all duration-200 ${
-          selectedGender === "female"
-            ? "text-pink-600"
-            : "text-gray-500"
+          selectedGender === "female" ? "text-pink-600" : "text-gray-500"
         }`}
       >
         ქალი
@@ -283,31 +288,29 @@ const GenderSelector = ({ selectedGender, onGenderSelect }) => (
     <div
       onClick={() => onGenderSelect("male")}
       className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "male" 
-          ? "shadow-lg scale-105" 
+        selectedGender === "male"
+          ? "shadow-lg scale-105"
           : "hover:shadow-sm border border-transparent hover:border-blue-100"
       }`}
     >
       <div
         className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
-          selectedGender === "male" 
-            ? "bg-gradient-to-br from-blue-100 to-blue-200 scale-110 shadow-inner" 
+          selectedGender === "male"
+            ? "bg-gradient-to-br from-blue-100 to-blue-200 scale-110 shadow-inner"
             : "bg-gray-50"
         }`}
       >
-        <img 
+        <img
           className={`w-9 h-9 transition-all duration-300 ${
             selectedGender === "male" ? "scale-110" : ""
-          }`} 
-          src={maleIcon} 
-          alt="Male Icon" 
+          }`}
+          src={maleIcon}
+          alt="Male Icon"
         />
       </div>
       <span
         className={`text-sm font-medium transition-all duration-200 ${
-          selectedGender === "male"
-            ? "text-blue-600"
-            : "text-gray-500"
+          selectedGender === "male" ? "text-blue-600" : "text-gray-500"
         }`}
       >
         კაცი
@@ -329,16 +332,17 @@ const Dashboard = ({ language = "GE" }) => {
   const [_salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log("Selected Region:", selectedRegion);
-  
-
   // Reference to the SVG element
   const svgRef = useRef(null);
+  // Function to handle region click - updates with numerical ID from mapping
+  const handleRegionClick = useCallback((id) => {
+    setSelectedRegion((prev) => {
+      const numericId = regionIdMap[id];
+      return prev === numericId ? null : numericId;
+    });
+  }, []);
 
-  // Function to handle region click
-  const handleRegionClick = useCallback((id) => setSelectedRegion((prev) => (prev === id ? null : id)), []);
-
-  // Function to handle region hover
+  // Function to handle region hover - still using the GE-XX format for hovering
   const handleRegionHover = (id) => setHoveredRegion(id);
 
   // Function to handle activity selection with toggle capability
@@ -350,10 +354,16 @@ const Dashboard = ({ language = "GE" }) => {
   const handleYearSelect = (year) => {
     setSelectedYear(selectedYear === year ? null : year);
   };
-
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
+  };
+
+  // Helper function to get GE-XX code from a numeric region ID
+  const getGeCodeFromRegionId = (numericId) => {
+    return Object.keys(regionIdMap).find(
+      (key) => regionIdMap[key] === numericId
+    );
   };
 
   // Move to next step when a selection is made
@@ -397,7 +407,7 @@ const Dashboard = ({ language = "GE" }) => {
             const bbox = svgElement.getBBox();
             const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
             svgElement.setAttribute("viewBox", viewBox);
-          }          // Add styles
+          } // Add styles
           const style = document.createElement("style");
           style.textContent = `
             #georgia-map-container svg path {
@@ -439,7 +449,7 @@ const Dashboard = ({ language = "GE" }) => {
             }
           `;
 
-          svgElement.appendChild(style);          // Apply colors to regions and add event listeners
+          svgElement.appendChild(style); // Apply colors to regions and add event listeners
           const paths = svgElement.querySelectorAll("path");
           paths.forEach((path) => {
             const id = path.getAttribute("id");
@@ -490,9 +500,10 @@ const Dashboard = ({ language = "GE" }) => {
         mapContainer.innerHTML = "";
       }
     };
-  }, [handleRegionClick]);  // Effect to update selected/hovered state
+  }, [handleRegionClick]); // Effect to update selected/hovered state
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (!svgRef.current) return; // Find the GE-XX code that corresponds to the selected region number
+    const selectedGeCode = getGeCodeFromRegionId(selectedRegion);
 
     const paths = svgRef.current.querySelectorAll("path");
     paths.forEach((path) => {
@@ -500,10 +511,10 @@ const Dashboard = ({ language = "GE" }) => {
       if (!id || !regionData[id]) return;
 
       // Handle selected state
-      if (id === selectedRegion) {
+      if (id === selectedGeCode) {
         path.classList.add("selected");
         // For additional specificity, add inline style as well
-        path.style.fill = regionData[id].color + " !important";  // Maintain original color
+        path.style.fill = regionData[id].color + " !important"; // Maintain original color
         path.style.strokeWidth = "1.5px";
         path.style.stroke = "white";
         path.style.filter = "drop-shadow(0 4px 3px rgb(0 0 0 / 0.1))";
@@ -522,7 +533,8 @@ const Dashboard = ({ language = "GE" }) => {
 
       // Handle hover state
       if (id === hoveredRegion) {
-        path.style.filter = "brightness(1.1) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))";
+        path.style.filter =
+          "brightness(1.1) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))";
         path.style.transform = "translateY(-1px)";
         path.style.opacity = "1";
         path.style.strokeWidth = "1px";
@@ -548,38 +560,39 @@ const Dashboard = ({ language = "GE" }) => {
 
     try {
       setIsLoading(true);
-      setError(null);
+      setError(null); // The selectedRegion is already the numeric ID we need for the API call
+      const regionId = selectedRegion;
 
-      // Get the mapped region ID for the API call
-      const regionId = regionIdMap[selectedRegion];
-      
       if (!regionId) {
-        throw new Error(`Region ID mapping not found for ${selectedRegion}`);
+        throw new Error(`No region ID selected`);
       }
 
       // Find the selected activity's ID from activitySectors
       const activityId = activitySectors.find(
-        activity => activity.name === selectedActivity
+        (activity) => activity.name === selectedActivity
       )?.id;
 
       if (!activityId) {
         throw new Error(`Activity ID not found for ${selectedActivity}`);
-      }      // Call the new data API endpoint with year and region
-      const response = await dataApi.getDataByYearAndRegion(selectedYear, regionId);
-      
+      } // Call the new data API endpoint with year and region
+      const response = await dataApi.getDataByYearAndRegion(
+        selectedYear,
+        regionId
+      );
+
       // In the future, you might want to include activity and gender parameters in the API
-      
+
       setSalaryData(response);
 
       // Navigate to results view or show results modal
       console.log("Analysis data:", response);
       console.log("Selected parameters:", {
-        region: selectedRegion,
-        regionId,
+        regionId: selectedRegion,
+        regionCode: getGeCodeFromRegionId(selectedRegion),
         activity: selectedActivity,
         activityId,
         year: selectedYear,
-        gender: selectedGender
+        gender: selectedGender,
       });
     } catch (err) {
       console.error("Failed to fetch salary data:", err);
@@ -603,8 +616,8 @@ const Dashboard = ({ language = "GE" }) => {
               <div key={index} className="flex items-center">
                 <div
                   className={`h-3 w-3 rounded-full transition-all duration-500 ${
-                    activeStepIndex >= step 
-                      ? "bg-gradient-to-r from-blue-600 to-indigo-500 shadow-md" 
+                    activeStepIndex >= step
+                      ? "bg-gradient-to-r from-blue-600 to-indigo-500 shadow-md"
                       : "bg-gray-200"
                   }`}
                 ></div>
@@ -636,46 +649,56 @@ const Dashboard = ({ language = "GE" }) => {
               selected={selectedRegion}
               onClear={() => setSelectedRegion(null)}
             />
-
             <div className="relative overflow-hidden rounded-xl group bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner p-2">
               {/* Map Container */}
               <div
                 id="georgia-map-container"
                 className="w-full h-[250px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
-            </div>
-
+            </div>{" "}
             {/* Selected Region Information */}
-            {selectedRegion && regionData[selectedRegion] && (
+            {selectedRegion && (
               <div className="mt-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-100 flex items-center justify-between animate-fadeIn">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center shadow-inner"
-                    style={{
-                      backgroundColor: regionData[selectedRegion].color,
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-white drop-shadow"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 000 4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-800">
-                      {regionData[selectedRegion].nameGe}
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      {regionData[selectedRegion].nameEn}
-                    </p>
-                  </div>
+                  {" "}
+                  {/* Find the GE-XX code that maps to this numeric ID */}
+                  {(() => {
+                    const geCode = getGeCodeFromRegionId(selectedRegion);
+                    if (geCode && regionData[geCode]) {
+                      return (
+                        <>
+                          <div
+                            className="w-8 h-8 rounded-full flex items-center justify-center shadow-inner"
+                            style={{
+                              backgroundColor: regionData[geCode].color,
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-white drop-shadow"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-gray-800">
+                              {regionData[geCode].nameGe}
+                            </h3>
+                            <p className="text-xs text-gray-500">
+                              {regionData[geCode].nameEn} (ID: {selectedRegion})
+                            </p>
+                          </div>
+                        </>
+                      );
+                    }
+                    return <div>Region ID: {selectedRegion}</div>;
+                  })()}
                 </div>
                 <button
                   onClick={() => setSelectedRegion(null)}
@@ -697,7 +720,8 @@ const Dashboard = ({ language = "GE" }) => {
                 </button>
               </div>
             )}
-          </div>          {/* Pinned Note */}
+          </div>{" "}
+          {/* Pinned Note */}
           <div className="col-span-12 md:col-span-3">
             <div className="relative h-full bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 shadow-md border border-amber-100 flex flex-col justify-center">
               {/* Pushpin */}
@@ -706,33 +730,59 @@ const Dashboard = ({ language = "GE" }) => {
                   <div className="w-2.5 h-2.5 bg-blue-300 rounded-full"></div>
                 </div>
               </div>
-
-              {/* Note Content */}
+              {/* Note Content */}{" "}
               <div className="pt-4 text-center">
-                {selectedRegion && regionData[selectedRegion] ? (
-                  <>
-                    <h3 className="text-lg font-semibold mb-2" style={{ color: regionData[selectedRegion].color }}>
-                      {language === "GE" ? regionData[selectedRegion].nameGe : regionData[selectedRegion].nameEn}
-                    </h3>
-                    <div className="space-y-2 text-gray-700">
-                      <p className="text-sm">
-                        {language === "GE" 
-                          ? `${regionData[selectedRegion].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
-                          : `${regionData[selectedRegion].nameEn} region salary statistics`}
-                      </p>
-                      <div className="pt-3 flex justify-center">
-                        <div className="px-4 py-2 rounded-lg bg-white shadow-sm" style={{ borderLeft: `3px solid ${regionData[selectedRegion].color}` }}>
-                          <p className="text-sm font-medium" style={{ color: regionData[selectedRegion].color }}>
-                            {language === "GE" ? "არჩეული რეგიონი" : "Selected Region"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                {selectedRegion ? (
+                  (() => {
+                    // Find GE-XX code corresponding to the numeric ID
+                    const geCode = getGeCodeFromRegionId(selectedRegion);
+                    if (geCode && regionData[geCode]) {
+                      return (
+                        <>
+                          <h3
+                            className="text-lg font-semibold mb-2"
+                            style={{ color: regionData[geCode].color }}
+                          >
+                            {language === "GE"
+                              ? regionData[geCode].nameGe
+                              : regionData[geCode].nameEn}
+                          </h3>
+                          <div className="space-y-2 text-gray-700">
+                            <p className="text-sm">
+                              {language === "GE"
+                                ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
+                                : `${regionData[geCode].nameEn} region salary statistics`}
+                            </p>
+                            <div className="pt-3 flex justify-center">
+                              <div
+                                className="px-4 py-2 rounded-lg bg-white shadow-sm"
+                                style={{
+                                  borderLeft: `3px solid ${regionData[geCode].color}`,
+                                }}
+                              >
+                                <p
+                                  className="text-sm font-medium"
+                                  style={{ color: regionData[geCode].color }}
+                                >
+                                  {language === "GE"
+                                    ? "არჩეული რეგიონი"
+                                    : "Selected Region"}{" "}
+                                  (ID: {selectedRegion})
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    }
+                    return <p>Region ID: {selectedRegion}</p>;
+                  })()
                 ) : (
                   <>
                     <h3 className="text-lg font-semibold mb-2 text-amber-800">
-                      {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
+                      {language === "GE"
+                        ? "ხელფასების კალკულატორი"
+                        : "Salary Calculator"}
                     </h3>
                     <div className="space-y-2 text-gray-700">
                       <p className="text-sm">
@@ -755,7 +805,6 @@ const Dashboard = ({ language = "GE" }) => {
               </div>
             </div>
           </div>
-
           {/* Right Side - Activity Selection */}
           <div
             className={`bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-5 transition-all duration-500 transform ${

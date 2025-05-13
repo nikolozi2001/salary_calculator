@@ -51,4 +51,46 @@ router.get('/:year/:region', async (req, res) => {
   }
 });
 
+// GET specific salary data by year, region, and business sector
+router.get('/:year/:region/:business', async (req, res) => {
+  try {
+    const { year, region, business } = req.params;
+    
+    const [rows] = await pool.query(
+      'SELECT * FROM sallarium.data WHERE YEAR = ? AND region = ? AND business = ?', 
+      [year, region, business]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No data found for the specified parameters' });
+    }
+    
+    res.json(rows[0]); // Return the first matching record
+  } catch (error) {
+    console.error('Error fetching specific salary data:', error);
+    res.status(500).json({ error: 'Error fetching specific salary data' });
+  }
+});
+
+// GET total salary by year, region, and business sector
+router.get('/total/:year/:region/:business', async (req, res) => {
+  try {
+    const { year, region, business } = req.params;
+    
+    const [rows] = await pool.query(
+      'SELECT total FROM sallarium.data WHERE YEAR = ? AND region = ? AND business = ?', 
+      [year, region, business]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No total salary data found for the specified parameters' });
+    }
+    
+    res.json({ total: rows[0].total });
+  } catch (error) {
+    console.error('Error fetching total salary data:', error);
+    res.status(500).json({ error: 'Error fetching total salary data' });
+  }
+});
+
 export default router;

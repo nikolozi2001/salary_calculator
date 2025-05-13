@@ -53,7 +53,7 @@ api.interceptors.response.use(
   }
 );
 
-// API methods for regions
+// API methods for data
 export const dataApi = {
   getAll: async () => {
     try {
@@ -71,6 +71,26 @@ export const dataApi = {
       return response.data;
     } catch (error) {
       console.error(`Failed to fetch data for year ${year} and region ${regionId}:`, error);
+      throw error;
+    }
+  },
+
+  getDataByYearRegionAndBusiness: async (year, regionId, business) => {
+    try {
+      const response = await api.get(`/data/${year}/${regionId}/${business}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch data for year ${year}, region ${regionId}, and business ${business}:`, error);
+      throw error;
+    }
+  },
+
+  getTotalSalary: async (year, regionId, business) => {
+    try {
+      const response = await api.get(`/data/total/${year}/${regionId}/${business}`);
+      return response.data.total;
+    } catch (error) {
+      console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);
       throw error;
     }
   },
