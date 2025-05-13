@@ -313,6 +313,9 @@ const Dashboard = ({ language = "GE" }) => {
   const [_salaryData, setSalaryData] = useState(null);
   const [error, setError] = useState(null);
 
+  console.log("Selected Region:", selectedRegion);
+  
+
   // Reference to the SVG element
   const svgRef = useRef(null);
 
@@ -657,9 +660,7 @@ const Dashboard = ({ language = "GE" }) => {
                 </button>
               </div>
             )}
-          </div>
-
-          {/* Pinned Note */}
+          </div>          {/* Pinned Note */}
           <div className="col-span-12 md:col-span-3">
             <div className="relative h-full bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 shadow-md border border-amber-100 flex flex-col justify-center">
               {/* Pushpin */}
@@ -671,25 +672,49 @@ const Dashboard = ({ language = "GE" }) => {
 
               {/* Note Content */}
               <div className="pt-4 text-center">
-                <h3 className="text-lg font-semibold mb-2 text-amber-800">
-                  {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
-                </h3>
-                <div className="space-y-2 text-gray-700">
-                  <p className="text-sm">
-                    {language === "GE"
-                      ? "წარმოგიდგენთ დაქირავებით დასაქმებულთა საშუალო ნომინალური ხელფასის განაწილებების პორტალს"
-                      : "Presents employee average nominal salary distribution portal"}
-                  </p>
-                  <div className="pt-3 flex justify-center">
-                    <div className="px-4 py-2 rounded-lg bg-white shadow-sm">
-                      <p className="text-sm text-blue-600 font-medium">
-                        {language === "GE"
-                          ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი"
-                          : "Choose region, activity, gender and year"}
+                {selectedRegion && regionData[selectedRegion] ? (
+                  <>
+                    <h3 className="text-lg font-semibold mb-2" style={{ color: regionData[selectedRegion].color }}>
+                      {language === "GE" ? regionData[selectedRegion].nameGe : regionData[selectedRegion].nameEn}
+                    </h3>
+                    <div className="space-y-2 text-gray-700">
+                      <p className="text-sm">
+                        {language === "GE" 
+                          ? `${regionData[selectedRegion].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
+                          : `${regionData[selectedRegion].nameEn} region salary statistics`}
                       </p>
+                      <div className="pt-3 flex justify-center">
+                        <div className="px-4 py-2 rounded-lg bg-white shadow-sm" style={{ borderLeft: `3px solid ${regionData[selectedRegion].color}` }}>
+                          <p className="text-sm font-medium" style={{ color: regionData[selectedRegion].color }}>
+                            {language === "GE" ? "არჩეული რეგიონი" : "Selected Region"}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-lg font-semibold mb-2 text-amber-800">
+                      {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
+                    </h3>
+                    <div className="space-y-2 text-gray-700">
+                      <p className="text-sm">
+                        {language === "GE"
+                          ? "წარმოგიდგენთ დაქირავებით დასაქმებულთა საშუალო ნომინალური ხელფასის განაწილებების პორტალს"
+                          : "Presents employee average nominal salary distribution portal"}
+                      </p>
+                      <div className="pt-3 flex justify-center">
+                        <div className="px-4 py-2 rounded-lg bg-white shadow-sm">
+                          <p className="text-sm text-blue-600 font-medium">
+                            {language === "GE"
+                              ? "აირჩიეთ რეგიონი, საქმიანობა, სქესი და წელი"
+                              : "Choose region, activity, gender and year"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
