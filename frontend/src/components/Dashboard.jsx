@@ -371,31 +371,44 @@ const Dashboard = ({ language = "GE" }) => {
     selectedYear,
     selectedGender,
     activeStepIndex,
-  ]); // Effect to automatically update salary data when selections change
+  ]);
+
+  // Effect to automatically update salary data when selections change
   useEffect(() => {
     const updateSalaryInfo = async () => {
       // Case 1: Only selectedYear is provided
       if (selectedYear && !selectedRegion && !selectedActivity) {
         try {
           // Default to regionId="0" (Georgia) and activityId="AA" (All activities)
-          const totalSalaryValue = await dataApi.getTotalSalary(
-            selectedYear,
-            "0", // Georgia (All)
-            "AA" // All activities
-          );
+          let totalSalaryValue;
+          if (selectedGender) {
+            // If gender is selected, get gender-specific salary
+            totalSalaryValue = await dataApi.getGenderSalary(
+              selectedYear,
+              "0", // Georgia (All)
+              "AA", // All activities
+              selectedGender
+            );
+          } else {
+            // Otherwise get the total salary
+            totalSalaryValue = await dataApi.getTotalSalary(
+              selectedYear,
+              "0", // Georgia (All)
+              "AA" // All activities
+            );
+          }
+
           setTotalSalary(totalSalaryValue);
           setError(null);
         } catch (totalError) {
           console.error(
-            "Failed to fetch total salary (default values):",
+            "Failed to fetch salary data (default values):",
             totalError
           );
           setTotalSalary(null);
         }
         return;
-      }
-
-      // Case 2: selectedYear and selectedActivity but no region
+      } // Case 2: selectedYear and selectedActivity but no region
       if (selectedYear && !selectedRegion && selectedActivity) {
         try {
           // Find the selected activity's ID from activitySectors
@@ -408,11 +421,24 @@ const Dashboard = ({ language = "GE" }) => {
           }
 
           // Default to regionId="0" (Georgia) with the selected activity
-          const totalSalaryValue = await dataApi.getTotalSalary(
-            selectedYear,
-            "0", // Georgia (All)
-            activityId
-          );
+          let totalSalaryValue;
+          if (selectedGender) {
+            // If gender is selected, get gender-specific salary
+            totalSalaryValue = await dataApi.getGenderSalary(
+              selectedYear,
+              "0", // Georgia (All)
+              activityId,
+              selectedGender
+            );
+          } else {
+            // Otherwise get the total salary
+            totalSalaryValue = await dataApi.getTotalSalary(
+              selectedYear,
+              "0", // Georgia (All)
+              activityId
+            );
+          }
+
           setTotalSalary(totalSalaryValue);
           setError(null);
         } catch (totalError) {
@@ -423,17 +449,28 @@ const Dashboard = ({ language = "GE" }) => {
           setTotalSalary(null);
         }
         return;
-      }
-
-      // Case 3: Both selectedYear and selectedRegion are provided but no activity
+      } // Case 3: Both selectedYear and selectedRegion are provided but no activity
       if (selectedYear && selectedRegion && !selectedActivity) {
         try {
           // Use the selected region but default to activityId="AA" (All activities)
-          const totalSalaryValue = await dataApi.getTotalSalary(
-            selectedYear,
-            selectedRegion,
-            "AA" // All activities
-          );
+          let totalSalaryValue;
+          if (selectedGender) {
+            // If gender is selected, get gender-specific salary
+            totalSalaryValue = await dataApi.getGenderSalary(
+              selectedYear,
+              selectedRegion,
+              "AA", // All activities
+              selectedGender
+            );
+          } else {
+            // Otherwise get the total salary
+            totalSalaryValue = await dataApi.getTotalSalary(
+              selectedYear,
+              selectedRegion,
+              "AA" // All activities
+            );
+          }
+
           setTotalSalary(totalSalaryValue);
           setError(null);
         } catch (totalError) {
@@ -444,9 +481,7 @@ const Dashboard = ({ language = "GE" }) => {
           setTotalSalary(null);
         }
         return;
-      }
-
-      // Case 3: All selections are provided
+      } // Case 3: All selections are provided
       if (selectedYear && selectedRegion && selectedActivity) {
         try {
           // Find the selected activity's ID from activitySectors
@@ -458,12 +493,25 @@ const Dashboard = ({ language = "GE" }) => {
             return;
           }
 
-          // Get the total salary without requiring the analyze button click
-          const totalSalaryValue = await dataApi.getTotalSalary(
-            selectedYear,
-            selectedRegion,
-            activityId
-          );
+          // Get the salary data based on gender selection
+          let totalSalaryValue;
+          if (selectedGender) {
+            // If gender is selected, get gender-specific salary
+            totalSalaryValue = await dataApi.getGenderSalary(
+              selectedYear,
+              selectedRegion,
+              activityId,
+              selectedGender
+            );
+          } else {
+            // Otherwise get the total salary
+            totalSalaryValue = await dataApi.getTotalSalary(
+              selectedYear,
+              selectedRegion,
+              activityId
+            );
+          }
+
           setTotalSalary(totalSalaryValue);
           // Clear any previous errors when successful
           setError(null);
@@ -478,7 +526,7 @@ const Dashboard = ({ language = "GE" }) => {
     };
 
     updateSalaryInfo();
-  }, [selectedRegion, selectedActivity, selectedYear]);
+  }, [selectedRegion, selectedActivity, selectedYear, selectedGender]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
@@ -675,13 +723,28 @@ const Dashboard = ({ language = "GE" }) => {
         selectedYear,
         regionId
       );
-
       try {
-        const totalSalaryValue = await dataApi.getTotalSalary(
-          selectedYear,
-          regionId,
-          activityId
-        );
+        // Get salary based on gender selection
+        let totalSalaryValue;
+
+        if (selectedGender) {
+          // If gender is selected, get gender-specific salary
+          const genderData = await dataApi.getGenderSpecificSalary(
+            selectedGender,
+            selectedYear,
+            regionId,
+            activityId
+          );
+          totalSalaryValue = genderData.total;
+        } else {
+          // Otherwise get the total salary
+          totalSalaryValue = await dataApi.getTotalSalary(
+            selectedYear,
+            regionId,
+            activityId
+          );
+        }
+
         setTotalSalary(totalSalaryValue);
       } catch (totalError) {
         console.error("Failed to fetch total salary:", totalError);

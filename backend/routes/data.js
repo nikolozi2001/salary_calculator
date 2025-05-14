@@ -102,10 +102,53 @@ router.get('/total/:year/:region/:business', async (req, res) => {
       return res.status(404).json({ error: 'No total salary data found for the specified parameters' });
     }
     
-    res.json({ total: rows[0].total });
-  } catch (error) {
+    res.json({ total: rows[0].total });  } catch (error) {
     console.error('Error fetching total salary data:', error);
     res.status(500).json({ error: 'Error fetching total salary data' });
+  }
+});
+
+// GET male or female salary by year, region, and business sector
+router.get('/gender/:year/:region/:business/:gender', async (req, res) => {
+  try {
+    const { year, region, business, gender } = req.params;
+    
+    // Validate gender parameter
+    if (gender !== 'male' && gender !== 'female') {
+      return res.status(400).json({ error: 'Invalid gender parameter. Use "male" or "female".' });
+    }
+    
+    // Handle default values on the server side as well, for robustness
+    let resolvedRegion = region;
+    let resolvedBusiness = business;
+    
+    // If only year is provided (region and business are missing or empty strings)
+    if (year && (!region || region === '') && (!business || business === '')) {
+      resolvedRegion = "0"; // Default to Georgia (All)
+      resolvedBusiness = "AA"; // Default to All Activities
+    }
+    // If year and region are provided but business is missing
+    else if (year && region && (!business || business === '')) {
+      resolvedBusiness = "AA"; // Default to All Activities
+    }
+    // If year and business are provided but region is missing
+    else if (year && (!region || region === '') && business) {
+      resolvedRegion = "0"; // Default to Georgia (All)
+    }
+    
+    const [rows] = await pool.query(
+      `SELECT ${gender} FROM sallarium.data WHERE YEAR = ? AND region = ? AND business = ?`, 
+      [year, resolvedRegion || "0", resolvedBusiness || "AA"]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: `No ${gender} salary data found for the specified parameters` });
+    }
+
+    res.json({ [gender]: rows[0][gender] });
+  } catch (error) {
+    console.error('Error fetching gender-specific data:', error);
+    res.status(500).json({ error: 'Error fetching gender-specific data' });
   }
 });
 

@@ -107,7 +107,39 @@ export const dataApi = {
       const response = await api.get(`/data/total/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}`);
       return response.data.total;
     } catch (error) {
-      console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);
+      console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);      throw error;
+    }
+  },
+    getGenderSalary: async (year, regionId, business, gender) => {
+    try {
+      // Validate gender parameter
+      if (gender !== 'male' && gender !== 'female') {
+        throw new Error('Invalid gender parameter. Use "male" or "female".');
+      }
+      
+      // Handle default parameter values based on which parameters are provided
+      let resolvedRegionId = regionId;
+      let resolvedBusiness = business;
+      
+      // If only year is provided, use default values for Georgia (All) and All Activities
+      if (year && !regionId && !business) {
+        resolvedRegionId = "0"; // Georgia (All)
+        resolvedBusiness = "AA";  // All Activities
+      }
+      // If year and region are provided but no business, use All Activities as default
+      else if (year && regionId && !business) {
+        resolvedBusiness = "AA"; // All Activities
+      }
+      // If year and business are provided but no region, use Georgia (All) as default
+      else if (year && !regionId && business) {
+        resolvedRegionId = "0"; // Georgia (All)
+      }
+      
+      // Make the API request with resolved parameters
+      const response = await api.get(`/data/gender/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}/${gender}`);
+      return response.data[gender];
+    } catch (error) {
+      console.error(`Failed to fetch ${gender} salary data for year ${year}, region ${regionId}, and business ${business}:`, error);
       throw error;
     }
   },
