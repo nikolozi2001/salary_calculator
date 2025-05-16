@@ -2,52 +2,49 @@ import React, { useEffect } from 'react';
 
 const InfoModal = ({ isOpen, onClose, language }) => {
   const handlePrint = () => {
-    const printContent = document.getElementById('modal-content').innerHTML;
-    const originalBody = document.body.innerHTML;
+    // Create a new hidden iframe
+    const printFrame = document.createElement('iframe');
+    printFrame.style.position = 'absolute';
+    printFrame.style.width = '0';
+    printFrame.style.height = '0';
+    printFrame.style.border = '0';
+    document.body.appendChild(printFrame);
+
+    // Get the content to print
+    const contentToPrint = document.getElementById('modal-content').cloneNode(true);
     
-    // Add print styles
-    const printStyles = `
-      <style>
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #print-content, #print-content * {
-            visibility: visible;
-          }
-          #print-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          #print-content button {
-            display: none;
-          }
-        }
-      </style>
-    `;
+    // Remove the buttons from the clone
+    const buttons = contentToPrint.querySelectorAll('button, .print\\:hidden');
+    buttons.forEach(button => button.remove());
 
-    // Create print-specific content
-    document.body.innerHTML = `
-      ${printStyles}
-      <div id="print-content">
-        ${printContent}
-      </div>
-    `;
+    // Write the content to the iframe
+    const frameDoc = printFrame.contentWindow.document;
+    frameDoc.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            p { margin-bottom: 1em; line-height: 1.5; }
+            .font-bold { font-weight: bold; }
+            .mt-4 { margin-top: 1.5em; }
+            a { color: #2563eb; text-decoration: underline; }
+          </style>
+        </head>
+        <body>
+          ${contentToPrint.innerHTML}
+        </body>
+      </html>
+    `);
+    frameDoc.close();
 
-    window.print();
-    document.body.innerHTML = originalBody;
+    // Print and remove the iframe
+    printFrame.contentWindow.onafterprint = () => {
+      document.body.removeChild(printFrame);
+    };
 
-    // Reattach event handlers after restoring content
-    const modal = document.querySelector('.modal-backdrop');
-    if (modal) {
-      modal.addEventListener('click', (event) => {
-        if (event.target.classList.contains('modal-backdrop')) {
-          onClose();
-        }
-      });
-    }
+    printFrame.contentWindow.print();
   };
 
   useEffect(() => {
