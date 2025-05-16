@@ -75,7 +75,7 @@ const Header = ({ language = "GE", setLanguage }) => {
             <button
               onClick={toggleLanguage}
               className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 ${
-                language === "GE" ? "bg-gray-400" : "bg-red-800/50"
+                language === "GE" ? "bg-gray-400" : "bg-gray-400"
               } hover:bg-gray-400/50 hover:shadow-sm`}
               aria-label="Toggle language"
             >
