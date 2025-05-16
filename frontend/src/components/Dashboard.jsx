@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import CircularYearSelector from "./CircularYearSelector";
+import Activity from "./ui/Activity";
 import { dataApi } from "../services/api";
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
@@ -1139,40 +1140,16 @@ const Dashboard = ({ language = "GE" }) => {
                 )}
               </div>
             </div>
-          </div>
+          </div>{" "}
           {/* Right Side - Activity Selection */}
-          <div
-            className={`bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-5 transition-all duration-500 transform ${
-              activeStepIndex === 1
-                ? "scale-100 opacity-100 ring-2 ring-blue-200"
-                : activeStepIndex > 1
-                ? "scale-[0.98] opacity-90"
-                : "scale-[0.95] opacity-80"
-            }`}
-          >
-            <StepHeading
-              number={2}
-              title={
-                language === "GE"
-                  ? "აირჩიეთ საქმიანობის სახე"
-                  : "Choose Activity"
-              }
-              selected={selectedActivity}
-              onClear={() => setSelectedActivity(null)}
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 h-[255px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-              {/* Activity Items - All industry sectors */}
-              {activitySectors.map((activity) => (
-                <ActivityItem
-                  key={activity.id}
-                  activity={activity}
-                  isSelected={selectedActivity === activity.name}
-                  onSelect={handleActivitySelect}
-                />
-              ))}
-            </div>
-          </div>
+          <Activity
+            activeStepIndex={activeStepIndex}
+            language={language}
+            selectedActivity={selectedActivity}
+            setSelectedActivity={setSelectedActivity}
+            activitySectors={activitySectors}
+            handleActivitySelect={handleActivitySelect}
+          />
         </div>
 
         {/* Bottom Row for Year and Gender Selection */}
