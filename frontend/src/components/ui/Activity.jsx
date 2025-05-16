@@ -125,7 +125,6 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
 
 // Main Activity selection component
 const Activity = ({ 
-  activeStepIndex, 
   language, 
   selectedActivity, 
   setSelectedActivity, 
@@ -162,65 +161,34 @@ const Activity = ({
     }
   }, [searchTerm, activitySectors, activeCategory]);
 
-  // Enhanced Step Heading component with better visual hierarchy
-  const StepHeading = ({ number, title, selected, onClear }) => (
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center">
-        <div className="relative mr-3">
-          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium shadow-sm">
-            {number}
-          </span>
-          {/* Animated pulse effect for active step */}
-          {activeStepIndex === 1 && (
-            <span className="absolute inset-0 rounded-full bg-blue-400 opacity-30 animate-ping" style={{ animationDuration: '3s' }}></span>
-          )}
-        </div>
-        <h3 className="text-gray-800 font-medium text-lg">{title}</h3>
-      </div>
-      {selected && (
-        <button
-          onClick={onClear}
-          className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-xs text-gray-600 hover:text-gray-800 transition-all duration-200 group"
-          aria-label="Clear selection"
-        >
-          <span>{language === "GE" ? "გასუფთავება" : "Clear"}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3.5 w-3.5 group-hover:rotate-90 transition-transform duration-300"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
-    </div>
-  );
 
   return (
-    <div
-      className={`bg-white rounded-2xl shadow-lg p-5 col-span-12 md:col-span-5 transition-all duration-500 transform ${
-        activeStepIndex === 1
-          ? "scale-100 opacity-100 ring-2 ring-blue-200"
-          : activeStepIndex > 1
-          ? "scale-[0.98] opacity-90"
-          : "scale-[0.95] opacity-80"
-      }`}
-    >
-      <StepHeading
-        number={2}
-        title={
-          language === "GE"
-            ? "აირჩიეთ საქმიანობის სახე"
-            : "Choose Activity"
-        }
-        selected={selectedActivity}
-        onClear={() => setSelectedActivity(null)}
-      />
+    <div      className="bg-white rounded-2xl shadow-lg p-5 col-span-12 md:col-span-5"
+    >      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {language === "GE" ? "აირჩიეთ საქმიანობის სახე" : "Choose Activity"}
+        </h2>
+        {selectedActivity && (
+          <button
+            onClick={() => setSelectedActivity(null)}
+            className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Clear selection"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
 
       {/* Search field */}
       <div className="mb-3 relative">

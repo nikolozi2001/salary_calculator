@@ -179,38 +179,6 @@ const activitySectors = [
   },
 ];
 
-// Reusable UI components
-const StepHeading = ({ number, title, selected, onClear }) => (
-  <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-sm mr-3 shadow-md">
-      {number}
-    </span>
-    {title}
-    {selected && (
-      <button
-        onClick={onClear}
-        className="ml-2 p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
-        aria-label="Clear selection"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-3 w-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-    )}
-  </h2>
-);
-
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
     className={`flex items-center p-3 rounded-xl cursor-pointer transition-all duration-300 ${
@@ -248,9 +216,7 @@ const Dashboard = ({ language = "GE" }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedGender, setSelectedGender] = useState(null);
-  const [hoveredRegion, setHoveredRegion] = useState(null);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [selectedGender, setSelectedGender] = useState(null);  const [hoveredRegion, setHoveredRegion] = useState(null);
   // These variables were used with the removed button
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
@@ -292,24 +258,6 @@ const Dashboard = ({ language = "GE" }) => {
       (key) => regionIdMap[key] === numericId
     );
   };
-
-  // Move to next step when a selection is made
-  useEffect(() => {
-    if (selectedRegion && activeStepIndex === 0) {
-      setTimeout(() => setActiveStepIndex(1), 300);
-    } else if (selectedActivity && activeStepIndex === 1) {
-      setTimeout(() => setActiveStepIndex(2), 300);
-    } else if (selectedYear && selectedGender && activeStepIndex === 2) {
-      setTimeout(() => setActiveStepIndex(3), 300);
-    }
-  }, [
-    selectedRegion,
-    selectedActivity,
-    selectedYear,
-    selectedGender,
-    activeStepIndex,
-  ]);
-
   // Effect to automatically update salary data when selections change
   useEffect(() => {
     const updateSalaryInfo = async () => {
@@ -727,48 +675,36 @@ const Dashboard = ({ language = "GE" }) => {
     selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-6 font-sans overflow-auto">
-      <div className="container mx-auto px-2 md:px-4">
-        {/* Progress Steps */}
-        <div className="flex justify-center mb-6">
-          <div className="hidden md:flex items-center space-x-2 px-4 py-2 bg-white rounded-full shadow-sm">
-            {[0, 1, 2, 3].map((step, index) => (
-              <div key={index} className="flex items-center">
-                <div
-                  className={`h-3 w-3 rounded-full transition-all duration-500 ${
-                    activeStepIndex >= step
-                      ? "bg-gradient-to-r from-blue-600 to-indigo-500 shadow-md"
-                      : "bg-gray-200"
-                  }`}
-                ></div>
-                {index < 3 && (
-                  <div
-                    className={`h-[2px] w-10 transition-all duration-500 ${
-                      activeStepIndex > step ? "bg-blue-500" : "bg-gray-200"
-                    }`}
-                  ></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-6 font-sans overflow-auto">      <div className="container mx-auto px-2 md:px-4">
         {/* Main Content - Compact Layout with card design */}
         <div className="grid grid-cols-12 gap-4 md:gap-5">
           {/* Left Side - Map */}
-          <div
-            className={`bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-4 transition-all duration-500 transform ${
-              activeStepIndex === 0
-                ? "scale-100 opacity-100 ring-2 ring-blue-200"
-                : "scale-[0.98] opacity-90"
-            }`}
-          >
-            <StepHeading
-              number={1}
-              title={language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
-              selected={selectedRegion}
-              onClear={() => setSelectedRegion(null)}
-            />
+          <div            className="bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-4"
+          >            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
+              </h2>
+              {selectedRegion && (
+                <button
+                  onClick={() => setSelectedRegion(null)}
+                  className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Clear selection"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
             <div className="relative overflow-hidden rounded-xl group bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner p-2">
               {/* Map Container */}
               <div
@@ -851,10 +787,8 @@ const Dashboard = ({ language = "GE" }) => {
             activitySectors={activitySectors}
             regionData={regionData}
             getGeCodeFromRegionId={getGeCodeFromRegionId}
-          />{" "}
-          {/* Right Side - Activity Selection */}
+          />{" "}          {/* Right Side - Activity Selection */}
           <Activity
-            activeStepIndex={activeStepIndex}
             language={language}
             selectedActivity={selectedActivity}
             setSelectedActivity={setSelectedActivity}
@@ -866,19 +800,32 @@ const Dashboard = ({ language = "GE" }) => {
         {/* Bottom Row for Year and Gender Selection */}
         <div className="mt-5 grid grid-cols-12 gap-4 md:gap-5">
           {/* Year Selector */}
-          <div
-            className={`bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6 transition-all duration-500 transform ${
-              activeStepIndex >= 2
-                ? "scale-100 opacity-100 ring-2 ring-blue-200"
-                : "scale-[0.95] opacity-80"
-            }`}
-          >
-            <StepHeading
-              number={3}
-              title={language === "GE" ? "აირჩიეთ წელი" : "Choose Year"}
-              selected={selectedYear}
-              onClear={() => setSelectedYear(null)}
-            />
+          <div            className="bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6"
+          >            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {language === "GE" ? "აირჩიეთ წელი" : "Choose Year"}
+              </h2>
+              {selectedYear && (
+                <button
+                  onClick={() => setSelectedYear(null)}
+                  className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Clear selection"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
             <div className="flex justify-center mt-2">
               <CircularYearSelector
                 years={years}
@@ -886,10 +833,8 @@ const Dashboard = ({ language = "GE" }) => {
                 setSelectedYear={handleYearSelect}
               />
             </div>
-          </div>{" "}
-          {/* Gender Selector */}
+          </div>{" "}          {/* Gender Selector */}
           <Gender
-            activeStepIndex={activeStepIndex}
             language={language}
             selectedGender={selectedGender}
             setSelectedGender={setSelectedGender}
