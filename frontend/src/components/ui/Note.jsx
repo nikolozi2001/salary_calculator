@@ -16,7 +16,7 @@ const Note = ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    fontFamily: 'BPG_Nino',
+    fontFamily: 'BPG Nino Mtavruli',
     fontSize: '18px',
     lineHeight: '27px',
     fontWeight: 400,
