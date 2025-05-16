@@ -17,17 +17,17 @@ const Header = ({ language = "GE", setLanguage }) => {
 
   return (
     <>
-      <InfoModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        language={language} 
+      <InfoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        language={language}
       />
       <header
         className={`sticky top-0 z-50 shadow-md px-4 md:px-8 py-4 md:py-5 flex items-center justify-between ${fontClass}`}
         style={{
           backgroundImage: `url(${headerBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         {/* Logo with Link to Home */}
@@ -72,21 +72,21 @@ const Header = ({ language = "GE", setLanguage }) => {
                 />
               </svg>
             </button>
-            <span className="text-sm text-white">
-              {language === "GE" ? "ქართული" : "English"}
-            </span>
             <button
               onClick={toggleLanguage}
-              className={`flex items-center gap-2 p-2 rounded-full transition-all duration-300 ${
-                language === "GE" ? "bg-blue-800/50" : "bg-red-800/50"
-              } hover:bg-blue-700/50 hover:shadow-sm`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 ${
+                language === "GE" ? "bg-gray-400" : "bg-red-800/50"
+              } hover:bg-gray-400/50 hover:shadow-sm`}
               aria-label="Toggle language"
             >
               <img
-                src={language === "GE" ? georgianFlag : britishFlag}
+                src={language === "GE" ? britishFlag : georgianFlag}
                 alt="Language flag"
                 className="h-6 w-6"
               />
+              <span className="text-sm text-white">
+                {language === "GE" ? "English" : "ქართული"}
+              </span>
             </button>
           </div>
 
@@ -97,18 +97,38 @@ const Header = ({ language = "GE", setLanguage }) => {
               data-toggle="modal"
               data-target="#modalProfession2021"
             >
-              {language === "GE" 
-                ? <>ხელფასები პროფესიების<br />მიხედვით - 2021 - ISCO08</> 
-                : <>Salaries by Profession<br />2021 - ISCO08</>}
+              {language === "GE" ? (
+                <>
+                  ხელფასები პროფესიების
+                  <br />
+                  მიხედვით - 2021 - ISCO08
+                </>
+              ) : (
+                <>
+                  Salaries by Profession
+                  <br />
+                  2021 - ISCO08
+                </>
+              )}
             </button>
             <button
               className="whitespace-normal text-left px-3 py-2 text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow min-w-[200px]"
               data-toggle="modal"
               data-target="#modalProfession"
             >
-              {language === "GE" 
-                ? <>ხელფასები პროფესიების<br />მიხედვით - 2017 - ISCO88</> 
-                : <>Salaries by Profession<br />2017 - ISCO88</>}
+              {language === "GE" ? (
+                <>
+                  ხელფასები პროფესიების
+                  <br />
+                  მიხედვით - 2017 - ISCO88
+                </>
+              ) : (
+                <>
+                  Salaries by Profession
+                  <br />
+                  2017 - ISCO88
+                </>
+              )}
             </button>
           </div>
         </div>
