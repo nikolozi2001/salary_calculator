@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 // Import all activity icons
 // These icons are not directly referenced but are needed when the activity objects
 // contain the icon references that are passed to the component
@@ -45,80 +45,25 @@ import otherIcon from "../../assets/icons/Other.png";
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
     onClick={() => onSelect(activity.name)}
-    className={`relative p-3.5 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden group ${
-      isSelected
-        ? "bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-md"
-        : "bg-white hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-50 border border-gray-100 hover:border-gray-200 hover:shadow-sm"
+    className={`workListElement clearfix border p-1 cursor-pointer transition-colors ${
+      isSelected ? "bg-[#0090D6]/10" : "hover:bg-[#0090D6]/5"
     }`}
+    data-id={activity.id}
   >
-    <div className="flex items-center space-x-3">
-      {/* Activity Icon with animated container */}
-      <div
-        className={`flex-shrink-0 w-11 h-11 rounded-lg p-2 transition-all duration-300 flex items-center justify-center ${
-          isSelected
-            ? "bg-gradient-to-br from-blue-100 to-blue-50 text-blue-700 shadow-inner"
-            : "bg-gray-50 text-gray-500 shadow-sm group-hover:bg-white group-hover:shadow"
-        }`}
-      >
-        <img
-          src={activity.icon || ""}
-          alt={activity.shortName}
-          className={`w-full h-full object-contain transition-all duration-300 ${
-            isSelected ? "scale-110" : "group-hover:scale-110"
-          }`}
-        />
-      </div>
-
-      {/* Activity Name with improved typography */}
-      <div className="flex-1 min-w-0">
-        <h4
-          className={`text-sm font-medium truncate transition-colors duration-300 ${
-            isSelected ? "text-blue-700" : "text-gray-700 group-hover:text-blue-600"
-          }`}
-        >
-          {activity.shortName}
-        </h4>
-        <p className={`mt-0.5 text-xs truncate transition-colors duration-300 ${
-            isSelected ? "text-blue-500" : "text-gray-500"
-          }`}>
-          {activity.name.length > 30
-            ? `${activity.name.substring(0, 30)}...`
-            : activity.name}
-        </p>
-      </div>
-
-      {/* Selected Checkmark with animated entrance */}
-      {isSelected ? (
-        <div className="absolute top-2 right-2 bg-blue-500 rounded-full p-1 shadow-sm animate-fadeIn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3 text-white"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      ) : (
-        <div className="absolute top-2 right-2 rounded-full p-1 opacity-0 group-hover:opacity-70 transition-opacity duration-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3 text-gray-400"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      )}
+    <img 
+      src={activity.icon} 
+      alt={activity.shortName}
+      className="float-left mr-2 pl-2 w-8 h-8 object-contain"
+    />
+    <div className="pt-2" style={{ 
+      fontSize: '12.8px',
+      lineHeight: '19.2px',
+      fontWeight: 400,
+      letterSpacing: 'normal',
+      color: '#212529',
+      fontFamily: 'BPG NINO'
+    }}>
+      {activity.name}
     </div>
   </div>
 );
@@ -126,204 +71,33 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
 // Main Activity selection component
 const Activity = ({ 
   language, 
-  selectedActivity, 
-  setSelectedActivity, 
+  selectedActivity,
   activitySectors, 
   handleActivitySelect 
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredActivities, setFilteredActivities] = useState(activitySectors);
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  // Filter activities based on search term
-  useEffect(() => {
-    if (searchTerm.trim() === '') {
-      if (activeCategory === 'all') {
-        setFilteredActivities(activitySectors);
-      } else {
-        // This is a placeholder categorization - you would need to define actual categories
-        const categoryMap = {
-          'primary': ['A', 'B', 'C'], // Agriculture, Fishing, Mining
-          'secondary': ['D', 'E', 'F'], // Manufacturing, Utilities, Construction
-          'tertiary': ['G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'] // Services, etc.
-        };
-        
-        setFilteredActivities(activitySectors.filter(activity => 
-          categoryMap[activeCategory]?.includes(activity.id)
-        ));
-      }
-    } else {
-      const filtered = activitySectors.filter(activity =>
-        activity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        activity.shortName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredActivities(filtered);
-    }
-  }, [searchTerm, activitySectors, activeCategory]);
-
-
   return (
-    <div      className="bg-white rounded-2xl shadow-lg p-5 col-span-12 md:col-span-5"
-    >      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">
-          {language === "GE" ? "აირჩიეთ საქმიანობის სახე" : "Choose Activity"}
-        </h2>
-        {selectedActivity && (
-          <button
-            onClick={() => setSelectedActivity(null)}
-            className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Clear selection"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        )}
+    <div className="rounded-lg p-4 col-span-12 md:col-span-4">
+      <div className="workListHead p-2 text-center mb-4" style={{ 
+        fontFamily: 'BPG Nino Mtavruli',
+        fontSize: '24px',
+        transition: '0.6s',
+        color: '#0090D6'
+      }}>
+        {language === "GE" ? "აირჩიეთ საქმიანობის სახე" : "Choose Activity"}
       </div>
-
-      {/* Search field */}
-      <div className="mb-3 relative">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder={language === "GE" ? "მოძებნეთ საქმიანობა..." : "Search activities..."}
-          className="w-full py-2 pl-9 pr-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all"
-        />
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          className="h-4 w-4 absolute left-3 top-2.5 text-gray-400"
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        {searchTerm && (
-          <button
-            onClick={() => setSearchTerm('')}
-            className="absolute right-2 top-2.5 text-gray-400 hover:text-gray-600"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+      
+      <div className="businessScroll overflow-y-auto max-h-[500px] border border-[#0090D6]/20 rounded">
+        {activitySectors.map(activity => (
+          <ActivityItem
+            key={activity.id}
+            activity={activity}
+            isSelected={selectedActivity === activity.name}
+            onSelect={handleActivitySelect}
+          />
+        ))}
       </div>
-
-      {/* Category filters */}
-      <div className="flex space-x-2 mb-3 overflow-x-auto py-1 scrollbar-none">
-        <button
-          onClick={() => setActiveCategory('all')}
-          className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${
-            activeCategory === 'all'
-              ? 'bg-blue-100 text-blue-700'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          {language === "GE" ? "ყველა" : "All"}
-        </button>
-        <button
-          onClick={() => setActiveCategory('primary')}
-          className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${
-            activeCategory === 'primary'
-              ? 'bg-green-100 text-green-700'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          {language === "GE" ? "პირველადი" : "Primary"}
-        </button>
-        <button
-          onClick={() => setActiveCategory('secondary')}
-          className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${
-            activeCategory === 'secondary'
-              ? 'bg-amber-100 text-amber-700'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          {language === "GE" ? "მეორადი" : "Secondary"}
-        </button>
-        <button
-          onClick={() => setActiveCategory('tertiary')}
-          className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${
-            activeCategory === 'tertiary'
-              ? 'bg-purple-100 text-purple-700'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          {language === "GE" ? "მესამედი" : "Tertiary"}
-        </button>
-      </div>
-
-      {/* Activities grid */}
-      <div 
-        className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 h-[200px] overflow-y-auto pr-1.5 rounded-lg"
-        style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#CBD5E0 #EDF2F7'
-        }}
-      >
-        {filteredActivities.length > 0 ? (
-          filteredActivities.map((activity, index) => (
-            <div 
-              key={activity.id} 
-              className="animate-fadeIn" 
-              style={{ animationDelay: `${index * 30}ms` }}
-            >
-              <ActivityItem
-                activity={activity}
-                isSelected={selectedActivity === activity.name}
-                onSelect={handleActivitySelect}
-              />
-            </div>
-          ))
-        ) : (
-          <div className="col-span-2 flex flex-col items-center justify-center h-full text-center text-gray-500 p-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mb-2 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="text-sm font-medium mb-1">
-              {language === "GE" ? "საქმიანობა ვერ მოიძებნა" : "No activities found"}
-            </p>
-            <p className="text-xs">
-              {language === "GE" 
-                ? "სცადეთ სხვა საძიებო ტერმინი" 
-                : "Try a different search term"}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Selected activity indicator */}
-      {selectedActivity && (
-        <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="h-2 w-2 bg-green-400 rounded-full mr-2"></div>
-            <span className="text-sm text-gray-600">
-              {language === "GE" ? "არჩეულია:" : "Selected:"} 
-              <span className="font-medium text-blue-600 ml-1">
-                {selectedActivity && activitySectors.find(a => a.name === selectedActivity)?.shortName}
-              </span>
-            </span>
-          </div>
-          <button 
-            onClick={() => setSelectedActivity(null)}
-            className="text-xs text-gray-500 hover:text-blue-600 transition-colors"
-          >
-            {language === "GE" ? "შეცვლა" : "Change"}
-          </button>
-        </div>
-      )}
     </div>
   );
 };
+
 export default Activity;
