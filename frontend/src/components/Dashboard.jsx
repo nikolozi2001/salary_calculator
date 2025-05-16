@@ -717,12 +717,15 @@ const Dashboard = ({ language = "GE" }) => {
             handleActivitySelect={handleActivitySelect}
           />
         </div>
-
-        {/* Bottom Row for Year and Gender Selection */}
-        <div className="mt-5 grid grid-cols-12 gap-4 md:gap-5">
-          {/* Year Selector */}{" "}
+        {/* Bottom Row for Year and Gender Selection */}{" "}
+        <div className="mt-8 grid grid-cols-12 gap-6 md:gap-8">
+          {/* Year Selector */}
           <div className="p-4 rounded-2xl col-span-12 md:col-span-6">
-            <div className="flex justify-center mt-2">
+            {" "}
+            <div
+              className="flex justify-center items-center"
+              style={{ minHeight: "300px" }}
+            >
               <CircularYearSelector
                 years={years}
                 selectedYear={selectedYear}
@@ -738,7 +741,6 @@ const Dashboard = ({ language = "GE" }) => {
             handleGenderSelect={handleGenderSelect}
           />
         </div>
-
         {/* Error display */}
         {error && (
           <div className="mt-4 p-4 bg-red-50 text-red-600 text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn">
