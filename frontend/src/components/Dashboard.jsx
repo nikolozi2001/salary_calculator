@@ -684,40 +684,20 @@ const Dashboard = ({ language = "GE" }) => {
               <h2 className="text-xl font-semibold text-gray-800">
                 {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
               </h2>
-              {selectedRegion && (
-                <button
-                  onClick={() => setSelectedRegion(null)}
-                  className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label="Clear selection"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              )}
             </div>
+
             <div className="relative overflow-hidden rounded-xl group bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner p-2">
               {/* Map Container */}
               <div
                 id="georgia-map-container"
                 className="w-full h-[250px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
-            </div>{" "}
+            </div>
+
             {/* Selected Region Information */}
             {selectedRegion && (
               <div className="mt-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-100 flex items-center justify-between animate-fadeIn">
                 <div className="flex items-center gap-3">
-                  {" "}
-                  {/* Find the GE-XX code that maps to this numeric ID */}
                   {(() => {
                     const geCode = getGeCodeFromRegionId(selectedRegion);
                     if (geCode && regionData[geCode]) {
@@ -756,24 +736,6 @@ const Dashboard = ({ language = "GE" }) => {
                     return <div>Region ID: {selectedRegion}</div>;
                   })()}
                 </div>
-                <button
-                  onClick={() => setSelectedRegion(null)}
-                  className="p-1.5 rounded-full hover:bg-gray-200 transition-colors duration-200"
-                  aria-label="Clear region selection"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-gray-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
               </div>
             )}{" "}
           </div>{" "}
@@ -800,31 +762,11 @@ const Dashboard = ({ language = "GE" }) => {
         {/* Bottom Row for Year and Gender Selection */}
         <div className="mt-5 grid grid-cols-12 gap-4 md:gap-5">
           {/* Year Selector */}
-          <div            className="bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6"
-          >            <div className="flex justify-between items-center mb-4">
+          <div className="bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-800">
                 {language === "GE" ? "აირჩიეთ წელი" : "Choose Year"}
               </h2>
-              {selectedYear && (
-                <button
-                  onClick={() => setSelectedYear(null)}
-                  className="p-1.5 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label="Clear selection"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 011.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              )}
             </div>
             <div className="flex justify-center mt-2">
               <CircularYearSelector
