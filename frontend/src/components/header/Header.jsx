@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import sakstatLogoGe from "../../assets/images/sakstat-logo.svg";
 import sakstatLogoEn from "../../assets/images/sakstat-logo-en.png";
 import georgianFlag from "../../assets/images/georgian-flag.svg";
-import britishFlag from "../../assets/images/british-flag.svg";
+import britishFlag from "../../assets/images/british-flag.png";
 import headerBg from "../../assets/images/header-bg.jpg";
 import InfoModal from "../ui/InfoModal";
 
