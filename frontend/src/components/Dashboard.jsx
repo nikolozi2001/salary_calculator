@@ -216,7 +216,8 @@ const Dashboard = ({ language = "GE" }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedGender, setSelectedGender] = useState(null);  const [hoveredRegion, setHoveredRegion] = useState(null);
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [hoveredRegion, setHoveredRegion] = useState(null);
   // These variables were used with the removed button
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
@@ -675,69 +676,26 @@ const Dashboard = ({ language = "GE" }) => {
     selectedRegion && selectedActivity && selectedYear && selectedGender;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-6 font-sans overflow-auto">      <div className="container mx-auto px-2 md:px-4">
+    <div className="min-h-screen p-4 md:p-6 font-sans overflow-auto">
+      {" "}
+      <div className="container mx-auto px-2 md:px-4">
         {/* Main Content - Compact Layout with card design */}
         <div className="grid grid-cols-12 gap-4 md:gap-5">
-          {/* Left Side - Map */}
-          <div            className="bg-white rounded-2xl shadow-md p-4 col-span-12 md:col-span-4"
-          >            <div className="flex justify-between items-center mb-4">
+          {/* Left Side - Map */}{" "}
+          <div className="rounded-2xl p-4 col-span-12 md:col-span-4">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-800">
                 {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
               </h2>
-            </div>
-
-            <div className="relative overflow-hidden rounded-xl group bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner p-2">
-              {/* Map Container */}
+            </div>{" "}
+            <div className="relative overflow-hidden rounded-xl group p-2">
+              {" "}
+              {/* Map Container */}{" "}
               <div
                 id="georgia-map-container"
-                className="w-full h-[250px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                className="w-full h-[400px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
-            </div>
-
-            {/* Selected Region Information */}
-            {selectedRegion && (
-              <div className="mt-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-100 flex items-center justify-between animate-fadeIn">
-                <div className="flex items-center gap-3">
-                  {(() => {
-                    const geCode = getGeCodeFromRegionId(selectedRegion);
-                    if (geCode && regionData[geCode]) {
-                      return (
-                        <>
-                          <div
-                            className="w-8 h-8 rounded-full flex items-center justify-center shadow-inner"
-                            style={{
-                              backgroundColor: regionData[geCode].color,
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4 text-white drop-shadow"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 000 4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium text-gray-800">
-                              {regionData[geCode].nameGe}
-                            </h3>
-                            <p className="text-xs text-gray-500">
-                              {regionData[geCode].nameEn} (ID: {selectedRegion})
-                            </p>
-                          </div>
-                        </>
-                      );
-                    }
-                    return <div>Region ID: {selectedRegion}</div>;
-                  })()}
-                </div>
-              </div>
-            )}{" "}
+            </div>{" "}
           </div>{" "}
           {/* Pinned Note */}
           <Note
@@ -749,7 +707,8 @@ const Dashboard = ({ language = "GE" }) => {
             activitySectors={activitySectors}
             regionData={regionData}
             getGeCodeFromRegionId={getGeCodeFromRegionId}
-          />{" "}          {/* Right Side - Activity Selection */}
+          />{" "}
+          {/* Right Side - Activity Selection */}
           <Activity
             language={language}
             selectedActivity={selectedActivity}
@@ -761,13 +720,8 @@ const Dashboard = ({ language = "GE" }) => {
 
         {/* Bottom Row for Year and Gender Selection */}
         <div className="mt-5 grid grid-cols-12 gap-4 md:gap-5">
-          {/* Year Selector */}
-          <div className="bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
-                {language === "GE" ? "აირჩიეთ წელი" : "Choose Year"}
-              </h2>
-            </div>
+          {/* Year Selector */}{" "}
+          <div className="p-4 rounded-2xl col-span-12 md:col-span-6">
             <div className="flex justify-center mt-2">
               <CircularYearSelector
                 years={years}
@@ -775,7 +729,8 @@ const Dashboard = ({ language = "GE" }) => {
                 setSelectedYear={handleYearSelect}
               />
             </div>
-          </div>{" "}          {/* Gender Selector */}
+          </div>{" "}
+          {/* Gender Selector */}
           <Gender
             language={language}
             selectedGender={selectedGender}
