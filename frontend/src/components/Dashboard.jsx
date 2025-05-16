@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import CircularYearSelector from "./CircularYearSelector";
 import Activity from "./ui/Activity";
+import Gender from "./ui/Gender";
 import { dataApi } from "../services/api";
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
@@ -28,7 +29,9 @@ import administrativeIcon from "../assets/icons/Administrative.png";
 import artsIcon from "../assets/icons/Arts.png";
 // eslint-disable-next-line no-unused-vars
 import otherIcon from "../assets/icons/Other.png";
+// eslint-disable-next-line no-unused-vars
 import maleIcon from "../assets/icons/male.png";
+// eslint-disable-next-line no-unused-vars
 import femaleIcon from "../assets/icons/female.png";
 
 // Data configuration
@@ -234,74 +237,6 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
       }`}
     >
       {activity.shortName}
-    </div>
-  </div>
-);
-
-const GenderSelector = ({ selectedGender, onGenderSelect }) => (
-  <div className="flex justify-center gap-8">
-    <div
-      onClick={() => onGenderSelect("female")}
-      className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "female"
-          ? "shadow-lg scale-105"
-          : "hover:shadow-sm border border-transparent hover:border-pink-100"
-      }`}
-    >
-      <div
-        className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
-          selectedGender === "female"
-            ? "bg-gradient-to-br from-pink-100 to-pink-200 scale-110 shadow-inner"
-            : "bg-gray-50"
-        }`}
-      >
-        <img
-          className={`w-9 h-9 transition-all duration-300 ${
-            selectedGender === "female" ? "scale-110" : ""
-          }`}
-          src={femaleIcon}
-          alt="Female Icon"
-        />
-      </div>
-      <span
-        className={`text-sm font-medium transition-all duration-200 ${
-          selectedGender === "female" ? "text-pink-600" : "text-gray-500"
-        }`}
-      >
-        ქალი
-      </span>
-    </div>
-
-    <div
-      onClick={() => onGenderSelect("male")}
-      className={`flex flex-col items-center p-4 rounded-2xl bg-white transition transform duration-300 cursor-pointer ${
-        selectedGender === "male"
-          ? "shadow-lg scale-105"
-          : "hover:shadow-sm border border-transparent hover:border-blue-100"
-      }`}
-    >
-      <div
-        className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition transform duration-300 ${
-          selectedGender === "male"
-            ? "bg-gradient-to-br from-blue-100 to-blue-200 scale-110 shadow-inner"
-            : "bg-gray-50"
-        }`}
-      >
-        <img
-          className={`w-9 h-9 transition-all duration-300 ${
-            selectedGender === "male" ? "scale-110" : ""
-          }`}
-          src={maleIcon}
-          alt="Male Icon"
-        />
-      </div>
-      <span
-        className={`text-sm font-medium transition-all duration-200 ${
-          selectedGender === "male" ? "text-blue-600" : "text-gray-500"
-        }`}
-      >
-        კაცი
-      </span>
     </div>
   </div>
 );
@@ -1175,29 +1110,14 @@ const Dashboard = ({ language = "GE" }) => {
                 setSelectedYear={handleYearSelect}
               />
             </div>
-          </div>
-
-          {/* Gender Selector */}
-          <div
-            className={`bg-white p-4 rounded-2xl shadow-md col-span-12 md:col-span-6 transition-all duration-500 transform ${
-              activeStepIndex >= 2
-                ? "scale-100 opacity-100 ring-2 ring-blue-200"
-                : "scale-[0.95] opacity-80"
-            }`}
-          >
-            <StepHeading
-              number={4}
-              title={language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
-              selected={selectedGender}
-              onClear={() => setSelectedGender(null)}
-            />
-            <div className="mt-4">
-              <GenderSelector
-                selectedGender={selectedGender}
-                onGenderSelect={handleGenderSelect}
-              />
-            </div>{" "}
-          </div>
+          </div>          {/* Gender Selector */}
+          <Gender
+            activeStepIndex={activeStepIndex}
+            language={language}
+            selectedGender={selectedGender}
+            setSelectedGender={setSelectedGender}
+            handleGenderSelect={handleGenderSelect}
+          />
         </div>
 
         {/* Error display */}
