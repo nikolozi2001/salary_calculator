@@ -23,7 +23,7 @@ const Header = ({ language = "GE", setLanguage }) => {
         language={language}
       />
       <header
-        className={`sticky top-0 z-50 shadow-md px-4 md:px-8 py-4 md:py-5 flex items-center justify-between ${fontClass}`}
+        className={`sticky top-0 z-50 shadow-md px-2 md:px-8 py-2 md:py-5 flex flex-col md:flex-row items-center gap-2 md:gap-4 ${fontClass}`}
         style={{
           backgroundImage: `url(${headerBg})`,
           backgroundSize: "cover",
@@ -31,27 +31,27 @@ const Header = ({ language = "GE", setLanguage }) => {
         }}
       >
         {/* Logo with Link to Home */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           <Link to="/" aria-label="Home">
             <img
               src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
               alt="Logo"
-              className="h-10 md:h-20 hover:scale-105 transition-transform duration-300 cursor-pointer"
+              className="h-8 md:h-20 hover:scale-105 transition-transform duration-300 cursor-pointer"
             />
           </Link>
         </div>
 
         {/* Title */}
         <div className="flex-1 flex justify-center">
-          <h1 className="text-xl md:text-2xl font-semibold text-white transition-colors duration-300">
+          <h1 className="text-lg md:text-2xl font-semibold text-white text-center transition-colors duration-300">
             {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
           </h1>
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col items-end gap-3">
-          {/* Language Toggle */}
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col items-center md:items-end gap-2 md:gap-3 w-full md:w-auto">
+          {/* Language Toggle and Info */}
+          <div className="flex items-center justify-center md:justify-end gap-2 w-full md:w-auto">
             <button
               onClick={() => setIsModalOpen(true)}
               className="text-white hover:text-gray-200 transition-colors"
@@ -59,7 +59,7 @@ const Header = ({ language = "GE", setLanguage }) => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5 md:h-6 md:w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -74,7 +74,7 @@ const Header = ({ language = "GE", setLanguage }) => {
             </button>
             <button
               onClick={toggleLanguage}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 ${
+              className={`flex items-center gap-2 px-2 md:px-3 py-1 md:py-2 rounded-md transition-all duration-300 ${
                 language === "GE" ? "bg-gray-400" : "bg-gray-400"
               } hover:bg-gray-400/50 hover:shadow-sm`}
               aria-label="Toggle language"
@@ -82,18 +82,18 @@ const Header = ({ language = "GE", setLanguage }) => {
               <img
                 src={language === "GE" ? britishFlag : georgianFlag}
                 alt="Language flag"
-                className="h-6 w-6"
+                className="h-5 w-5 md:h-6 md:w-6"
               />
-              <span className="text-sm text-white">
+              <span className="text-xs md:text-sm text-white">
                 {language === "GE" ? "English" : "ქართული"}
               </span>
             </button>
           </div>
 
           {/* Profession Buttons */}
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <button
-              className="whitespace-normal text-left px-3 py-2 text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow min-w-[200px]"
+              className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
               data-toggle="modal"
               data-target="#modalProfession2021"
             >
@@ -112,7 +112,7 @@ const Header = ({ language = "GE", setLanguage }) => {
               )}
             </button>
             <button
-              className="whitespace-normal text-left px-3 py-2 text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow min-w-[200px]"
+              className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
               data-toggle="modal"
               data-target="#modalProfession"
             >
