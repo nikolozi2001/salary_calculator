@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
-import CircularYearSelector from "./CircularYearSelector";
+import circleMap from "../assets/svg/circle.svg";
 import Activity from "./ui/Activity";
 import Gender from "./ui/Gender";
 import Note from "./ui/Note";
@@ -20,20 +20,7 @@ import agroIcon from "../assets/icons/agro.png";
 import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
-// eslint-disable-next-line no-unused-vars
-import informationIcon from "../assets/icons/information.png";
-// eslint-disable-next-line no-unused-vars
-import professionalIcon from "../assets/icons/Professional.png";
-// eslint-disable-next-line no-unused-vars
-import administrativeIcon from "../assets/icons/Administrative.png";
-// eslint-disable-next-line no-unused-vars
-import artsIcon from "../assets/icons/Arts.png";
-// eslint-disable-next-line no-unused-vars
-import otherIcon from "../assets/icons/Other.png";
-// eslint-disable-next-line no-unused-vars
-import maleIcon from "../assets/icons/male.png";
-// eslint-disable-next-line no-unused-vars
-import femaleIcon from "../assets/icons/female.png";
+
 
 // Data configuration
 const regionData = {
@@ -83,8 +70,6 @@ const regionIdMap = {
   "GE-SK": "47", // შიდა ქართლი
   "GE-AB": "00", // აფხაზეთი
 };
-
-const years = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014];
 
 const activitySectors = [
   {
@@ -243,11 +228,10 @@ const Dashboard = ({ language = "GE" }) => {
   const handleActivitySelect = (activity) => {
     setSelectedActivity(selectedActivity === activity ? null : activity);
   };
-
   // Function to handle year selection with toggle capability
-  const handleYearSelect = (year) => {
-    setSelectedYear(selectedYear === year ? null : year);
-  };
+  const handleYearSelect = useCallback((year) => {
+    setSelectedYear(prev => prev === year ? null : year);
+  }, []);
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
@@ -579,6 +563,81 @@ const Dashboard = ({ language = "GE" }) => {
     });
   }, [selectedRegion, hoveredRegion]);
 
+  // Effect to handle SVG loading and manipulation
+  useEffect(() => {
+    const loadCircleSvg = async () => {
+      try {
+        const response = await fetch(circleMap);
+        const svgText = await response.text();
+
+        const circleContainer = document.getElementById("circle-svg-container");
+        if (!circleContainer) return;
+
+        circleContainer.innerHTML = svgText;
+        const circleSvg = circleContainer.querySelector("svg");
+
+        if (circleSvg) {
+          circleSvg.setAttribute("width", "100%");
+          circleSvg.setAttribute("height", "100%");
+          circleSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+          // Add styles for active year
+          const style = document.createElement("style");
+          style.textContent = `
+            path.activeYear {
+              fill: #C85861 !important;
+            }
+          `;
+          circleSvg.appendChild(style);
+
+          // Add click handlers for year selection
+          const paths = circleSvg.querySelectorAll("path[data-year]");
+          paths.forEach((path) => {
+            const year = parseInt(path.getAttribute("data-year"), 10);
+
+            // Highlight selected year
+            if (selectedYear === year) {
+              path.classList.add("activeYear");
+              path.style.filter = "drop-shadow(0 4px 3px rgb(0, 0, 0 / 0.1))";
+              // path.style.transform = "scale(1.05)";
+            } else {
+              path.classList.remove("activeYear");
+            }
+
+            // Add click handler
+            path.addEventListener("click", () => handleYearSelect(year));
+
+            // Add hover effects
+            path.addEventListener("mouseenter", () => {
+              if (selectedYear !== year) {
+                path.style.filter = "brightness(1.1) saturate(1.2)";
+                // path.style.transform = "scale(1.02)";
+              }
+            });
+
+            path.addEventListener("mouseleave", () => {
+              if (selectedYear !== year) {
+                path.style.filter = "";
+                path.style.transform = "";
+              }
+            });
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load or process the circle SVG:", error);
+      }
+    };
+
+    loadCircleSvg();
+
+    return () => {
+      const circleContainer = document.getElementById("circle-svg-container");
+      if (circleContainer) {
+        circleContainer.innerHTML = "";
+      }
+    };
+  }, [selectedYear, handleYearSelect]);
+
   // We've removed the button that used these functions and variables,
   // but we're keeping the code as it may be needed later if button is restored
   // eslint-disable-next-line no-unused-vars
@@ -719,18 +778,12 @@ const Dashboard = ({ language = "GE" }) => {
         </div>
         {/* Bottom Row for Year and Gender Selection */}{" "}
         <div className="mt-8 grid grid-cols-12 gap-6 md:gap-8">
-          {/* Year Selector */}
-          <div className="p-4 rounded-2xl col-span-12 md:col-span-6">
-            {" "}
-            <div
-              className="flex justify-center items-center"
-              style={{ minHeight: "300px" }}
-            >
-              <CircularYearSelector
-                years={years}
-                selectedYear={selectedYear}
-                setSelectedYear={handleYearSelect}
-              />
+          {/* Year Selector */}          <div className="p-4 rounded-2xl col-span-12 md:col-span-6">
+            <div className="flex justify-center items-center" style={{ minHeight: "300px" }}>
+              <div
+                id="circle-svg-container"
+                className="w-[400px] h-[400px] transition-all duration-300 ease-in-out"
+              ></div>
             </div>
           </div>{" "}
           {/* Gender Selector */}
