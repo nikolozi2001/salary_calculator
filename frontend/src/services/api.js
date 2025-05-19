@@ -145,6 +145,29 @@ export const dataApi = {
   },
 };
 
+// API methods for activities
+export const activityApi = {
+  getAll: async () => {
+    try {
+      const response = await api.get("/activity");
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch activities:", error);
+      throw error;
+    }
+  },
+
+  getById: async (id) => {
+    try {
+      const response = await api.get(`/activity/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch activity with id ${id}:`, error);
+      throw error;
+    }
+  }
+};
+
 // Function to test database connection
 export const testDbConnection = async () => {
   try {
@@ -156,4 +179,7 @@ export const testDbConnection = async () => {
   }
 };
 
-export default api;
+export default {
+  dataApi,
+  activityApi
+};

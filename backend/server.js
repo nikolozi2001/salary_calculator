@@ -4,6 +4,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
 import dataRoutes from './routes/data.js';
+import activityRoutes from './routes/activity.js';
 
 // Load environment variables
 dotenv.config();
@@ -47,6 +48,7 @@ app.get('/api', (req, res) => {
 
 // Routes
 app.use('/api/data', dataRoutes);
+app.use('/api/activity', activityRoutes);
 
 // Start server
 app.listen(PORT, () => {
