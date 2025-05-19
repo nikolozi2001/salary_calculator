@@ -45,23 +45,22 @@ import otherIcon from "../../assets/icons/Other.png";
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
     onClick={() => onSelect(activity.name)}
-    className={`workListElement clearfix border p-1 cursor-pointer transition-colors ${
+    className={`workListElement clearfix border p-5 cursor-pointer transition-colors ${
       isSelected ? "bg-[#0090D6]/10" : "hover:bg-[#0090D6]/5"
     }`}
     data-id={activity.id}
-  >
-    <img 
+  >    <img 
       src={activity.icon} 
       alt={activity.shortName}
-      className="float-left mr-2 pl-2 w-8 h-8 object-contain"
+      className="float-left mr-3 w-12 h-12 object-contain"
     />
     <div className="pt-2" style={{ 
       fontSize: '12.8px',
       lineHeight: '19.2px',
       fontWeight: 400,
       letterSpacing: 'normal',
-      color: '#212529',
-      fontFamily: 'BPG NINO'
+      color: '#0090D6',
+      fontFamily: 'BPG NINO MTAVRULI'
     }}>
       {activity.name}
     </div>

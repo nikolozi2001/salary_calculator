@@ -735,18 +735,17 @@ const Dashboard = ({ language = "GE" }) => {
   return (
     <div className="h-[calc(100vh-80px)] p-2 font-sans overflow-hidden flex flex-col">
       <div className="h-full container mx-auto px-2">
-        {/* Main Content - Compact Layout with card design */}{" "}        <div className="grid grid-cols-12 gap-3">
+        {/* Main Content - Compact Layout with card design */}{" "}
+        <div className="grid grid-cols-12 gap-3">
           {/* Left Side Content */}
           <div className="col-span-12 md:col-span-8">
             {/* Map and Note Section */}
             <div className="grid grid-cols-8 gap-3 mb-3">
               {/* Map */}
               <div className="rounded-2xl p-2 col-span-8 md:col-span-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
-                  </h2>
-                </div>
+                <h2 className="sections-header">
+                  {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
+                </h2>
                 <div className="relative overflow-hidden rounded-xl group p-1">
                   <div
                     id="georgia-map-container"
@@ -755,7 +754,6 @@ const Dashboard = ({ language = "GE" }) => {
                 </div>
               </div>
               {/* Pinned Note */}
-              <div className="col-span-8 md:col-span-4">
                 <Note
                   language={language}
                   selectedYear={selectedYear}
@@ -766,7 +764,6 @@ const Dashboard = ({ language = "GE" }) => {
                   regionData={regionData}
                   getGeCodeFromRegionId={getGeCodeFromRegionId}
                 />
-              </div>
             </div>
 
             {/* Year and Gender Selection Row */}

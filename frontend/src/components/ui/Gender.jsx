@@ -91,7 +91,7 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
       <div className="flex justify-center">
         <div className="w-full">
           <div className="text-center mb-3">
-            <span className="text-xl font-semibold text-gray-800">
+            <span className="sections-header">
               {language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
             </span>
           </div>
