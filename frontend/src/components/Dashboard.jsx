@@ -21,6 +21,11 @@ import agroIcon from "../assets/icons/agro.png";
 import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
+import informationIcon from "../assets/icons/information.png";
+import professionalIcon from "../assets/icons/professional.png";
+import administrativeIcon from "../assets/icons/Administrative.png";
+import artsIcon from "../assets/icons/arts.png";
+import otherIcon from "../assets/icons/other.png";
 
 // Create an icon map
 const iconMap = {
@@ -38,6 +43,11 @@ const iconMap = {
   transportIcon: transportIcon,
   healthIcon: healthIcon,
   waterIcon: waterIcon,
+  informationIcon: informationIcon,
+  professionalIcon: professionalIcon,
+  administrationIcon: administrativeIcon,
+  artsIcon: artsIcon,
+  otherIcon: otherIcon,
 };
 
 // Data configuration
