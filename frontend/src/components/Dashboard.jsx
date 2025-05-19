@@ -73,92 +73,77 @@ const regionIdMap = {
 const activitySectors = [
   {
     id: "A",
-    name: "სოფლის მეურნეობა. ნადირობა და სატყეო მეურნეობა",
-    shortName: "სოფლის მეურნეობა",
+    name: "სოფლის მეურნეობა",
     icon: agroIcon,
   },
   {
     id: "B",
     name: "თევზჭერა, მეთევზეობა",
-    shortName: "თევზჭერა, მეთევზეობა",
     icon: miningIcon,
   },
   {
     id: "C",
     name: "სამთომოპოვებითი მრეწველობა",
-    shortName: "სამთომოპოვებითი მრეწველობა",
     icon: miningIcon,
   },
   {
     id: "D",
     name: "დამამუშავებელი მრეწველობა",
-    shortName: "დამამუშავებელი მრეწველობა",
     icon: manufacturingIcon,
   },
   {
     id: "E",
-    name: "ელექტროენერგიის, აირისა და წყლის წარმოება და განაწილება",
-    shortName: "ელექტროენერგია, აირი და წყალი",
+    name: "ელექტროენერგია, აირი და წყალი",
     icon: electricityIcon,
   },
   {
     id: "F",
     name: "მშენებლობა",
-    shortName: "მშენებლობა",
     icon: constructionIcon,
   },
   {
     id: "G",
-    name: "ვაჭრობა; ავტომობილების, საყოფაცხოვრებო ნაწარმისა და პირადი მოხმარების საგნების რემონტი",
-    shortName: "ვაჭრობა და რემონტი",
+    name: "ვაჭრობა და რემონტი",
     icon: tradeIcon,
   },
   {
     id: "H",
     name: "სასტუმროები და რესტორნები",
-    shortName: "სასტუმროები და რესტორნები",
     icon: hotelsIcon,
   },
   {
     id: "I",
     name: "ტრანსპორტი და კავშირგაბმულობა",
-    shortName: "ტრანსპორტი და კავშირგაბმულობა",
     icon: transportIcon,
   },
   {
     id: "J",
     name: "საფინანსო საქმიანობა",
-    shortName: "საფინანსო საქმიანობა",
     icon: financialIcon,
   },
   {
     id: "K",
-    name: "ოპერაციები უძრავი ქონებით, იჯარა და მომხმარებლი-სათვის მომსახურების გაწევა",
-    shortName: "უძრავი ქონება და იჯარა",
+    name: "უძრავი ქონება და იჯარა",
     icon: realEstateIcon,
   },
   {
     id: "L",
     name: "სახელმწიფო მმართველობა",
-    shortName: "სახელმწიფო მმართველობა",
     icon: publicIcon,
   },
   {
     id: "M",
     name: "განათლება",
-    shortName: "განათლება",
     icon: educationIcon,
   },
   {
     id: "N",
-    name: "ჯანმრთელობის დაცვა და სოციალური დახმარება",
-    shortName: "ჯანდაცვა და სოციალური დახმარება",
+    name: "ჯანდაცვა და სოციალური დახმარება",
     icon: healthIcon,
   },
   {
     id: "O",
-    name: "კომუნალური, სოციალური და პერსონალური მომსახურების გაწევა",
-    shortName: "კომუნალური მომსახურება",
+    name: "კომუნალური მომსახურება",
     icon: waterIcon,
   },
 ];
@@ -178,18 +163,19 @@ const ActivityItem = ({ activity, isSelected, onSelect }) => (
         isSelected ? "bg-white shadow-sm scale-110" : ""
       }`}
     >
+      {" "}
       <img
         className="w-full h-full object-contain transition-all duration-300"
         src={activity.icon}
-        alt={activity.shortName}
+        alt={activity.name}
       />
-    </div>
+    </div>{" "}
     <div
       className={`text-xs ${
         isSelected ? "font-medium text-blue-700" : "text-gray-700"
       }`}
     >
-      {activity.shortName}
+      {activity.name}
     </div>
   </div>
 );
@@ -754,16 +740,16 @@ const Dashboard = ({ language = "GE" }) => {
                 </div>
               </div>
               {/* Pinned Note */}
-                <Note
-                  language={language}
-                  selectedYear={selectedYear}
-                  selectedRegion={selectedRegion}
-                  selectedActivity={selectedActivity}
-                  totalSalary={totalSalary}
-                  activitySectors={activitySectors}
-                  regionData={regionData}
-                  getGeCodeFromRegionId={getGeCodeFromRegionId}
-                />
+              <Note
+                language={language}
+                selectedYear={selectedYear}
+                selectedRegion={selectedRegion}
+                selectedActivity={selectedActivity}
+                totalSalary={totalSalary}
+                activitySectors={activitySectors}
+                regionData={regionData}
+                getGeCodeFromRegionId={getGeCodeFromRegionId}
+              />
             </div>
 
             {/* Year and Gender Selection Row */}
