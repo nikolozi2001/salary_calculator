@@ -21,7 +21,6 @@ import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
 
-
 // Data configuration
 const regionData = {
   "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" }, // Grey
@@ -166,16 +165,16 @@ const activitySectors = [
 
 const ActivityItem = ({ activity, isSelected, onSelect }) => (
   <div
-    className={`flex items-center p-3 rounded-xl cursor-pointer transition-all duration-300 ${
+    className={`flex items-center p-2 rounded-lg cursor-pointer transition-all duration-300 ${
       isSelected
-        ? "bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 shadow-sm"
-        : "bg-white border-l-4 border-transparent hover:bg-gray-50"
+        ? "bg-gradient-to-r from-blue-50 to-indigo-50 border-l-2 border-blue-500 shadow-sm"
+        : "bg-white border-l-2 border-transparent hover:bg-gray-50"
     }`}
     onClick={() => onSelect(activity.name)}
     data-id={activity.id}
   >
     <div
-      className={`w-8 h-8 rounded-lg mr-3 bg-gray-50 p-1.5 flex items-center justify-center transition-all duration-300 ${
+      className={`w-6 h-6 rounded-md mr-2 bg-gray-50 p-1 flex items-center justify-center transition-all duration-300 ${
         isSelected ? "bg-white shadow-sm scale-110" : ""
       }`}
     >
@@ -230,7 +229,7 @@ const Dashboard = ({ language = "GE" }) => {
   };
   // Function to handle year selection with toggle capability
   const handleYearSelect = useCallback((year) => {
-    setSelectedYear(prev => prev === year ? null : year);
+    setSelectedYear((prev) => (prev === year ? null : year));
   }, []);
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
@@ -733,26 +732,23 @@ const Dashboard = ({ language = "GE" }) => {
   // eslint-disable-next-line no-unused-vars
   const allSelectionsComplete =
     selectedRegion && selectedActivity && selectedYear && selectedGender;
-
   return (
-    <div className="min-h-screen p-4 md:p-6 font-sans overflow-auto">
-      {" "}
-      <div className="container mx-auto px-2 md:px-4">
-        {/* Main Content - Compact Layout with card design */}
-        <div className="grid grid-cols-12 gap-4 md:gap-5">
-          {/* Left Side - Map */}{" "}
-          <div className="rounded-2xl p-4 col-span-12 md:col-span-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
+    <div className="h-[calc(100vh-80px)] p-2 font-sans overflow-hidden flex flex-col">
+      <div className="h-full container mx-auto px-2">
+        {/* Main Content - Compact Layout with card design */}{" "}
+        <div className="grid grid-cols-12 gap-3 h-[45vh]">
+          {" "}
+          {/* Left Side - Map */}
+          <div className="rounded-2xl p-2 col-span-12 md:col-span-4">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-lg font-semibold text-gray-800">
                 {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
               </h2>
-            </div>{" "}
-            <div className="relative overflow-hidden rounded-xl group p-2">
-              {" "}
-              {/* Map Container */}{" "}
+            </div>
+            <div className="relative overflow-hidden rounded-xl group p-1">
               <div
                 id="georgia-map-container"
-                className="w-full h-[400px] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                className="w-full h-[35vh] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
               ></div>
             </div>{" "}
           </div>{" "}
@@ -768,35 +764,40 @@ const Dashboard = ({ language = "GE" }) => {
             getGeCodeFromRegionId={getGeCodeFromRegionId}
           />{" "}
           {/* Right Side - Activity Selection */}
-          <Activity
-            language={language}
-            selectedActivity={selectedActivity}
-            setSelectedActivity={setSelectedActivity}
-            activitySectors={activitySectors}
-            handleActivitySelect={handleActivitySelect}
-          />
-        </div>
-        {/* Bottom Row for Year and Gender Selection */}{" "}
-        <div className="mt-8 grid grid-cols-12 gap-6 md:gap-8">
-          {/* Year Selector */}          <div className="p-4 rounded-2xl col-span-12 md:col-span-6">
-            <div className="flex justify-center items-center" style={{ minHeight: "300px" }}>
+          <div className="col-span-12 md:col-span-4 overflow-hidden">
+            <Activity
+              language={language}
+              selectedActivity={selectedActivity}
+              setSelectedActivity={setSelectedActivity}
+              activitySectors={activitySectors}
+              handleActivitySelect={handleActivitySelect}
+            />
+          </div>
+        </div>{" "}
+        {/* Year and Gender Selection Row */}
+        <div className="grid grid-cols-12 gap-3 mt-3">
+          {/* Year Selector - Left Side */}
+          <div className="col-span-12 md:col-span-4">
+            <div className="flex justify-center items-center h-full">
               <div
                 id="circle-svg-container"
-                className="w-[400px] h-[400px] transition-all duration-300 ease-in-out"
+                className="w-[220px] h-[220px] transition-all duration-300 ease-in-out"
               ></div>
             </div>
-          </div>{" "}
-          {/* Gender Selector */}
-          <Gender
-            language={language}
-            selectedGender={selectedGender}
-            setSelectedGender={setSelectedGender}
-            handleGenderSelect={handleGenderSelect}
-          />
-        </div>
+          </div>
+          {/* Gender Selector - Right Side */}
+          <div className="col-span-12 md:col-start-5 md:col-span-4">
+            <Gender
+              language={language}
+              selectedGender={selectedGender}
+              setSelectedGender={setSelectedGender}
+              handleGenderSelect={handleGenderSelect}
+            />
+          </div>
+        </div>{" "}
         {/* Error display */}
         {error && (
-          <div className="mt-4 p-4 bg-red-50 text-red-600 text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 p-3 bg-red-50 text-red-600 text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn">
             <div className="flex items-center justify-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

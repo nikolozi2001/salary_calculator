@@ -9,10 +9,10 @@ import "./App.css";
 
 function App() {
   const [language, setLanguage] = useState("GE");
-  
-  return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header language={language} setLanguage={setLanguage} />      <main className="flex-grow">
+    return (
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+      <Header language={language} setLanguage={setLanguage} />
+      <main className="flex-1 min-h-0">
         <Routes>
           <Route path="/" element={<Dashboard language={language} />} />
         </Routes>
