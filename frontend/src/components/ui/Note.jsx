@@ -13,38 +13,54 @@ const Note = ({
 }) => {
   const noteStyle = {
     backgroundImage: 'url("/src/assets/images/note.png")',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    fontFamily: 'BPG Nino Mtavruli',
-    fontSize: '18px',
-    lineHeight: '27px',
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    fontFamily: "BPG Nino Mtavruli",
+    fontSize: "18px",
+    lineHeight: "27px",
     fontWeight: 400,
-    letterSpacing: 'normal',
-    color: '#0090D6',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '2rem'
+    letterSpacing: "normal",
+    color: "#0090D6",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "2rem",
   };
 
   const renderContent = () => {
     if (selectedYear && !selectedRegion && !selectedActivity) {
       // Case 1: Only year selected
-      const allGeorgiaActivity = activitySectors.find(activity => activity.id === "AA");
+      const allGeorgiaActivity = activitySectors.find(
+        (activity) => activity.id === "AA"
+      );
       return (
         <>
           <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
-          <p>{language === "GE" ? "საქართველოს ხელფასების სტატისტიკა" : "Georgia salary statistics"}</p>
           <p>
-            {language === "GE" ? `რეგიონი: საქართველო (ყველა)` : `Region: Georgia (All)`}
+            {language === "GE"
+              ? "საქართველოს ხელფასების სტატისტიკა"
+              : "Georgia salary statistics"}
+          </p>
+          <p>
+            {language === "GE"
+              ? `რეგიონი: საქართველო (ყველა)`
+              : `Region: Georgia (All)`}
           </p>
           {selectedYear && totalSalary !== null && (
             <p>
               {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${allGeorgiaActivity ? allGeorgiaActivity.shortName : "საქართველო (ყველა)"}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: ${allGeorgiaActivity ? allGeorgiaActivity.shortName : "All Activities"}, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
+                    allGeorgiaActivity
+                      ? allGeorgiaActivity.shortName
+                      : "საქართველო (ყველა)"
+                  }, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                : `Year: ${selectedYear}, Business sector: ${
+                    allGeorgiaActivity
+                      ? allGeorgiaActivity.shortName
+                      : "All Activities"
+                  }, Average salary: ${totalSalary.toLocaleString()} GEL`}
             </p>
           )}
         </>
@@ -53,19 +69,31 @@ const Note = ({
 
     if (selectedYear && !selectedRegion && selectedActivity) {
       // Case 2: Year and activity selected
-      const activityInfo = activitySectors.find(activity => activity.name === selectedActivity);
+      const activityInfo = activitySectors.find(
+        (activity) => activity.name === selectedActivity
+      );
       return (
         <>
           <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
-          <p>{language === "GE" ? "საქართველოს ხელფასების სტატისტიკა" : "Georgia salary statistics"}</p>
           <p>
-            {language === "GE" ? `რეგიონი: საქართველო (ყველა)` : `Region: Georgia (All)`}
+            {language === "GE"
+              ? "საქართველოს ხელფასების სტატისტიკა"
+              : "Georgia salary statistics"}
+          </p>
+          <p>
+            {language === "GE"
+              ? `რეგიონი: საქართველო (ყველა)`
+              : `Region: Georgia (All)`}
           </p>
           {selectedYear && totalSalary !== null && (
             <p>
               {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityInfo ? activityInfo.shortName : selectedActivity}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: ${activityInfo ? activityInfo.shortName : selectedActivity}, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
+                    activityInfo ? activityInfo.shortName : selectedActivity
+                  }, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                : `Year: ${selectedYear}, Business sector: ${
+                    activityInfo ? activityInfo.shortName : selectedActivity
+                  }, Average salary: ${totalSalary.toLocaleString()} GEL`}
             </p>
           )}
         </>
@@ -79,13 +107,15 @@ const Note = ({
         const displayActivity = selectedActivity
           ? selectedActivity
           : selectedYear
-          ? activitySectors.find(activity => activity.id === "AA")?.shortName
+          ? activitySectors.find((activity) => activity.id === "AA")?.shortName
           : null;
 
         return (
           <>
             <h3>
-              {language === "GE" ? regionData[geCode].nameGe : regionData[geCode].nameEn}
+              {language === "GE"
+                ? regionData[geCode].nameGe
+                : regionData[geCode].nameEn}
             </h3>
             <p>
               {language === "GE"
@@ -93,13 +123,18 @@ const Note = ({
                 : `${regionData[geCode].nameEn} region salary statistics`}
             </p>
             <p>
-              {language === "GE" ? "არჩეული რეგიონი" : "Selected Region"} (ID: {selectedRegion})
+              {language === "GE" ? "არჩეული რეგიონი" : "Selected Region"} (ID:{" "}
+              {selectedRegion})
             </p>
             {selectedYear && totalSalary !== null && (
               <p>
                 {language === "GE"
-                  ? `წელი: ${selectedYear}, საქმიანობის სახე: ${displayActivity || "საქართველო (ყველა)"}, საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                  : `Year: ${selectedYear}, Business sector: ${displayActivity || "All Activities"}, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                  ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
+                      displayActivity || "საქართველო (ყველა)"
+                    }, საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                  : `Year: ${selectedYear}, Business sector: ${
+                      displayActivity || "All Activities"
+                    }, Average salary: ${totalSalary.toLocaleString()} GEL`}
               </p>
             )}
           </>
@@ -129,11 +164,9 @@ const Note = ({
   };
 
   return (
-    <div className="col-span-12 md:col-span-3">
+    <div className="col-span-8 md:col-span-4 p-4">
       <div style={noteStyle}>
-        <div className="text-center">
-          {renderContent()}
-        </div>
+        <div className="text-center">{renderContent()}</div>
       </div>
     </div>
   );
