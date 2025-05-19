@@ -145,7 +145,7 @@ export const dataApi = {
   },
 };
 
-// API methods for activities
+// Activity API methods
 export const activityApi = {
   getAll: async () => {
     try {

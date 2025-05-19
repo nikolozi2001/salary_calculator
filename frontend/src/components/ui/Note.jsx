@@ -29,12 +29,24 @@ const Note = ({
     padding: "2rem",
   };
 
+  const getActivityName = (activityName) => {
+    if (!activityName) return null;
+    const activity = activitySectors.find(
+      (act) =>
+        act.name_ge === activityName ||
+        act.name_en === activityName ||
+        act.name === activityName
+    );
+    return activity
+      ? language === "GE"
+        ? activity.name_ge
+        : activity.name_en
+      : activityName;
+  };
+
   const renderContent = () => {
     if (selectedYear && !selectedRegion && !selectedActivity) {
       // Case 1: Only year selected
-      const allGeorgiaActivity = activitySectors.find(
-        (activity) => activity.id === "AA"
-      );
       return (
         <>
           <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
@@ -51,16 +63,8 @@ const Note = ({
           {selectedYear && totalSalary !== null && (
             <p>
               {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
-                    allGeorgiaActivity
-                      ? allGeorgiaActivity.shortName
-                      : "საქართველო (ყველა)"
-                  }, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: ${
-                    allGeorgiaActivity
-                      ? allGeorgiaActivity.shortName
-                      : "All Activities"
-                  }, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                ? `წელი: ${selectedYear}, საქმიანობის სახე: საქართველო (ყველა), არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                : `Year: ${selectedYear}, Business sector: All Activities, Average salary: ${totalSalary.toLocaleString()} GEL`}
             </p>
           )}
         </>
@@ -69,9 +73,7 @@ const Note = ({
 
     if (selectedYear && !selectedRegion && selectedActivity) {
       // Case 2: Year and activity selected
-      const activityInfo = activitySectors.find(
-        (activity) => activity.name === selectedActivity
-      );
+      const activityDisplay = getActivityName(selectedActivity);
       return (
         <>
           <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
@@ -88,12 +90,8 @@ const Note = ({
           {selectedYear && totalSalary !== null && (
             <p>
               {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
-                    activityInfo ? activityInfo.shortName : selectedActivity
-                  }, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: ${
-                    activityInfo ? activityInfo.shortName : selectedActivity
-                  }, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityDisplay}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                : `Year: ${selectedYear}, Business sector: ${activityDisplay}, Average salary: ${totalSalary.toLocaleString()} GEL`}
             </p>
           )}
         </>
@@ -104,11 +102,11 @@ const Note = ({
       // Case 3: Region selected
       const geCode = getGeCodeFromRegionId(selectedRegion);
       if (geCode && regionData[geCode]) {
-        const displayActivity = selectedActivity
-          ? selectedActivity
-          : selectedYear
-          ? activitySectors.find((activity) => activity.id === "AA")?.shortName
-          : null;
+        const activityDisplay = selectedActivity
+          ? getActivityName(selectedActivity)
+          : language === "GE"
+          ? "საქართველო (ყველა)"
+          : "All Activities";
 
         return (
           <>
@@ -129,12 +127,8 @@ const Note = ({
             {selectedYear && totalSalary !== null && (
               <p>
                 {language === "GE"
-                  ? `წელი: ${selectedYear}, საქმიანობის სახე: ${
-                      displayActivity || "საქართველო (ყველა)"
-                    }, საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                  : `Year: ${selectedYear}, Business sector: ${
-                      displayActivity || "All Activities"
-                    }, Average salary: ${totalSalary.toLocaleString()} GEL`}
+                  ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityDisplay}, საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
+                  : `Year: ${selectedYear}, Business sector: ${activityDisplay}, Average salary: ${totalSalary.toLocaleString()} GEL`}
               </p>
             )}
           </>

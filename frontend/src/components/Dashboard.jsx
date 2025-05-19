@@ -4,7 +4,8 @@ import circleMap from "../assets/svg/circle.svg";
 import Activity from "./ui/Activity";
 import Gender from "./ui/Gender";
 import Note from "./ui/Note";
-import { dataApi } from "../services/api";
+import { dataApi, activityApi } from "../services/api";
+
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
 import manufacturingIcon from "../assets/icons/manufacturing.png";
@@ -20,6 +21,24 @@ import agroIcon from "../assets/icons/agro.png";
 import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
+
+// Create an icon map
+const iconMap = {
+  educationIcon: educationIcon,
+  manufacturingIcon: manufacturingIcon,
+  electricityIcon: electricityIcon,
+  tradeIcon: tradeIcon,
+  constructionIcon: constructionIcon,
+  realEstateIcon: realEstateIcon,
+  miningIcon: miningIcon,
+  hotelsIcon: hotelsIcon,
+  financialIcon: financialIcon,
+  publicIcon: publicIcon,
+  agroIcon: agroIcon,
+  transportIcon: transportIcon,
+  healthIcon: healthIcon,
+  waterIcon: waterIcon,
+};
 
 // Data configuration
 const regionData = {
@@ -70,141 +89,64 @@ const regionIdMap = {
   "GE-AB": "00", // აფხაზეთი
 };
 
-const activitySectors = [
-  {
-    id: "A",
-    name: "სოფლის მეურნეობა",
-    icon: agroIcon,
-  },
-  {
-    id: "B",
-    name: "თევზჭერა, მეთევზეობა",
-    icon: miningIcon,
-  },
-  {
-    id: "C",
-    name: "სამთომოპოვებითი მრეწველობა",
-    icon: miningIcon,
-  },
-  {
-    id: "D",
-    name: "დამამუშავებელი მრეწველობა",
-    icon: manufacturingIcon,
-  },
-  {
-    id: "E",
-    name: "ელექტროენერგია, აირი და წყალი",
-    icon: electricityIcon,
-  },
-  {
-    id: "F",
-    name: "მშენებლობა",
-    icon: constructionIcon,
-  },
-  {
-    id: "G",
-    name: "ვაჭრობა და რემონტი",
-    icon: tradeIcon,
-  },
-  {
-    id: "H",
-    name: "სასტუმროები და რესტორნები",
-    icon: hotelsIcon,
-  },
-  {
-    id: "I",
-    name: "ტრანსპორტი და კავშირგაბმულობა",
-    icon: transportIcon,
-  },
-  {
-    id: "J",
-    name: "საფინანსო საქმიანობა",
-    icon: financialIcon,
-  },
-  {
-    id: "K",
-    name: "უძრავი ქონება და იჯარა",
-    icon: realEstateIcon,
-  },
-  {
-    id: "L",
-    name: "სახელმწიფო მმართველობა",
-    icon: publicIcon,
-  },
-  {
-    id: "M",
-    name: "განათლება",
-    icon: educationIcon,
-  },
-  {
-    id: "N",
-    name: "ჯანდაცვა და სოციალური დახმარება",
-    icon: healthIcon,
-  },
-  {
-    id: "O",
-    name: "კომუნალური მომსახურება",
-    icon: waterIcon,
-  },
-];
-
-const ActivityItem = ({ activity, isSelected, onSelect }) => (
-  <div
-    className={`flex items-center p-2 rounded-lg cursor-pointer transition-all duration-300 ${
-      isSelected
-        ? "bg-gradient-to-r from-blue-50 to-indigo-50 border-l-2 border-blue-500 shadow-sm"
-        : "bg-white border-l-2 border-transparent hover:bg-gray-50"
-    }`}
-    onClick={() => onSelect(activity.name)}
-    data-id={activity.id}
-  >
-    <div
-      className={`w-6 h-6 rounded-md mr-2 bg-gray-50 p-1 flex items-center justify-center transition-all duration-300 ${
-        isSelected ? "bg-white shadow-sm scale-110" : ""
-      }`}
-    >
-      {" "}
-      <img
-        className="w-full h-full object-contain transition-all duration-300"
-        src={activity.icon}
-        alt={activity.name}
-      />
-    </div>{" "}
-    <div
-      className={`text-xs ${
-        isSelected ? "font-medium text-blue-700" : "text-gray-700"
-      }`}
-    >
-      {activity.name}
-    </div>
-  </div>
-);
-
 // Main component
 const Dashboard = ({ language = "GE" }) => {
+  // Add state for activities
+  const [activities, setActivities] = useState([]);
   // State for selections
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [hoveredRegion, setHoveredRegion] = useState(null);
-  // These variables were used with the removed button
-  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [salaryData, setSalaryData] = useState(null);
   const [totalSalary, setTotalSalary] = useState(null);
   const [error, setError] = useState(null);
 
+  // Fetch activities from API
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const data = await activityApi.getAll();
+        const activitiesWithIcons = data.map((activity) => ({
+          ...activity,
+          icon: iconMap[activity.icon],
+          name: language === "GE" ? activity.name_ge : activity.name_en,
+        }));
+        setActivities(activitiesWithIcons);
+      } catch (error) {
+        console.error("Failed to fetch activities:", error);
+        setError("Failed to load activities");
+      }
+    };
+
+    fetchActivities();
+  }, [language]);
+
+  // Get activity code helper function
+  const getActivityCode = useCallback(
+    (activityName) => {
+      const activity = activities.find(
+        (a) => a.name === activityName || a.name_ge === activityName || a.name_en === activityName
+      );
+      return activity ? activity.code : null;
+    },
+    [activities]
+  );
+
   // Reference to the SVG element
   const svgRef = useRef(null);
   // Function to handle region click - updates with numerical ID from mapping
-  const handleRegionClick = useCallback((id) => {
-    setSelectedRegion((prev) => {
-      const numericId = regionIdMap[id];
-      return prev === numericId ? null : numericId;
-    });
-  }, []);
+  const handleRegionClick = useCallback(
+    (id) => {
+      setSelectedRegion((prev) => {
+        const numericId = regionIdMap[id];
+        return prev === numericId ? null : numericId;
+      });
+    },
+    []
+  );
 
   // Function to handle region hover - still using the GE-XX format for hovering
   const handleRegionHover = (id) => setHoveredRegion(id);
@@ -214,9 +156,12 @@ const Dashboard = ({ language = "GE" }) => {
     setSelectedActivity(selectedActivity === activity ? null : activity);
   };
   // Function to handle year selection with toggle capability
-  const handleYearSelect = useCallback((year) => {
-    setSelectedYear((prev) => (prev === year ? null : year));
-  }, []);
+  const handleYearSelect = useCallback(
+    (year) => {
+      setSelectedYear((prev) => (prev === year ? null : year));
+    },
+    []
+  );
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
@@ -224,9 +169,7 @@ const Dashboard = ({ language = "GE" }) => {
 
   // Helper function to get GE-XX code from a numeric region ID
   const getGeCodeFromRegionId = (numericId) => {
-    return Object.keys(regionIdMap).find(
-      (key) => regionIdMap[key] === numericId
-    );
+    return Object.keys(regionIdMap).find((key) => regionIdMap[key] === numericId);
   };
   // Effect to automatically update salary data when selections change
   useEffect(() => {
@@ -267,11 +210,9 @@ const Dashboard = ({ language = "GE" }) => {
       if (selectedYear && !selectedRegion && selectedActivity) {
         try {
           // Find the selected activity's ID from activitySectors
-          const activityId = activitySectors.find(
-            (activity) => activity.name === selectedActivity
-          )?.id;
+          const activityCode = getActivityCode(selectedActivity);
 
-          if (!activityId) {
+          if (!activityCode) {
             return;
           }
 
@@ -282,7 +223,7 @@ const Dashboard = ({ language = "GE" }) => {
             totalSalaryValue = await dataApi.getGenderSalary(
               selectedYear,
               "0", // Georgia (All)
-              activityId,
+              activityCode,
               selectedGender
             );
           } else {
@@ -290,7 +231,7 @@ const Dashboard = ({ language = "GE" }) => {
             totalSalaryValue = await dataApi.getTotalSalary(
               selectedYear,
               "0", // Georgia (All)
-              activityId
+              activityCode
             );
           }
 
@@ -340,11 +281,9 @@ const Dashboard = ({ language = "GE" }) => {
       if (selectedYear && selectedRegion && selectedActivity) {
         try {
           // Find the selected activity's ID from activitySectors
-          const activityId = activitySectors.find(
-            (activity) => activity.name === selectedActivity
-          )?.id;
+          const activityCode = getActivityCode(selectedActivity);
 
-          if (!activityId) {
+          if (!activityCode) {
             return;
           }
 
@@ -355,7 +294,7 @@ const Dashboard = ({ language = "GE" }) => {
             totalSalaryValue = await dataApi.getGenderSalary(
               selectedYear,
               selectedRegion,
-              activityId,
+              activityCode,
               selectedGender
             );
           } else {
@@ -363,7 +302,7 @@ const Dashboard = ({ language = "GE" }) => {
             totalSalaryValue = await dataApi.getTotalSalary(
               selectedYear,
               selectedRegion,
-              activityId
+              activityCode
             );
           }
 
@@ -381,7 +320,7 @@ const Dashboard = ({ language = "GE" }) => {
     };
 
     updateSalaryInfo();
-  }, [selectedRegion, selectedActivity, selectedYear, selectedGender]);
+  }, [selectedRegion, selectedActivity, selectedYear, selectedGender, getActivityCode]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
@@ -627,12 +566,7 @@ const Dashboard = ({ language = "GE" }) => {
   // but we're keeping the code as it may be needed later if button is restored
   // eslint-disable-next-line no-unused-vars
   const fetchSalaryData = async () => {
-    if (
-      !selectedRegion ||
-      !selectedActivity ||
-      !selectedYear ||
-      !selectedGender
-    ) {
+    if (!selectedRegion || !selectedActivity || !selectedYear || !selectedGender) {
       return;
     }
 
@@ -640,38 +574,30 @@ const Dashboard = ({ language = "GE" }) => {
       setIsLoading(true);
       setError(null);
       const regionId = selectedRegion;
+      const activityCode = getActivityCode(selectedActivity);
 
-      const activityId = activitySectors.find(
-        (activity) => activity.name === selectedActivity
-      )?.id;
-
-      if (!activityId) {
-        throw new Error(`Activity ID not found for ${selectedActivity}`);
+      if (!activityCode) {
+        throw new Error(`Activity code not found for ${selectedActivity}`);
       }
 
-      const response = await dataApi.getDataByYearAndRegion(
-        selectedYear,
-        regionId
-      );
+      const response = await dataApi.getDataByYearAndRegion(selectedYear, regionId);
+      
       try {
-        // Get salary based on gender selection
         let totalSalaryValue;
 
         if (selectedGender) {
-          // If gender is selected, get gender-specific salary
           const genderData = await dataApi.getGenderSpecificSalary(
             selectedGender,
             selectedYear,
             regionId,
-            activityId
+            activityCode
           );
           totalSalaryValue = genderData.total;
         } else {
-          // Otherwise get the total salary
           totalSalaryValue = await dataApi.getTotalSalary(
             selectedYear,
             regionId,
-            activityId
+            activityCode
           );
         }
 
@@ -682,17 +608,11 @@ const Dashboard = ({ language = "GE" }) => {
 
         if (totalError.response && totalError.response.status === 404) {
           setError(
-            `${
-              language === "GE" ? "მონაცემები არ მოიძებნა" : "No data found"
-            } (${selectedYear}, ${regionId}, ${activityId})`
+            `${language === "GE" ? "მონაცემები არ მოიძებნა" : "No data found"} (${selectedYear}, ${regionId}, ${activityCode})`
           );
         } else {
           setError(
-            `${
-              language === "GE"
-                ? "მონაცემების მიღების შეცდომა"
-                : "Error fetching data"
-            }`
+            `${language === "GE" ? "მონაცემების მიღების შეცდომა" : "Error fetching data"}`
           );
         }
       }
@@ -703,7 +623,7 @@ const Dashboard = ({ language = "GE" }) => {
         regionId: selectedRegion,
         regionCode: getGeCodeFromRegionId(selectedRegion),
         activity: selectedActivity,
-        activityId,
+        activityCode,
         year: selectedYear,
         gender: selectedGender,
       });
@@ -746,7 +666,7 @@ const Dashboard = ({ language = "GE" }) => {
                 selectedRegion={selectedRegion}
                 selectedActivity={selectedActivity}
                 totalSalary={totalSalary}
-                activitySectors={activitySectors}
+                activitySectors={activities}
                 regionData={regionData}
                 getGeCodeFromRegionId={getGeCodeFromRegionId}
               />
@@ -781,7 +701,7 @@ const Dashboard = ({ language = "GE" }) => {
               language={language}
               selectedActivity={selectedActivity}
               setSelectedActivity={setSelectedActivity}
-              activitySectors={activitySectors}
+              activitySectors={activities}
               handleActivitySelect={handleActivitySelect}
             />
           </div>
