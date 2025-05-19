@@ -735,63 +735,71 @@ const Dashboard = ({ language = "GE" }) => {
   return (
     <div className="h-[calc(100vh-80px)] p-2 font-sans overflow-hidden flex flex-col">
       <div className="h-full container mx-auto px-2">
-        {/* Main Content - Compact Layout with card design */}{" "}
-        <div className="grid grid-cols-12 gap-3 h-[45vh]">
-          {" "}
-          {/* Left Side - Map */}
-          <div className="rounded-2xl p-2 col-span-12 md:col-span-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold text-gray-800">
-                {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
-              </h2>
+        {/* Main Content - Compact Layout with card design */}{" "}        <div className="grid grid-cols-12 gap-3">
+          {/* Left Side Content */}
+          <div className="col-span-12 md:col-span-8">
+            {/* Map and Note Section */}
+            <div className="grid grid-cols-8 gap-3 mb-3">
+              {/* Map */}
+              <div className="rounded-2xl p-2 col-span-8 md:col-span-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
+                  </h2>
+                </div>
+                <div className="relative overflow-hidden rounded-xl group p-1">
+                  <div
+                    id="georgia-map-container"
+                    className="w-full h-[35vh] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                  ></div>
+                </div>
+              </div>
+              {/* Pinned Note */}
+              <div className="col-span-8 md:col-span-4">
+                <Note
+                  language={language}
+                  selectedYear={selectedYear}
+                  selectedRegion={selectedRegion}
+                  selectedActivity={selectedActivity}
+                  totalSalary={totalSalary}
+                  activitySectors={activitySectors}
+                  regionData={regionData}
+                  getGeCodeFromRegionId={getGeCodeFromRegionId}
+                />
+              </div>
             </div>
-            <div className="relative overflow-hidden rounded-xl group p-1">
-              <div
-                id="georgia-map-container"
-                className="w-full h-[35vh] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
-              ></div>
-            </div>{" "}
-          </div>{" "}
-          {/* Pinned Note */}
-          <Note
-            language={language}
-            selectedYear={selectedYear}
-            selectedRegion={selectedRegion}
-            selectedActivity={selectedActivity}
-            totalSalary={totalSalary}
-            activitySectors={activitySectors}
-            regionData={regionData}
-            getGeCodeFromRegionId={getGeCodeFromRegionId}
-          />{" "}
+
+            {/* Year and Gender Selection Row */}
+            <div className="grid grid-cols-8 gap-3">
+              {/* Year Selector */}
+              <div className="col-span-8 md:col-span-4">
+                <div className="flex justify-center items-center">
+                  <div
+                    id="circle-svg-container"
+                    className="w-[220px] h-[220px] transition-all duration-300 ease-in-out"
+                  ></div>
+                </div>
+              </div>
+              {/* Gender Selector */}
+              <div className="col-span-8 md:col-span-4">
+                <Gender
+                  language={language}
+                  selectedGender={selectedGender}
+                  setSelectedGender={setSelectedGender}
+                  handleGenderSelect={handleGenderSelect}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Right Side - Activity Selection */}
-          <div className="col-span-12 md:col-span-4 overflow-hidden">
+          <div className="col-span-12 md:col-span-4 h-full">
             <Activity
               language={language}
               selectedActivity={selectedActivity}
               setSelectedActivity={setSelectedActivity}
               activitySectors={activitySectors}
               handleActivitySelect={handleActivitySelect}
-            />
-          </div>
-        </div>{" "}
-        {/* Year and Gender Selection Row */}
-        <div className="grid grid-cols-12 gap-3 mt-3">
-          {/* Year Selector - Left Side */}
-          <div className="col-span-12 md:col-span-4">
-            <div className="flex justify-center items-center h-full">
-              <div
-                id="circle-svg-container"
-                className="w-[220px] h-[220px] transition-all duration-300 ease-in-out"
-              ></div>
-            </div>
-          </div>
-          {/* Gender Selector - Right Side */}
-          <div className="col-span-12 md:col-start-5 md:col-span-4">
-            <Gender
-              language={language}
-              selectedGender={selectedGender}
-              setSelectedGender={setSelectedGender}
-              handleGenderSelect={handleGenderSelect}
             />
           </div>
         </div>{" "}
