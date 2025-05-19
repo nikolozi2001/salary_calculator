@@ -112,9 +112,6 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
                   className="w-20 h-20 object-contain transition-transform duration-300 hover:scale-110"
                 />
               </div>
-              <div className="text-center mt-2 text-gray-700">
-                {language === "GE" ? "ქალი" : "Female"}
-              </div>
             </div>
 
             <div
@@ -131,9 +128,6 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
                   alt="Male"
                   className="w-20 h-20 object-contain transition-transform duration-300 hover:scale-110"
                 />
-              </div>
-              <div className="text-center mt-2 text-gray-700">
-                {language === "GE" ? "კაცი" : "Male"}
               </div>
             </div>
           </div>
