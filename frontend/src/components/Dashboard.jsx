@@ -109,8 +109,6 @@ const Dashboard = ({ language = "GE" }) => {
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [hoveredRegion, setHoveredRegion] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [salaryData, setSalaryData] = useState(null);
   const [totalSalary, setTotalSalary] = useState(null);
   const [error, setError] = useState(null);
 
@@ -468,7 +466,10 @@ const Dashboard = ({ language = "GE" }) => {
               label.setAttribute("class", "region-label");
               label.setAttribute("x", labelX);
               label.setAttribute("y", labelY);
-              label.textContent = language === "GE" ? regionData[id].nameGe : regionData[id].nameEn;
+              label.textContent =
+                language === "GE"
+                  ? regionData[id].nameGe
+                  : regionData[id].nameEn;
 
               // Update tooltip content and position on hover
               const showTooltip = (event) => {
@@ -651,9 +652,7 @@ const Dashboard = ({ language = "GE" }) => {
     ) {
       return;
     }
-
     try {
-      setIsLoading(true);
       setError(null);
       const regionId = selectedRegion;
       const activityCode = getActivityCode(selectedActivity);
@@ -661,11 +660,6 @@ const Dashboard = ({ language = "GE" }) => {
       if (!activityCode) {
         throw new Error(`Activity code not found for ${selectedActivity}`);
       }
-
-      const response = await dataApi.getDataByYearAndRegion(
-        selectedYear,
-        regionId
-      );
 
       try {
         let totalSalaryValue;
@@ -708,8 +702,6 @@ const Dashboard = ({ language = "GE" }) => {
         }
       }
 
-      setSalaryData(response);
-      console.log("Analysis data:", response);
       console.log("Selected parameters:", {
         regionId: selectedRegion,
         regionCode: getGeCodeFromRegionId(selectedRegion),
@@ -721,8 +713,6 @@ const Dashboard = ({ language = "GE" }) => {
     } catch (err) {
       console.error("Failed to fetch salary data:", err);
       setError("Failed to fetch salary data. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
