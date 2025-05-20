@@ -363,9 +363,8 @@ const Dashboard = ({ language = "GE" }) => {
           const style = document.createElement("style");
           style.textContent = `
             #georgia-map-container svg path {
-              stroke: white !important;
-              stroke-width: 0.5 !important;
-              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+              stroke: white;
+              stroke-width: 0.5 ;
               cursor: pointer !important;
               opacity: 0.9 !important;
               filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05)) !important;
@@ -375,7 +374,6 @@ const Dashboard = ({ language = "GE" }) => {
               stroke-width: 1 !important;
               stroke: white !important;
               filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1)) !important;
-              transform: translateY(-1px) !important;
             }
             #georgia-map-container svg path.selected {
               stroke-width: 1.5 !important;
@@ -397,7 +395,6 @@ const Dashboard = ({ language = "GE" }) => {
             #georgia-map-container svg path:hover + .region-label,
             #georgia-map-container svg path.selected + .region-label {
               opacity: 1 !important;
-              transform: translateY(-1px) !important;
             }
             .map-tooltip {
               position: fixed;
