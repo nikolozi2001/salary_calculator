@@ -49,23 +49,22 @@ const Note = ({
       // Case 1: Only year selected
       return (
         <>
-          <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
-          <p>
-            {language === "GE"
-              ? "საქართველოს ხელფასების სტატისტიკა"
-              : "Georgia salary statistics"}
-          </p>
-          <p>
-            {language === "GE"
-              ? `რეგიონი: საქართველო (ყველა)`
-              : `Region: Georgia (All)`}
-          </p>
           {selectedYear && totalSalary !== null && (
-            <p>
-              {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: საქართველო (ყველა), არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: All Activities, Average salary: ${totalSalary.toLocaleString()} GEL`}
-            </p>
+            <>
+              <p>
+                <strong>{language === "GE" ? "წელი" : "Year"}:</strong>{" "}
+                {selectedYear}
+              </p>
+              <p className="mt-8">
+                {language === "GE"
+                  ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
+                  : "BY THE SELECTED CRITERIA THE AVERAGE SALARY IS: "}
+                <strong className="text-2xl">
+                  {totalSalary.toLocaleString()}
+                </strong>
+                {language === "GE" ? " ლარს" : " GEL"}
+              </p>
+            </>
           )}
         </>
       );
@@ -76,23 +75,34 @@ const Note = ({
       const activityDisplay = getActivityName(selectedActivity);
       return (
         <>
-          <h3>{language === "GE" ? "საქართველო" : "Georgia"}</h3>
-          <p>
-            {language === "GE"
-              ? "საქართველოს ხელფასების სტატისტიკა"
-              : "Georgia salary statistics"}
-          </p>
-          <p>
-            {language === "GE"
-              ? `რეგიონი: საქართველო (ყველა)`
-              : `Region: Georgia (All)`}
-          </p>
           {selectedYear && totalSalary !== null && (
-            <p>
-              {language === "GE"
-                ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityDisplay}, არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                : `Year: ${selectedYear}, Business sector: ${activityDisplay}, Average salary: ${totalSalary.toLocaleString()} GEL`}
-            </p>
+            <>
+              <p>
+                <strong>{language === "GE" ? "წელი" : "Year"}:</strong>{" "}
+                {selectedYear}
+              </p>
+              <p>
+                {language === "GE" ? (
+                  <span>
+                    {" "}
+                    <strong>საქმიანობის სახე:</strong> {activityDisplay}
+                  </span>
+                ) : (
+                  <span>
+                    <strong>Business sector:</strong> {activityDisplay}
+                  </span>
+                )}
+              </p>
+              <p className="mt-8">
+                {language === "GE"
+                  ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
+                  : "BY THE SELECTED CRITERIA THE AVERAGE SALARY IS: "}
+                <strong className="text-2xl">
+                  {totalSalary.toLocaleString()}
+                </strong>
+                {language === "GE" ? " ლარს" : " GEL"}
+              </p>
+            </>
           )}
         </>
       );
@@ -102,34 +112,31 @@ const Note = ({
       // Case 3: Region selected
       const geCode = getGeCodeFromRegionId(selectedRegion);
       if (geCode && regionData[geCode]) {
-        const activityDisplay = selectedActivity
-          ? getActivityName(selectedActivity)
-          : language === "GE"
-          ? "საქართველო (ყველა)"
-          : "All Activities";
-
         return (
           <>
+            {" "}
             <h3>
+              <strong>{language === "GE" ? "რეგიონი" : "Region"}:</strong>{" "}
               {language === "GE"
                 ? regionData[geCode].nameGe
                 : regionData[geCode].nameEn}
             </h3>
-            <p>
-              {language === "GE"
-                ? `${regionData[geCode].nameGe}ს რეგიონის ხელფასების სტატისტიკა`
-                : `${regionData[geCode].nameEn} region salary statistics`}
-            </p>
-            <p>
-              {language === "GE" ? "არჩეული რეგიონი" : "Selected Region"} (ID:{" "}
-              {selectedRegion})
-            </p>
             {selectedYear && totalSalary !== null && (
-              <p>
-                {language === "GE"
-                  ? `წელი: ${selectedYear}, საქმიანობის სახე: ${activityDisplay}, საშუალო ხელფასი შეადგენს: ${totalSalary.toLocaleString()} ლარი`
-                  : `Year: ${selectedYear}, Business sector: ${activityDisplay}, Average salary: ${totalSalary.toLocaleString()} GEL`}
-              </p>
+              <>
+                <p>
+                  <strong>{language === "GE" ? "წელი" : "Year"}:</strong>{" "}
+                  {selectedYear}
+                </p>
+                <p className="mt-8">
+                  {language === "GE"
+                    ? "არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: "
+                    : "BY THE SELECTED CRITERIA THE AVERAGE SALARY IS: "}
+                  <strong className="text-2xl">
+                    {totalSalary.toLocaleString()}
+                  </strong>
+                  {language === "GE" ? " ლარს" : " GEL"}
+                </p>
+              </>
             )}
           </>
         );
