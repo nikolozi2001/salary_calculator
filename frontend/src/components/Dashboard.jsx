@@ -52,21 +52,21 @@ const iconMap = {
 
 // Data configuration
 const regionData = {
-  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" }, 
-  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#ce8d34" }, 
-  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#6ea76f" }, 
+  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" },
+  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#ce8d34" },
+  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#6ea76f" },
   "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#c85861" },
-  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#c85861" }, 
-  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#6ea76f" }, 
+  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#c85861" },
+  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#6ea76f" },
   "GE-MM": {
     nameEn: "Mtskheta-Mtianeti",
     nameGe: "მცხეთა-მთიანეთი",
-    color: "#9e6e9c", 
+    color: "#9e6e9c",
   },
   "GE-RL": {
     nameEn: "Racha-Lechkhumi",
     nameGe: "რაჭა-ლეჩხუმი",
-    color: "#ce8d34", 
+    color: "#ce8d34",
   },
   "GE-SJ": {
     nameEn: "Samtskhe-Javakheti",
@@ -79,7 +79,7 @@ const regionData = {
     nameGe: "სამეგრელო-ზემო სვანეთი",
     color: "#678dac",
   },
-  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#ce8d34" }, 
+  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#ce8d34" },
 };
 
 // Mapping from GE-XX codes to numerical region IDs for database queries
@@ -138,7 +138,10 @@ const Dashboard = ({ language = "GE" }) => {
   const getActivityCode = useCallback(
     (activityName) => {
       const activity = activities.find(
-        (a) => a.name === activityName || a.name_ge === activityName || a.name_en === activityName
+        (a) =>
+          a.name === activityName ||
+          a.name_ge === activityName ||
+          a.name_en === activityName
       );
       return activity ? activity.code : null;
     },
@@ -148,15 +151,12 @@ const Dashboard = ({ language = "GE" }) => {
   // Reference to the SVG element
   const svgRef = useRef(null);
   // Function to handle region click - updates with numerical ID from mapping
-  const handleRegionClick = useCallback(
-    (id) => {
-      setSelectedRegion((prev) => {
-        const numericId = regionIdMap[id];
-        return prev === numericId ? null : numericId;
-      });
-    },
-    []
-  );
+  const handleRegionClick = useCallback((id) => {
+    setSelectedRegion((prev) => {
+      const numericId = regionIdMap[id];
+      return prev === numericId ? null : numericId;
+    });
+  }, []);
 
   // Function to handle region hover - still using the GE-XX format for hovering
   const handleRegionHover = (id) => setHoveredRegion(id);
@@ -166,12 +166,9 @@ const Dashboard = ({ language = "GE" }) => {
     setSelectedActivity(selectedActivity === activity ? null : activity);
   };
   // Function to handle year selection with toggle capability
-  const handleYearSelect = useCallback(
-    (year) => {
-      setSelectedYear((prev) => (prev === year ? null : year));
-    },
-    []
-  );
+  const handleYearSelect = useCallback((year) => {
+    setSelectedYear((prev) => (prev === year ? null : year));
+  }, []);
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
@@ -179,7 +176,9 @@ const Dashboard = ({ language = "GE" }) => {
 
   // Helper function to get GE-XX code from a numeric region ID
   const getGeCodeFromRegionId = (numericId) => {
-    return Object.keys(regionIdMap).find((key) => regionIdMap[key] === numericId);
+    return Object.keys(regionIdMap).find(
+      (key) => regionIdMap[key] === numericId
+    );
   };
   // Effect to automatically update salary data when selections change
   useEffect(() => {
@@ -330,7 +329,13 @@ const Dashboard = ({ language = "GE" }) => {
     };
 
     updateSalaryInfo();
-  }, [selectedRegion, selectedActivity, selectedYear, selectedGender, getActivityCode]);
+  }, [
+    selectedRegion,
+    selectedActivity,
+    selectedYear,
+    selectedGender,
+    getActivityCode,
+  ]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
@@ -396,9 +401,48 @@ const Dashboard = ({ language = "GE" }) => {
               opacity: 1 !important;
               transform: translateY(-1px) !important;
             }
+            .map-tooltip {
+              position: fixed;
+              background: #37c8f5;
+              color: white;
+              padding: 8px 16px;
+              border-radius: 8px;
+              font-size: 14px;
+              font-family: 'FiraGO', sans-serif;
+              font-weight: 500;
+              pointer-events: none;
+              opacity: 0;
+              transition: opacity 0.2s ease;
+              z-index: 1000;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              white-space: nowrap;
+              transform: translate(-50%, -100%);
+            }
+            .map-tooltip::after {
+              content: '';
+              position: absolute;
+              bottom: -5px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 0;
+              height: 0;
+              border-left: 6px solid transparent;
+              border-right: 6px solid transparent;
+              border-top: 6px solid #37c8f5;
+            }
+            .map-tooltip.visible {
+              opacity: 1;
+            }
           `;
 
-          svgElement.appendChild(style); // Apply colors to regions and add event listeners
+          svgElement.appendChild(style);
+
+          // Create tooltip element
+          const tooltip = document.createElement("div");
+          tooltip.className = "map-tooltip";
+          document.body.appendChild(tooltip);
+
+          // Apply colors to regions and add event listeners
           const paths = svgElement.querySelectorAll("path");
           paths.forEach((path) => {
             const id = path.getAttribute("id");
@@ -424,11 +468,32 @@ const Dashboard = ({ language = "GE" }) => {
               label.setAttribute("class", "region-label");
               label.setAttribute("x", labelX);
               label.setAttribute("y", labelY);
-              label.textContent = regionData[id].nameGe;
+              label.textContent = language === "GE" ? regionData[id].nameGe : regionData[id].nameEn;
+
+              // Update tooltip content and position on hover
+              const showTooltip = (event) => {
+                tooltip.textContent =
+                  language === "GE"
+                    ? regionData[id].nameGe
+                    : regionData[id].nameEn;
+                tooltip.style.left = event.pageX + "px";
+                tooltip.style.top = event.pageY - 10 + "px";
+                tooltip.classList.add("visible");
+              };
+
+              const hideTooltip = () => {
+                tooltip.classList.remove("visible");
+              };
+
+              // Add hover events to both path and label
+              path.addEventListener("mousemove", showTooltip);
+              path.addEventListener("mouseleave", hideTooltip);
+              label.addEventListener("mousemove", showTooltip);
+              label.addEventListener("mouseleave", hideTooltip);
 
               path.parentNode.insertBefore(label, path.nextSibling);
 
-              // Add event listeners
+              // Add event listeners for click and hover
               path.addEventListener("click", () => handleRegionClick(id));
               path.addEventListener("mouseenter", () => handleRegionHover(id));
               path.addEventListener("mouseleave", () => setHoveredRegion(null));
@@ -449,7 +514,9 @@ const Dashboard = ({ language = "GE" }) => {
         mapContainer.innerHTML = "";
       }
     };
-  }, [handleRegionClick]); // Effect to update selected/hovered state
+  }, [handleRegionClick, language]); // Added language dependency
+
+  // Effect to update selected/hovered state
   useEffect(() => {
     if (!svgRef.current) return; // Find the GE-XX code that corresponds to the selected region number
     const selectedGeCode = getGeCodeFromRegionId(selectedRegion);
@@ -576,7 +643,12 @@ const Dashboard = ({ language = "GE" }) => {
   // but we're keeping the code as it may be needed later if button is restored
   // eslint-disable-next-line no-unused-vars
   const fetchSalaryData = async () => {
-    if (!selectedRegion || !selectedActivity || !selectedYear || !selectedGender) {
+    if (
+      !selectedRegion ||
+      !selectedActivity ||
+      !selectedYear ||
+      !selectedGender
+    ) {
       return;
     }
 
@@ -590,8 +662,11 @@ const Dashboard = ({ language = "GE" }) => {
         throw new Error(`Activity code not found for ${selectedActivity}`);
       }
 
-      const response = await dataApi.getDataByYearAndRegion(selectedYear, regionId);
-      
+      const response = await dataApi.getDataByYearAndRegion(
+        selectedYear,
+        regionId
+      );
+
       try {
         let totalSalaryValue;
 
@@ -618,11 +693,17 @@ const Dashboard = ({ language = "GE" }) => {
 
         if (totalError.response && totalError.response.status === 404) {
           setError(
-            `${language === "GE" ? "მონაცემები არ მოიძებნა" : "No data found"} (${selectedYear}, ${regionId}, ${activityCode})`
+            `${
+              language === "GE" ? "მონაცემები არ მოიძებნა" : "No data found"
+            } (${selectedYear}, ${regionId}, ${activityCode})`
           );
         } else {
           setError(
-            `${language === "GE" ? "მონაცემების მიღების შეცდომა" : "Error fetching data"}`
+            `${
+              language === "GE"
+                ? "მონაცემების მიღების შეცდომა"
+                : "Error fetching data"
+            }`
           );
         }
       }
