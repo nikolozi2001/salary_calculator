@@ -4,9 +4,8 @@ const ActivityItem = ({ activity, isSelected, onSelect, language }) => (
   <div
     onClick={() =>
       onSelect(language === "GE" ? activity.name_ge : activity.name_en)
-    }
-    className={`workListElement clearfix border p-5 cursor-pointer transition-colors ${
-      isSelected ? "bg-[#0090D6]/10" : "hover:bg-[#0090D6]/5"
+    }    className={`workListElement clearfix border p-5 cursor-pointer transition-colors ${
+      isSelected ? "bg-[#C85861] text-white" : "hover:bg-[#0090D6]/5"
     }`}
     data-id={activity.id}
   >
@@ -14,15 +13,14 @@ const ActivityItem = ({ activity, isSelected, onSelect, language }) => (
       src={activity.icon}
       alt={language === "GE" ? activity.name_ge : activity.name_en}
       className="float-left mr-3 w-12 h-12 object-contain"
-    />
-    <div
+    />    <div
       className="pt-2"
       style={{
         fontSize: "12.8px",
         lineHeight: "19.2px",
         fontWeight: 400,
         letterSpacing: "normal",
-        color: "#0090D6",
+        color: isSelected ? "#fff" : "#0090D6",
         fontFamily: "BPG NINO MTAVRULI",
       }}
     >

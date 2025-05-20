@@ -97,11 +97,10 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
-            <div
-              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+            <div              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
                 selectedGender === "female"
-                  ? "bg-pink-50 border-pink-300 shadow-md"
-                  : "hover:bg-pink-50 hover:border-pink-200"
+                  ? "bg-[#C85861] bg-opacity-10 border-[#C85861] shadow-md"
+                  : "hover:bg-[#C85861] hover:bg-opacity-10 hover:border-[#C85861]"
               }`}
               onClick={() => handleGenderSelect("female")}
             >
@@ -114,11 +113,10 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
               </div>
             </div>
 
-            <div
-              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+            <div              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
                 selectedGender === "male"
-                  ? "bg-blue-50 border-blue-300 shadow-md"
-                  : "hover:bg-blue-50 hover:border-blue-200"
+                  ? "bg-[#C85861] bg-opacity-10 border-[#C85861] shadow-md"
+                  : "hover:bg-[#C85861] hover:bg-opacity-10 hover:border-[#C85861]"
               }`}
               onClick={() => handleGenderSelect("male")}
             >

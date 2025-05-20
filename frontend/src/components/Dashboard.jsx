@@ -52,34 +52,34 @@ const iconMap = {
 
 // Data configuration
 const regionData = {
-  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" }, // Grey
-  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#e08d30" }, // Orange
-  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#5f8bd0" }, // Light blue
-  "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#9c6bbd" }, // Purple
-  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#e14b69" }, // Red/Pink
-  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#67dbf9" }, // Cyan
+  "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" }, 
+  "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#ce8d34" }, 
+  "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#6ea76f" }, 
+  "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#c85861" },
+  "GE-KA": { nameEn: "Kakheti", nameGe: "კახეთი", color: "#c85861" }, 
+  "GE-KK": { nameEn: "Kvemo Kartli", nameGe: "ქვემო ქართლი", color: "#6ea76f" }, 
   "GE-MM": {
     nameEn: "Mtskheta-Mtianeti",
     nameGe: "მცხეთა-მთიანეთი",
-    color: "#a6e06c", // Light green
+    color: "#9e6e9c", 
   },
   "GE-RL": {
     nameEn: "Racha-Lechkhumi",
     nameGe: "რაჭა-ლეჩხუმი",
-    color: "#f3a659", // Pale orange
+    color: "#ce8d34", 
   },
   "GE-SJ": {
     nameEn: "Samtskhe-Javakheti",
     nameGe: "სამცხე-ჯავახეთი",
-    color: "#9c9ca6", // Grey/Purple
+    color: "#9e6e9c",
   },
-  "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#7b818c" }, // Grey
+  "GE-SK": { nameEn: "Shida Kartli", nameGe: "შიდა ქართლი", color: "#678dac" },
   "GE-SZ": {
     nameEn: "Samegrelo-Zemo Svaneti",
     nameGe: "სამეგრელო-ზემო სვანეთი",
-    color: "#6bd0a0", // Green
+    color: "#678dac",
   },
-  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#f6cb45" }, // Yellow
+  "GE-TB": { nameEn: "Tbilisi", nameGe: "თბილისი", color: "#ce8d34" }, 
 };
 
 // Mapping from GE-XX codes to numerical region IDs for database queries
