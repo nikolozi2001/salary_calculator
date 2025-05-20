@@ -6,6 +6,7 @@ const Note = ({
   selectedYear,
   selectedRegion,
   selectedActivity,
+  selectedGender,
   totalSalary,
   activitySectors,
   regionData,
@@ -18,7 +19,7 @@ const Note = ({
     backgroundPosition: "center",
     fontFamily: "BPG Nino Mtavruli",
     fontSize: "18px",
-    lineHeight: "27px",
+    lineHeight: "25px",
     fontWeight: 400,
     letterSpacing: "normal",
     color: "#0090D6",
@@ -51,10 +52,23 @@ const Note = ({
         <>
           {selectedYear && totalSalary !== null && (
             <>
+              {" "}
               <p>
                 <strong>{language === "GE" ? "წელი" : "Year"}:</strong>{" "}
                 {selectedYear}
               </p>
+              {selectedGender && (
+                <p>
+                  <strong>{language === "GE" ? "სქესი" : "Gender"}:</strong>{" "}
+                  {language === "GE"
+                    ? selectedGender === "female"
+                      ? "ქალი"
+                      : "კაცი"
+                    : selectedGender === "female"
+                    ? "Female"
+                    : "Male"}
+                </p>
+              )}
               <p className="mt-8">
                 {language === "GE"
                   ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
@@ -93,6 +107,18 @@ const Note = ({
                   </span>
                 )}
               </p>
+              {selectedGender && (
+                <p>
+                  <strong>{language === "GE" ? "სქესი" : "Gender"}:</strong>{" "}
+                  {language === "GE"
+                    ? selectedGender === "female"
+                      ? "ქალი"
+                      : "კაცი"
+                    : selectedGender === "female"
+                    ? "Female"
+                    : "Male"}
+                </p>
+              )}
               <p className="mt-8">
                 {language === "GE"
                   ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
@@ -110,12 +136,13 @@ const Note = ({
 
     if (selectedRegion) {
       // Case 3: Region selected
+      const activityDisplay = getActivityName(selectedActivity);
       const geCode = getGeCodeFromRegionId(selectedRegion);
       if (geCode && regionData[geCode]) {
         return (
           <>
             {" "}
-            <h3>
+            <h3 className="mt-8">
               <strong>{language === "GE" ? "რეგიონი" : "Region"}:</strong>{" "}
               {language === "GE"
                 ? regionData[geCode].nameGe
@@ -127,6 +154,30 @@ const Note = ({
                   <strong>{language === "GE" ? "წელი" : "Year"}:</strong>{" "}
                   {selectedYear}
                 </p>
+                <p>
+                {language === "GE" ? (
+                  <span>
+                    {" "}
+                    <strong>საქმიანობის სახე:</strong> {activityDisplay}
+                  </span>
+                ) : (
+                  <span>
+                    <strong>Business sector:</strong> {activityDisplay}
+                  </span>
+                )}
+              </p>
+                {selectedGender && (
+                  <p>
+                    <strong>{language === "GE" ? "სქესი" : "Gender"}:</strong>{" "}
+                    {language === "GE"
+                      ? selectedGender === "female"
+                        ? "ქალი"
+                        : "კაცი"
+                      : selectedGender === "female"
+                      ? "Female"
+                      : "Male"}
+                  </p>
+                )}
                 <p className="mt-8">
                   {language === "GE"
                     ? "არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: "
@@ -165,7 +216,7 @@ const Note = ({
   };
 
   return (
-    <div className="col-span-8 md:col-span-4 p-4">
+    <div className="col-span-8 md:col-span-4">
       <div style={noteStyle}>
         <div className="text-center">{renderContent()}</div>
       </div>

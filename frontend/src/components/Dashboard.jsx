@@ -740,12 +740,13 @@ const Dashboard = ({ language = "GE" }) => {
                   ></div>
                 </div>
               </div>
-              {/* Pinned Note */}
+              {/* Pinned Note */}{" "}
               <Note
                 language={language}
                 selectedYear={selectedYear}
                 selectedRegion={selectedRegion}
                 selectedActivity={selectedActivity}
+                selectedGender={selectedGender}
                 totalSalary={totalSalary}
                 activitySectors={activities}
                 regionData={regionData}
