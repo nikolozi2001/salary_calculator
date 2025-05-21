@@ -53,6 +53,11 @@ const iconMap = {
 // Data configuration
 const regionData = {
   "GE-AB": { nameEn: "Abkhazia", nameGe: "აფხაზეთი", color: "#7b818c" },
+  "GE-TS": {
+    nameEn: "Tskhinvali Region",
+    nameGe: "ცხინვალის რეგიონი",
+    color: "#7b818c",
+  },
   "GE-AJ": { nameEn: "Adjara", nameGe: "აჭარა", color: "#ce8d34" },
   "GE-GU": { nameEn: "Guria", nameGe: "გურია", color: "#6ea76f" },
   "GE-IM": { nameEn: "Imereti", nameGe: "იმერეთი", color: "#c85861" },
@@ -96,7 +101,6 @@ const regionIdMap = {
   "GE-SJ": "41", // სამცხე-ჯავახეთი
   "GE-KK": "44", // ქვემო ქართლი
   "GE-SK": "47", // შიდა ქართლი
-  "GE-AB": "00", // აფხაზეთი
 };
 
 // Main component
@@ -375,13 +379,8 @@ const Dashboard = ({ language = "GE" }) => {
               stroke: white !important;
               filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1)) !important;
             }
-            #georgia-map-container svg path.selected {
-              stroke-width: 1.5 !important;
-              stroke: white !important;
-              filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) !important;
-              opacity: 1 !important;
-              transform: translateY(-2px) !important;
-            }#georgia-map-container svg .region-label {
+    
+              #georgia-map-container svg .region-label {
               font-family: 'FiraGO', sans-serif !important;
               font-size: 11px !important;
               font-weight: 500 !important;
@@ -394,7 +393,7 @@ const Dashboard = ({ language = "GE" }) => {
             }
             #georgia-map-container svg path:hover + .region-label,
             #georgia-map-container svg path.selected + .region-label {
-              opacity: 1 !important;
+              opacity: 0 !important;
             }
             .map-tooltip {
               position: fixed;
