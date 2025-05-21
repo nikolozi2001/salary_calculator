@@ -373,6 +373,10 @@ const Dashboard = ({ language = "GE" }) => {
               opacity: 0.9 !important;
               filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05)) !important;
             }
+            #georgia-map-container svg path[id="GE-AB"],
+            #georgia-map-container svg path[id="GE-TS"] {
+              cursor: not-allowed !important;
+            }
             #georgia-map-container svg path:hover {
               opacity: 1 !important;
               stroke-width: 1 !important;
@@ -712,9 +716,6 @@ const Dashboard = ({ language = "GE" }) => {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const allSelectionsComplete =
-    selectedRegion && selectedActivity && selectedYear && selectedGender;
   return (
     <div className="h-[calc(100vh-80px)] p-2 font-sans overflow-hidden flex flex-col">
       <div className="h-full container mx-auto px-2">
@@ -732,7 +733,7 @@ const Dashboard = ({ language = "GE" }) => {
                 <div className="relative overflow-hidden rounded-xl group p-1">
                   <div
                     id="georgia-map-container"
-                    className="w-full h-[35vh] transition-transform duration-700 ease-out transform group-hover:scale-[1.02]"
+                    className="w-full h-[35vh]"
                   ></div>
                 </div>
               </div>
