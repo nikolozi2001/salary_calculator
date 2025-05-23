@@ -5,9 +5,13 @@ import { isco08Api } from "../../services/api";
 const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingSubcategories, setLoadingSubcategories] = useState(false);
 
-  useEffect(() => {    const loadCategories = async () => {
+  useEffect(() => {
+    const loadCategories = async () => {
       try {
         setLoading(true);
         const isEnglish = language === "EN";
@@ -24,6 +28,33 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
       loadCategories();
     }
   }, [isOpen, language]);
+
+  useEffect(() => {
+    const loadSubcategories = async () => {
+      if (!selectedCategory) {
+        setSubcategories([]);
+        return;
+      }
+
+      try {
+        setLoadingSubcategories(true);
+        const isEnglish = language === "EN";
+        const data = await isco08Api.getLevel2ByParent(
+          selectedCategory,
+          isEnglish
+        );
+        setSubcategories(data);
+      } catch (error) {
+        console.error("Error fetching subcategories:", error);
+        setSubcategories([]);
+      } finally {
+        setLoadingSubcategories(false);
+      }
+    };
+
+    loadSubcategories();
+  }, [selectedCategory, language]);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -48,11 +79,14 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
     };
   }, [isOpen, onClose]);
 
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center p-4 modal-backdrop">
-      {" "}
       <div
         className={`bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto ${fontClass}`}
         onClick={(e) => e.stopPropagation()}
@@ -78,7 +112,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
             >
               ×
             </button>
-          </div>{" "}
+          </div>
           <div className="p-6">
             <div className="flex flex-col gap-6">
               <p className="text-gray-600 text-center">
@@ -87,21 +121,22 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
                   : "Select a first or second level"}
               </p>
 
-              {/* Two selects side by side */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600">
                     {language === "GE" ? "მთავარი კატეგორია" : "Main Category"}
-                  </label>{" "}
+                  </label>
                   <select
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     disabled={loading}
+                    value={selectedCategory}
+                    onChange={handleCategoryChange}
                   >
                     <option value="">
                       {language === "GE"
                         ? "აირჩიეთ კატეგორია"
                         : "Select Category"}
-                    </option>{" "}
+                    </option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.code}>
                         {category.name}
@@ -114,18 +149,25 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
                   <label className="text-sm text-gray-600">
                     {language === "GE" ? "ქვეკატეგორია" : "Subcategory"}
                   </label>
-                  <select className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    disabled={loadingSubcategories || !selectedCategory}
+                  >
                     <option value="">
                       {language === "GE"
                         ? "აირჩიეთ ქვეკატეგორია"
                         : "Select Subcategory"}
                     </option>
-                    {/* Add your subcategory options here */}
-                  </select>{" "}
+                    {subcategories.map((subcategory) => (
+                      <option key={subcategory.id} value={subcategory.code}>
+                        {subcategory.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
-          </div>{" "}
+          </div>
           <div className="border-t p-4 flex justify-center gap-2 print:hidden">
             <button className="px-8 py-2 border-2 border-green-500 text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-all duration-300 flex items-center gap-2">
               <svg

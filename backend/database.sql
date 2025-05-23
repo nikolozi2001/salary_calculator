@@ -25,3 +25,24 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `orderby` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE IF NOT EXISTS `isco08_2` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` int(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `total` int(11) NOT NULL,
+  `female` int(11) NOT NULL,
+  `male` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `isco08_2eng` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` int(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `total` int(11) NOT NULL,
+  `female` int(11) NOT NULL,
+  `male` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;

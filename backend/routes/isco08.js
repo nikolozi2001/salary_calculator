@@ -33,6 +33,48 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get all second-level ISCO08 categories
+router.get('/level2', async (req, res) => {
+  try {
+    const { lang = 'ge' } = req.query;
+    const tableName = lang.toLowerCase() === 'en' ? 'isco08_2eng' : 'isco08_2';
+    
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
+    connection.release();
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching ISCO08 level 2 data:', error);
+    res.status(500).json({ error: 'Failed to fetch ISCO08 level 2 data' });
+  }
+});
+
+// Get second-level categories by parent code
+router.get('/level2/parent/:code', async (req, res) => {
+  try {
+    const { lang = 'ge' } = req.query;
+    const tableName = lang.toLowerCase() === 'en' ? 'isco08_2eng' : 'isco08_2';
+    const parentCode = req.params.code;
+    
+    const connection = await pool.getConnection();
+    // Match first digit of level 2 code with parent code
+    const [rows] = await connection.query(
+      `SELECT * FROM ${tableName} WHERE code >= ? AND code < ?`,
+      [parentCode * 10, (parseInt(parentCode) + 1) * 10]
+    );
+    connection.release();
+    
+    if (rows.length === 0) {
+      res.status(404).json({ error: 'No subcategories found' });
+    } else {
+      res.json(rows);
+    }
+  } catch (error) {
+    console.error('Error fetching ISCO08 level 2 data:', error);
+    res.status(500).json({ error: 'Failed to fetch ISCO08 level 2 data' });
+  }
+});
+
 // Get ISCO08 profession by code
 router.get('/code/:code', async (req, res) => {
   try {
@@ -52,7 +94,7 @@ router.get('/code/:code', async (req, res) => {
 });
 
 // Get statistics by gender
-router.get('/statistics/gender', async (req, res) => {
+router.get('/statistics/gender', async (req, res) => {  
   try {
     const connection = await pool.getConnection();
     const [rows] = await connection.query(

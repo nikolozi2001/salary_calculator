@@ -173,11 +173,35 @@ export const isco08Api = {
   getAll: async (isEnglish = false) => {
     try {
       const response = await api.get("/isco08", {
-        params: { lang: isEnglish ? 'en' : '' }
+        params: { lang: isEnglish ? 'eng' : '' }
       });
       return response.data;
     } catch (error) {
       console.error("Failed to fetch ISCO08 categories:", error);
+      throw error;
+    }
+  },
+
+  getAllLevel2: async (isEnglish = false) => {
+    try {
+      const response = await api.get("/isco08/level2", {
+        params: { lang: isEnglish ? 'eng' : '' }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch ISCO08 level 2 categories:", error);
+      throw error;
+    }
+  },
+
+  getLevel2ByParent: async (parentCode, isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco08/level2/parent/${parentCode}`, {
+        params: { lang: isEnglish ? 'eng' : '' }
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch ISCO08 level 2 categories for parent ${parentCode}:`, error);
       throw error;
     }
   },
