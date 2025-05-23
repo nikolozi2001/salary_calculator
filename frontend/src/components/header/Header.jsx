@@ -6,10 +6,12 @@ import georgianFlag from "../../assets/images/georgian-flag.svg";
 import britishFlag from "../../assets/images/british-flag.png";
 import headerBg from "../../assets/images/header-bg.jpg";
 import InfoModal from "../ui/InfoModal";
+import ProfessionModal2021 from "../ui/ProfessionModal2021";
 
 const Header = ({ language = "GE", setLanguage }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfessionModal2021Open, setIsProfessionModal2021Open] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage(language === "GE" ? "EN" : "GE");
@@ -20,6 +22,11 @@ const Header = ({ language = "GE", setLanguage }) => {
       <InfoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        language={language}
+      />
+      <ProfessionModal2021
+        isOpen={isProfessionModal2021Open}
+        onClose={() => setIsProfessionModal2021Open(false)}
         language={language}
       />
       <header
@@ -93,9 +100,8 @@ const Header = ({ language = "GE", setLanguage }) => {
           {/* Profession Buttons */}
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <button
+              onClick={() => setIsProfessionModal2021Open(true)}
               className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
-              data-toggle="modal"
-              data-target="#modalProfession2021"
             >
               {language === "GE" ? (
                 <>

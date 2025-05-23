@@ -168,6 +168,50 @@ export const activityApi = {
   }
 };
 
+// ISCO08 API methods
+export const isco08Api = {
+  getAll: async (isEnglish = false) => {
+    try {
+      const endpoint = isEnglish ? "/isco08eng" : "/isco08";
+      const response = await api.get(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch ISCO08 categories:", error);
+      throw error;
+    }
+  },
+
+  getByCode: async (code) => {
+    try {
+      const response = await api.get(`/isco08/code/${code}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch ISCO08 category with code ${code}:`, error);
+      throw error;
+    }
+  },
+
+  getGenderStatistics: async () => {
+    try {
+      const response = await api.get('/isco08/statistics/gender');
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch ISCO08 gender statistics:", error);
+      throw error;
+    }
+  },
+
+  searchProfessions: async (query) => {
+    try {
+      const response = await api.get(`/isco08/search`, { params: { query } });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to search ISCO08 professions:", error);
+      throw error;
+    }
+  }
+};
+
 // Function to test database connection
 export const testDbConnection = async () => {
   try {
@@ -181,5 +225,6 @@ export const testDbConnection = async () => {
 
 export default {
   dataApi,
-  activityApi
+  activityApi,
+  isco08Api
 };
