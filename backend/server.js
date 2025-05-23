@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import dataRoutes from './routes/data.js';
 import activityRoutes from './routes/activity.js';
 import isco08Routes from './routes/isco08.js';
-import isco08EngRoutes from './routes/isco08eng.js';
+
 
 // Load environment variables
 dotenv.config();
@@ -52,7 +52,6 @@ app.get('/api', (req, res) => {
 app.use('/api/data', dataRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/isco08', isco08Routes);
-app.use('/api/isco08eng', isco08EngRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -17,11 +17,14 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-// Get all ISCO08 professions
+// Get all ISCO08 professions (with language support)
 router.get('/', async (req, res) => {
   try {
+    const { lang = 'ge' } = req.query;
+    const tableName = lang.toLowerCase() === 'en' ? 'isco08eng' : 'isco08';
+    
     const connection = await pool.getConnection();
-    const [rows] = await connection.query('SELECT * FROM isco08');
+    const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
     connection.release();
     res.json(rows);
   } catch (error) {

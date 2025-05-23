@@ -172,8 +172,9 @@ export const activityApi = {
 export const isco08Api = {
   getAll: async (isEnglish = false) => {
     try {
-      const endpoint = isEnglish ? "/isco08eng" : "/isco08";
-      const response = await api.get(endpoint);
+      const response = await api.get("/isco08", {
+        params: { lang: isEnglish ? 'en' : '' }
+      });
       return response.data;
     } catch (error) {
       console.error("Failed to fetch ISCO08 categories:", error);
