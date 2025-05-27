@@ -2,14 +2,31 @@ import React, { useEffect, useState } from "react";
 import headerBg from "../../assets/images/header-bg.jpg";
 import { isco08Api } from "../../services/api";
 
-const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
+const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingSubcategories, setLoadingSubcategories] = useState(false);
 
+  // Handle initial code
+  useEffect(() => {
+    if (initialCode && isOpen) {
+      // If initial code is one digit, it's a main category
+      // If it's two digits, it's a subcategory
+      if (initialCode.toString().length === 1) {
+        setSelectedCategory(initialCode);
+      } else if (initialCode.toString().length === 2) {
+        const mainCategory = initialCode.toString()[0];
+        setSelectedCategory(mainCategory);
+        setSelectedSubcategory(initialCode);
+      }
+    }
+  }, [initialCode, isOpen]);
+
+  // Load main categories
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -29,6 +46,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
     }
   }, [isOpen, language]);
 
+  // Load subcategories when main category changes
   useEffect(() => {
     const loadSubcategories = async () => {
       if (!selectedCategory) {
@@ -39,10 +57,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
       try {
         setLoadingSubcategories(true);
         const isEnglish = language === "EN";
-        const data = await isco08Api.getLevel2ByParent(
-          selectedCategory,
-          isEnglish
-        );
+        const data = await isco08Api.getAllLevel2(isEnglish);
         setSubcategories(data);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
@@ -77,10 +92,26 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isOpen, onClose]);
-
-  const handleCategoryChange = (e) => {
+  }, [isOpen, onClose]);  const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedSubcategory(value);
+    
+    const isFirstSubcategory = subcategories.find(sub => 
+      String(sub.code) === "0" || sub.id === 1
+    );
+    
+    // Log for debugging
+    console.log('Selected subcategory:', value);
+    console.log('First subcategory:', isFirstSubcategory);
+    console.log('First subcategory code:', isFirstSubcategory?.code);
+    
+    if (value === "0" || value === isFirstSubcategory?.code) {
+      console.log("First subcategory selected!");
+    }
   };
 
   if (!isOpen) return null;
@@ -123,9 +154,6 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600">
-                    {language === "GE" ? "მთავარი კატეგორია" : "Main Category"}
-                  </label>
                   <select
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     disabled={loading}
@@ -146,12 +174,15 @@ const ProfessionModal2021 = ({ isOpen, onClose, language }) => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600">
-                    {language === "GE" ? "ქვეკატეგორია" : "Subcategory"}
-                  </label>
                   <select
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    disabled={loadingSubcategories || !selectedCategory}
+                    disabled={
+                      loadingSubcategories ||
+                      !selectedCategory ||
+                      selectedCategory !== "0"
+                    }
+                    value={selectedSubcategory}
+                    onChange={handleSubcategoryChange}
                   >
                     <option value="">
                       {language === "GE"

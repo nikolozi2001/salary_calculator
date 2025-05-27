@@ -23,11 +23,11 @@ const Header = ({ language = "GE", setLanguage }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         language={language}
-      />
-      <ProfessionModal2021
+      />      <ProfessionModal2021
         isOpen={isProfessionModal2021Open}
         onClose={() => setIsProfessionModal2021Open(false)}
         language={language}
+        initialCode={0}
       />
       <header
         className={`sticky top-0 z-50 shadow-md px-2 md:px-8 py-2 md:py-5 flex flex-col md:flex-row items-center gap-2 md:gap-4 ${fontClass}`}
