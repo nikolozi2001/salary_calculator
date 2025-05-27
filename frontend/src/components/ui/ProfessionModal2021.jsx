@@ -161,8 +161,8 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                   >
                     <option value="">
                       {language === "GE"
-                        ? "აირჩიეთ კატეგორია"
-                        : "Select Category"}
+                        ? "ISCO 1 დონე"
+                        : "ISCO Level 1"}
                     </option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.code}>
@@ -185,8 +185,8 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                   >
                     <option value="">
                       {language === "GE"
-                        ? "აირჩიეთ ქვეკატეგორია"
-                        : "Select Subcategory"}
+                        ? "ISCO 2 დონე"
+                        : "ISCO Level 2"}
                     </option>
                     {subcategories.map((subcategory) => (
                       <option key={subcategory.id} value={subcategory.code}>
