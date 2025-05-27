@@ -103,10 +103,10 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
     setSelectedSubcategory(value);
 
     const isFirstSubcategory = subcategories.find(
-      (sub) => String(sub.code) === "0" || sub.id === 1
+      (sub) => String(sub.code) !== "0" || sub.id !== 1
     );
 
-    if (value === "0" || value === isFirstSubcategory?.code) {
+    if (value !== "0" || value === isFirstSubcategory?.code) {
       setIsFirstSubcategory(true);
     } else {
       setIsFirstSubcategory(false);
