@@ -10,6 +10,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingSubcategories, setLoadingSubcategories] = useState(false);
+  const [isFirstSubcategory, setIsFirstSubcategory] = useState(false);
 
   // Handle initial code
   useEffect(() => {
@@ -92,25 +93,23 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isOpen, onClose]);  const handleCategoryChange = (e) => {
+  }, [isOpen, onClose]);
+  const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
 
   const handleSubcategoryChange = (e) => {
     const value = e.target.value;
     setSelectedSubcategory(value);
-    
-    const isFirstSubcategory = subcategories.find(sub => 
-      String(sub.code) === "0" || sub.id === 1
+
+    const isFirstSubcategory = subcategories.find(
+      (sub) => String(sub.code) === "0" || sub.id === 1
     );
-    
-    // Log for debugging
-    console.log('Selected subcategory:', value);
-    console.log('First subcategory:', isFirstSubcategory);
-    console.log('First subcategory code:', isFirstSubcategory?.code);
-    
+
     if (value === "0" || value === isFirstSubcategory?.code) {
-      console.log("First subcategory selected!");
+      setIsFirstSubcategory(true);
+    } else {
+      setIsFirstSubcategory(false);
     }
   };
 
@@ -156,7 +155,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                 <div className="flex flex-col gap-2">
                   <select
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    disabled={loading}
+                    disabled={isFirstSubcategory === true}
                     value={selectedCategory}
                     onChange={handleCategoryChange}
                   >
