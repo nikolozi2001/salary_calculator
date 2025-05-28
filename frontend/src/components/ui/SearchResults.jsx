@@ -4,6 +4,9 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { isco08Api } from "../../services/api";
 import Gender from "./Gender";
+import icon111 from "../../assets/icons/111.png";
+import icon222 from "../../assets/icons/222.png";
+import iconBoth from "../../assets/icons/iconBoth.png";
 
 const SearchResults = ({ language, setLanguage }) => {
   const location = useLocation();
@@ -173,47 +176,85 @@ const SearchResults = ({ language, setLanguage }) => {
         {/* Results Box */}
         <div className="flex justify-center">
           <div className="w-full max-w-2xl">
-            <div className="bg-white rounded-lg shadow p-6 min-h-[200px]">
+            <div className="bg-white rounded-lg shadow p-6 min-h-[227px] border">
               {loading ? (
                 <div className="flex justify-center items-center h-[200px]">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
                 </div>
               ) : salaryData ? (
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-5 text-right">
-                    <div className="font-bold mb-2">
-                      {language === "GE" ? "დაკავებული თანამდებობა/პოზიცია" : "Position/Occupation"}
-                    </div>
-                    <div className="text-gray-700">
-                      {salaryData.name}
-                    </div>
+                <div className="relative">
+                  <div className="opacity-0 absolute top-0 left-0 w-full text-center space-y-2">
+                    <span>{language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}</span>
+                    <span>{language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}</span>
                   </div>
-                  <div className="col-span-5 flex items-center justify-center">
-                    {selectedGender && (
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-gray-800">
-                          {selectedGender === 'male' ? salaryData.male : salaryData.female}
+
+                  <div className="grid grid-cols-12 gap-4">
+                    {/* Position Title Column */}
+                    <div className="col-span-5">
+                      <div className="text-right pr-4">
+                        <div className="mb-2 resultTitle">
+                          <b>{language === "GE" ? "დაკავებული თანამდებობა/პოზიცია" : "Position/Occupation"}</b>
                         </div>
-                        <div className="text-sm text-gray-600">
-                          {language === "GE" ? "ლარი" : "GEL"}
+                        <div className="text-gray-700 resultOccupation float-right">
+                          {salaryData.name}
                         </div>
                       </div>
-                    )}
-                  </div>
-                  <div className="col-span-2 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-gray-800">{salaryData.total}</div>
-                      <div className="text-sm text-gray-600">
-                        {language === "GE" ? "ლარი" : "GEL"}
+                    </div>
+
+                    {/* Gender Specific Salary */}
+                    <div className="col-span-5 pt-1">
+                      {selectedGender && (
+                        <div className="flex">
+                          <div className="w-5/12">
+                            <img 
+                              src={selectedGender === 'male' ? icon222 : icon111}
+                              alt={selectedGender === 'male' ? "Male" : "Female"}
+                              className="genderIcon w-16"
+                            />
+                          </div>
+                          <div className="w-5/12">
+                            <div className="font-bold text-2xl resultValue">
+                              {selectedGender === 'male' ? salaryData.male : salaryData.female}
+                            </div>
+                            <div className="text-sm resultCur">
+                              {language === "GE" ? "ლარი" : "GEL"}
+                            </div>
+                          </div>
+                          <div className="w-2/12">
+                            <div className="h-full w-1 mx-auto bg-gray-200"></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Total Column */}
+                    <div className="col-span-2 pt-2">
+                      <div className="flex flex-col items-center">
+                        <img 
+                          src={iconBoth} 
+                          alt="Total"
+                          className="totalGender w-8 mb-2"
+                        />
+                        <div className="text-center">
+                          <div className="resultTotalValue font-bold">
+                            {salaryData.total}
+                          </div>
+                          <div className="resultTotalCur text-sm">
+                            {language === "GE" ? "ლარი" : "GEL"}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-gray-500 py-8">
-                  {language === "GE" 
-                    ? "აირჩიეთ კატეგორია ან ქვეკატეგორია"
-                    : "Select a category or subcategory"}
+                <div className="flex flex-col space-y-2 text-center">
+                  <span className="chooseGenderAnimation opacity-0">
+                    {language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
+                  </span>
+                  <span className="chooseOccupationAnimation opacity-0">
+                    {language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}
+                  </span>
                 </div>
               )}
             </div>
