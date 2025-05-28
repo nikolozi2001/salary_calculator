@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { isco08Api } from "../../services/api";
+import Gender from "./Gender";
 
 const SearchResults = ({ language, setLanguage }) => {
   const location = useLocation();
@@ -15,9 +16,13 @@ const SearchResults = ({ language, setLanguage }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedSubcategory, setSelectedSubcategory] =
     useState(initialSubcategory);
-  const [loading, setLoading] = useState(false);
+  const [selectedGender, setSelectedGender] = useState(null);
   const [loadingSubcategories, setLoadingSubcategories] = useState(false);
   const [isFirstSubcategory, setIsFirstSubcategory] = useState(false);
+
+  const handleGenderSelect = (gender) => {
+    setSelectedGender(selectedGender === gender ? null : gender);
+  };
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -41,14 +46,11 @@ const SearchResults = ({ language, setLanguage }) => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        setLoading(true);
         const isEnglish = language === "EN";
         const data = await isco08Api.getAll(isEnglish);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -80,6 +82,16 @@ const SearchResults = ({ language, setLanguage }) => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex flex-col gap-6">
+            {/* Gender Selection */}
+            <div className="mb-6">
+              <Gender
+                language={language}
+                selectedGender={selectedGender}
+                handleGenderSelect={handleGenderSelect}
+              />
+            </div>
+
+            {/* ISCO Levels Selection */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <select
