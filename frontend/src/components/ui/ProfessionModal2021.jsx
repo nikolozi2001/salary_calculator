@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import headerBg from "../../assets/images/header-bg.jpg";
 import { isco08Api } from "../../services/api";
 
 const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
+  const navigate = useNavigate();
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -197,9 +199,26 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="border-t p-4 flex justify-center gap-2 print:hidden">
-            <button className="px-8 py-2 border-2 border-green-500 text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-all duration-300 flex items-center gap-2">
+          </div>          <div className="border-t p-4 flex justify-center gap-2 print:hidden">
+            <button 
+              onClick={() => {
+                if (selectedCategory) {                  const categoryName = categories.find(cat => cat.code === selectedCategory)?.name;
+                  const subcategoryName = subcategories.find(sub => sub.code === selectedSubcategory)?.name;
+                  navigate('/search-results', { 
+                    state: { 
+                      selectedCategory, 
+                      selectedSubcategory,
+                      categoryName,
+                      subcategoryName,
+                      language 
+                    } 
+                  });
+                  onClose();
+                }
+              }}
+              className="px-8 py-2 border-2 border-green-500 text-green-500 rounded-md hover:bg-green-500 hover:text-white transition-all duration-300 flex items-center gap-2"
+              disabled={!selectedCategory}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
