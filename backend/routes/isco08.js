@@ -78,8 +78,19 @@ router.get('/level2/parent/:code', async (req, res) => {
 // Get ISCO08 profession by code
 router.get('/code/:code', async (req, res) => {
   try {
+    const { lang = 'ge' } = req.query;
+    const code = req.params.code;
+    let tableName;
+    
+    // If code is 2 digits, it's a level 2 category
+    if (code.length === 2) {
+      tableName = lang.toLowerCase() === 'en' ? 'isco08_2eng' : 'isco08_2';
+    } else {
+      tableName = lang.toLowerCase() === 'en' ? 'isco08eng' : 'isco08';
+    }
+    
     const connection = await pool.getConnection();
-    const [rows] = await connection.query('SELECT * FROM isco08 WHERE code = ?', [req.params.code]);
+    const [rows] = await connection.query(`SELECT * FROM ${tableName} WHERE code = ?`, [code]);
     connection.release();
     
     if (rows.length === 0) {

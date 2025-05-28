@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -17,7 +17,8 @@ const SearchResults = ({ language, setLanguage }) => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(initialSubcategory);
+  const [selectedSubcategory, setSelectedSubcategory] =
+    useState(initialSubcategory);
   const [selectedGender, setSelectedGender] = useState(null);
   const [loadingSubcategories, setLoadingSubcategories] = useState(false);
   const [isFirstSubcategory, setIsFirstSubcategory] = useState(false);
@@ -79,21 +80,37 @@ const SearchResults = ({ language, setLanguage }) => {
     loadSubcategories();
   }, [language]);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     try {
       setLoading(true);
-      const code = selectedSubcategory || selectedCategory;
-      if (!code) return;
-
       const isEnglish = language === "EN";
-      const data = await isco08Api.getByCode(code, isEnglish);
+
+      let data;
+      if (selectedSubcategory && selectedSubcategory !== "0") {
+        // Use level2 endpoint for subcategories
+        data = await isco08Api.getByLevel2Code(selectedSubcategory, isEnglish);
+      } else if (selectedCategory && selectedCategory !== "0") {
+        // Use regular endpoint for main categories
+        data = await isco08Api.getByCode(selectedCategory, isEnglish);
+      } else {
+        return;
+      }
+
+      console.log("Fetched salary data:", data); // Debug log
       setSalaryData(data);
     } catch (error) {
       console.error("Error fetching salary data:", error);
+      setSalaryData(null);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, selectedSubcategory, language]);
+
+  useEffect(() => {
+    if (selectedGender && (selectedCategory || selectedSubcategory)) {
+      handleSearch();
+    }
+  }, [selectedGender, selectedCategory, selectedSubcategory, handleSearch]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -141,7 +158,11 @@ const SearchResults = ({ language, setLanguage }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={handleSearch}
-                    className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    disabled={
+                      !selectedGender ||
+                      (!selectedCategory && !selectedSubcategory)
+                    }
+                    className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     {language === "GE" ? "ძებნა" : "Search"}
                   </button>
@@ -181,19 +202,30 @@ const SearchResults = ({ language, setLanguage }) => {
                 <div className="flex justify-center items-center h-[200px]">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
                 </div>
-              ) : salaryData ? (
+              ) : !selectedGender ? (
+                <div className="flex flex-col space-y-2">
+                  <span className="chooseGenderAnimation text-center opacity-100">
+                    {language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
+                  </span>
+                </div>
+              ) : !salaryData || !(selectedCategory || selectedSubcategory) ? (
+                <div className="flex flex-col space-y-2">
+                  <span className="chooseOccupationAnimation text-center opacity-100">
+                    {language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}
+                  </span>
+                </div>
+              ) : (
                 <div className="relative">
-                  <div className="opacity-0 absolute top-0 left-0 w-full text-center space-y-2">
-                    <span>{language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}</span>
-                    <span>{language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}</span>
-                  </div>
-
                   <div className="grid grid-cols-12 gap-4">
                     {/* Position Title Column */}
                     <div className="col-span-5">
                       <div className="text-right pr-4">
                         <div className="mb-2 resultTitle">
-                          <b>{language === "GE" ? "დაკავებული თანამდებობა/პოზიცია" : "Position/Occupation"}</b>
+                          <b>
+                            {language === "GE"
+                              ? "დაკავებული თანამდებობა/პოზიცია"
+                              : "Position/Occupation"}
+                          </b>
                         </div>
                         <div className="text-gray-700 resultOccupation float-right">
                           {salaryData.name}
@@ -203,35 +235,35 @@ const SearchResults = ({ language, setLanguage }) => {
 
                     {/* Gender Specific Salary */}
                     <div className="col-span-5 pt-1">
-                      {selectedGender && (
-                        <div className="flex">
-                          <div className="w-5/12">
-                            <img 
-                              src={selectedGender === 'male' ? icon222 : icon111}
-                              alt={selectedGender === 'male' ? "Male" : "Female"}
-                              className="genderIcon w-16"
-                            />
+                      <div className="flex">
+                        <div className="w-5/12">
+                          <img
+                            src={selectedGender === "male" ? icon222 : icon111}
+                            alt={selectedGender === "male" ? "Male" : "Female"}
+                            className="genderIcon w-16"
+                          />
+                        </div>
+                        <div className="w-5/12">
+                          <div className="font-bold text-2xl resultValue">
+                            {selectedGender === "male"
+                              ? salaryData.male
+                              : salaryData.female}
                           </div>
-                          <div className="w-5/12">
-                            <div className="font-bold text-2xl resultValue">
-                              {selectedGender === 'male' ? salaryData.male : salaryData.female}
-                            </div>
-                            <div className="text-sm resultCur">
-                              {language === "GE" ? "ლარი" : "GEL"}
-                            </div>
-                          </div>
-                          <div className="w-2/12">
-                            <div className="h-full w-1 mx-auto bg-gray-200"></div>
+                          <div className="text-sm resultCur">
+                            {language === "GE" ? "ლარი" : "GEL"}
                           </div>
                         </div>
-                      )}
+                        <div className="w-2/12">
+                          <div className="h-full w-1 mx-auto bg-gray-200"></div>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Total Column */}
                     <div className="col-span-2 pt-2">
                       <div className="flex flex-col items-center">
-                        <img 
-                          src={iconBoth} 
+                        <img
+                          src={iconBoth}
                           alt="Total"
                           className="totalGender w-8 mb-2"
                         />
@@ -246,15 +278,6 @@ const SearchResults = ({ language, setLanguage }) => {
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="flex flex-col space-y-2 text-center">
-                  <span className="chooseGenderAnimation opacity-0">
-                    {language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
-                  </span>
-                  <span className="chooseOccupationAnimation opacity-0">
-                    {language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}
-                  </span>
                 </div>
               )}
             </div>

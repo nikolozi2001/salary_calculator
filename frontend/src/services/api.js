@@ -234,7 +234,18 @@ export const isco08Api = {
       console.error("Failed to search ISCO08 professions:", error);
       throw error;
     }
-  }
+  },
+  getByLevel2Code: async (code, isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco08/code/${code}`, {
+        params: { lang: isEnglish ? 'eng' : '' }
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch ISCO08 level 2 category with code ${code}:`, error);
+      throw error;
+    }
+  },
 };
 
 // Function to test database connection
