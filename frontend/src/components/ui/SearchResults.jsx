@@ -4,9 +4,11 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { isco08Api } from "../../services/api";
 import Gender from "./Gender";
-import icon111 from "../../assets/icons/111.png";
-import icon222 from "../../assets/icons/222.png";
 import iconBoth from "../../assets/icons/iconBoth.png";
+import f1Icon from "../../assets/icons/f1.png";
+import f2Icon from "../../assets/icons/f2.png";
+import m1Icon from "../../assets/icons/m1.png";
+import m2Icon from "../../assets/icons/m2.png";
 
 const SearchResults = ({ language, setLanguage }) => {
   const location = useLocation();
@@ -104,11 +106,13 @@ const SearchResults = ({ language, setLanguage }) => {
       setLoading(false);
     }
   }, [selectedCategory, selectedSubcategory, language]);
-
   useEffect(() => {
     if (selectedGender && (selectedCategory || selectedSubcategory)) {
       handleSearch();
     }
+    // Clean up any stray tooltips
+    const tooltips = document.querySelectorAll(".map-tooltip");
+    tooltips.forEach((tooltip) => tooltip.remove());
   }, [selectedGender, selectedCategory, selectedSubcategory, handleSearch]);
 
   return (
@@ -119,13 +123,48 @@ const SearchResults = ({ language, setLanguage }) => {
         {/* First Row - Gender Selection */}
         <div className="flex justify-center mb-6">
           <div className="w-full max-w-2xl">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-center">
-                <Gender
-                  language={language}
-                  selectedGender={selectedGender}
-                  handleGenderSelect={handleGenderSelect}
-                />
+            {" "}
+            <div className="rounded-lg p-6">
+              {" "}
+              <div className="flex justify-center space-x-8">
+                <button
+                  onClick={() => handleGenderSelect("female")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.querySelector("img").src = f2Icon)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.querySelector("img").src =
+                      selectedGender === "female" ? f2Icon : f1Icon)
+                  }
+                  className={`transition-transform duration-300 hover:scale-110 ${
+                    selectedGender === "female" ? "scale-110" : ""
+                  }`}
+                >
+                  <img
+                    src={selectedGender === "female" ? f2Icon : f1Icon}
+                    alt="Female"
+                    className="w-16 h-16"
+                  />
+                </button>
+                <button
+                  onClick={() => handleGenderSelect("male")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.querySelector("img").src = m2Icon)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.querySelector("img").src =
+                      selectedGender === "male" ? m2Icon : m1Icon)
+                  }
+                  className={`transition-transform duration-300 hover:scale-110 ${
+                    selectedGender === "male" ? "scale-110" : ""
+                  }`}
+                >
+                  <img
+                    src={selectedGender === "male" ? m2Icon : m1Icon}
+                    alt="Male"
+                    className="w-16 h-16"
+                  />
+                </button>
               </div>
             </div>
           </div>
@@ -134,7 +173,8 @@ const SearchResults = ({ language, setLanguage }) => {
         {/* Second Row - ISCO Selection */}
         <div className="flex justify-center mb-6">
           <div className="w-full max-w-2xl">
-            <div className="bg-white rounded-lg shadow p-6">
+            {" "}
+            <div className="rounded-lg p-6">
               <div className="grid grid-cols-5 gap-4">
                 <div className="col-span-2">
                   <select
@@ -196,7 +236,8 @@ const SearchResults = ({ language, setLanguage }) => {
         {/* Results Box */}
         <div className="flex justify-center">
           <div className="w-full max-w-2xl">
-            <div className="bg-white rounded-lg shadow p-6 min-h-[227px] border">
+            {" "}
+            <div className="rounded-lg p-6 min-h-[227px]">
               {loading ? (
                 <div className="flex justify-center items-center h-[200px]">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
@@ -237,9 +278,9 @@ const SearchResults = ({ language, setLanguage }) => {
                       <div className="flex">
                         <div className="w-5/12">
                           <img
-                            src={selectedGender === "male" ? icon222 : icon111}
+                            src={selectedGender === "male" ? m2Icon : f2Icon}
                             alt={selectedGender === "male" ? "Male" : "Female"}
-                            className="genderIcon w-16"
+                            className="w-16 h-16"
                           />
                         </div>
                         <div className="w-5/12">
