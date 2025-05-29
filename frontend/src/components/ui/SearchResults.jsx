@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import Select from "react-select";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { isco08Api } from "../../services/api";
@@ -9,6 +10,31 @@ import f1Icon from "../../assets/icons/f1.png";
 import f2Icon from "../../assets/icons/f2.png";
 import m1Icon from "../../assets/icons/m1.png";
 import m2Icon from "../../assets/icons/m2.png";
+
+// Custom styles for react-select
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    padding: "2px",
+    borderColor: state.isFocused ? "#22c55e" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 2px #22c55e" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "#22c55e",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected
+      ? "#22c55e"
+      : state.isFocused
+      ? "#dcfce7"
+      : "white",
+    color: state.isSelected ? "white" : "#374151",
+    "&:hover": {
+      backgroundColor: state.isSelected ? "#22c55e" : "#dcfce7",
+    },
+  }),
+};
 
 const SearchResults = ({ language, setLanguage }) => {
   const location = useLocation();
@@ -30,13 +56,12 @@ const SearchResults = ({ language, setLanguage }) => {
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+  const handleCategoryChange = (selectedOption) => {
+    setSelectedCategory(selectedOption?.value || "0");
   };
 
-  const handleSubcategoryChange = (e) => {
-    const value = e.target.value;
+  const handleSubcategoryChange = (selectedOption) => {
+    const value = selectedOption?.value || "0";
     setSelectedSubcategory(value);
 
     const firstSubcat = subcategories.find(
@@ -118,7 +143,6 @@ const SearchResults = ({ language, setLanguage }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header language={language} setLanguage={setLanguage} />
-
       <main className="flex-grow container mx-auto px-4 py-8">
         {/* First Row - Gender Selection */}
         <div className="flex justify-center mb-6">
@@ -169,25 +193,34 @@ const SearchResults = ({ language, setLanguage }) => {
         {/* Second Row - ISCO Selection */}
         <div className="flex justify-center mb-6">
           <div className="w-full max-w-4xl">
-            {" "}
             <div className="rounded-lg p-6">
               <div className="grid grid-cols-5 gap-4">
                 <div className="col-span-2">
-                  <select
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
-                    value={selectedCategory || ""}
+                  <Select
+                    styles={customStyles}
+                    value={
+                      selectedCategory
+                        ? {
+                            value: selectedCategory,
+                            label:
+                              categories.find(
+                                (c) => c.code === selectedCategory
+                              )?.name || "",
+                          }
+                        : null
+                    }
                     onChange={handleCategoryChange}
-                    disabled={isFirstSubcategory === true}
-                  >
-                    <option value="">
-                      {language === "GE" ? "ISCO 1 დონე" : "ISCO Level 1"}
-                    </option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.code}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                    options={categories.map((category) => ({
+                      value: category.code,
+                      label: category.name,
+                    }))}
+                    isDisabled={isFirstSubcategory === true}
+                    isClearable
+                    isSearchable
+                    placeholder={
+                      language === "GE" ? "ISCO 1 დონე" : "ISCO Level 1"
+                    }
+                  />
                 </div>
 
                 <div className="flex justify-center items-center">
@@ -204,25 +237,35 @@ const SearchResults = ({ language, setLanguage }) => {
                 </div>
 
                 <div className="col-span-2">
-                  <select
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
-                    value={selectedSubcategory || ""}
+                  <Select
+                    styles={customStyles}
+                    value={
+                      selectedSubcategory
+                        ? {
+                            value: selectedSubcategory,
+                            label:
+                              subcategories.find(
+                                (s) => s.code === selectedSubcategory
+                              )?.name || "",
+                          }
+                        : null
+                    }
                     onChange={handleSubcategoryChange}
-                    disabled={
+                    options={subcategories.map((subcategory) => ({
+                      value: subcategory.code,
+                      label: subcategory.name,
+                    }))}
+                    isDisabled={
                       loadingSubcategories ||
                       !selectedCategory ||
                       selectedCategory !== "0"
                     }
-                  >
-                    <option value="">
-                      {language === "GE" ? "ISCO 2 დონე" : "ISCO Level 2"}
-                    </option>
-                    {subcategories.map((subcategory) => (
-                      <option key={subcategory.id} value={subcategory.code}>
-                        {subcategory.name}
-                      </option>
-                    ))}
-                  </select>
+                    isClearable
+                    isSearchable
+                    placeholder={
+                      language === "GE" ? "ISCO 2 დონე" : "ISCO Level 2"
+                    }
+                  />
                 </div>
               </div>
             </div>
