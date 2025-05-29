@@ -122,7 +122,7 @@ const SearchResults = ({ language, setLanguage }) => {
       <main className="flex-grow container mx-auto px-4 py-8">
         {/* First Row - Gender Selection */}
         <div className="flex justify-center mb-6">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-4xl">
             {" "}
             <div className="rounded-lg p-6">
               {" "}
@@ -136,14 +136,12 @@ const SearchResults = ({ language, setLanguage }) => {
                     (e.currentTarget.querySelector("img").src =
                       selectedGender === "female" ? f2Icon : f1Icon)
                   }
-                  className={`transition-transform duration-300 hover:scale-110 ${
-                    selectedGender === "female" ? "scale-110" : ""
-                  }`}
+                  className={` ${selectedGender === "female" ? "" : ""}`}
                 >
                   <img
                     src={selectedGender === "female" ? f2Icon : f1Icon}
                     alt="Female"
-                    className="w-16 h-16"
+                    className="w-24 h-30"
                   />
                 </button>
                 <button
@@ -155,14 +153,12 @@ const SearchResults = ({ language, setLanguage }) => {
                     (e.currentTarget.querySelector("img").src =
                       selectedGender === "male" ? m2Icon : m1Icon)
                   }
-                  className={`transition-transform duration-300 hover:scale-110 ${
-                    selectedGender === "male" ? "scale-110" : ""
-                  }`}
+                  className={`  ${selectedGender === "male" ? "" : ""}`}
                 >
                   <img
                     src={selectedGender === "male" ? m2Icon : m1Icon}
                     alt="Male"
-                    className="w-16 h-16"
+                    className="w-24 h-30"
                   />
                 </button>
               </div>
@@ -172,7 +168,7 @@ const SearchResults = ({ language, setLanguage }) => {
 
         {/* Second Row - ISCO Selection */}
         <div className="flex justify-center mb-6">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-4xl">
             {" "}
             <div className="rounded-lg p-6">
               <div className="grid grid-cols-5 gap-4">
@@ -235,7 +231,7 @@ const SearchResults = ({ language, setLanguage }) => {
 
         {/* Results Box */}
         <div className="flex justify-center">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-4xl">
             {" "}
             <div className="rounded-lg p-6 min-h-[227px]">
               {loading ? (
