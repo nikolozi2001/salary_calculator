@@ -96,7 +96,6 @@ const SearchResults = ({ language, setLanguage }) => {
         return;
       }
 
-      console.log("Fetched salary data:", data); // Debug log
       setSalaryData(data);
     } catch (error) {
       console.error("Error fetching salary data:", error);

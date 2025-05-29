@@ -10,15 +10,11 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [loading, setLoading] = useState(false);
   const [loadingSubcategories, setLoadingSubcategories] = useState(false);
   const [isFirstSubcategory, setIsFirstSubcategory] = useState(false);
 
-  // Handle initial code
   useEffect(() => {
     if (initialCode && isOpen) {
-      // If initial code is one digit, it's a main category
-      // If it's two digits, it's a subcategory
       if (initialCode.toString().length === 1) {
         setSelectedCategory(initialCode);
       } else if (initialCode.toString().length === 2) {
@@ -29,18 +25,14 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
     }
   }, [initialCode, isOpen]);
 
-  // Load main categories
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        setLoading(true);
         const isEnglish = language === "EN";
         const data = await isco08Api.getAll(isEnglish);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -162,9 +154,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                     onChange={handleCategoryChange}
                   >
                     <option value="">
-                      {language === "GE"
-                        ? "ISCO 1 დონე"
-                        : "ISCO Level 1"}
+                      {language === "GE" ? "ISCO 1 დონე" : "ISCO Level 1"}
                     </option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.code}>
@@ -186,9 +176,7 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                     onChange={handleSubcategoryChange}
                   >
                     <option value="">
-                      {language === "GE"
-                        ? "ISCO 2 დონე"
-                        : "ISCO Level 2"}
+                      {language === "GE" ? "ISCO 2 დონე" : "ISCO Level 2"}
                     </option>
                     {subcategories.map((subcategory) => (
                       <option key={subcategory.id} value={subcategory.code}>
@@ -199,19 +187,25 @@ const ProfessionModal2021 = ({ isOpen, onClose, language, initialCode }) => {
                 </div>
               </div>
             </div>
-          </div>          <div className="border-t p-4 flex justify-center gap-2 print:hidden">
-            <button 
+          </div>{" "}
+          <div className="border-t p-4 flex justify-center gap-2 print:hidden">
+            <button
               onClick={() => {
-                if (selectedCategory) {                  const categoryName = categories.find(cat => cat.code === selectedCategory)?.name;
-                  const subcategoryName = subcategories.find(sub => sub.code === selectedSubcategory)?.name;
-                  navigate('/search-results', { 
-                    state: { 
-                      selectedCategory, 
+                if (selectedCategory) {
+                  const categoryName = categories.find(
+                    (cat) => cat.code === selectedCategory
+                  )?.name;
+                  const subcategoryName = subcategories.find(
+                    (sub) => sub.code === selectedSubcategory
+                  )?.name;
+                  navigate("/search-results", {
+                    state: {
+                      selectedCategory,
                       selectedSubcategory,
                       categoryName,
                       subcategoryName,
-                      language 
-                    } 
+                      language,
+                    },
                   });
                   onClose();
                 }
