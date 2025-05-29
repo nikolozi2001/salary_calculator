@@ -16,23 +16,28 @@ const customStyles = {
   control: (provided, state) => ({
     ...provided,
     padding: "2px",
-    borderColor: state.isFocused ? "#22c55e" : "#d1d5db",
-    boxShadow: state.isFocused ? "0 0 0 2px #22c55e" : provided.boxShadow,
+    borderColor: state.isFocused ? "#007bff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 2px #007bff" : provided.boxShadow,
     "&:hover": {
-      borderColor: "#22c55e",
+      borderColor: "#007bff",
     },
+    fontFamily: "BPG Nino Mtavruli",
+    fontSize: "22px",
   }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected
-      ? "#22c55e"
+      ? "#007bff"
       : state.isFocused
       ? "#dcfce7"
       : "white",
     color: state.isSelected ? "white" : "#374151",
     "&:hover": {
-      backgroundColor: state.isSelected ? "#22c55e" : "#dcfce7",
+      backgroundColor: state.isSelected ? "#007bff" : "#007bff",
+        color: "white",
     },
+    fontFamily: "BPG Nino Mtavruli",
+    fontSize: "16px",
   }),
 };
 
