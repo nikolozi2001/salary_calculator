@@ -34,7 +34,7 @@ const customStyles = {
     color: state.isSelected ? "white" : "#374151",
     "&:hover": {
       backgroundColor: state.isSelected ? "#007bff" : "#007bff",
-        color: "white",
+      color: "white",
     },
     fontFamily: "BPG Nino Mtavruli",
     fontSize: "16px",
@@ -151,7 +151,7 @@ const SearchResults = ({ language, setLanguage }) => {
       <main className="flex-grow container mx-auto px-4 py-8">
         {/* First Row - Gender Selection */}
         <div className="flex justify-center mb-6">
-          <div className="w-full max-w-4xl">
+          <div className="w-full max-w-5xl">
             {" "}
             <div className="rounded-lg p-6">
               {" "}
@@ -197,7 +197,7 @@ const SearchResults = ({ language, setLanguage }) => {
 
         {/* Second Row - ISCO Selection */}
         <div className="flex justify-center mb-6">
-          <div className="w-full max-w-4xl">
+          <div className="w-full max-w-5xl">
             <div className="rounded-lg p-6">
               <div className="grid grid-cols-5 gap-4">
                 <div className="col-span-2">
@@ -279,7 +279,12 @@ const SearchResults = ({ language, setLanguage }) => {
 
         {/* Results Box */}
         <div className="flex justify-center">
-          <div className="w-full max-w-4xl">
+          <div
+            className="w-full max-w-5xl border"
+            style={{ border: "1px solid #dee2e6!important",
+              borderRadius: "0.5rem"
+             }}
+          >
             {" "}
             <div className="rounded-lg p-6 min-h-[227px]">
               {loading ? (
@@ -288,7 +293,7 @@ const SearchResults = ({ language, setLanguage }) => {
                 </div>
               ) : !selectedGender ? (
                 <div className="flex flex-col space-y-2">
-                  <span className="chooseGenderAnimation text-center opacity-100">
+                  <span className="chooseGenderAnimation text-center opacity-100 font-bpg-nino text-2xl">
                     {language === "GE" ? "აირჩიეთ სქესი" : "Choose Gender"}
                   </span>
                 </div>
@@ -304,7 +309,7 @@ const SearchResults = ({ language, setLanguage }) => {
                     {/* Position Title Column */}
                     <div className="col-span-5">
                       <div className="text-right pr-4">
-                        <div className="mb-2 resultTitle">
+                        <div className="mb-2 resultTitle text-base">
                           <b>
                             {language === "GE"
                               ? "დაკავებული თანამდებობა/პოზიცია"
