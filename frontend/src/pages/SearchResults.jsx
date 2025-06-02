@@ -152,7 +152,7 @@ const SearchResults = ({ language, setLanguage }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header language={language} setLanguage={setLanguage} />
+      <Header language={language} setLanguage={setLanguage} page="search" />
       <main className="flex-grow container mx-auto px-4 py-8">
         {/* First Row - Gender Selection */}
         <div className="flex justify-center mb-6">

@@ -8,10 +8,20 @@ import headerBg from "../../assets/images/header-bg.jpg";
 import InfoModal from "../ui/InfoModal";
 import ProfessionModal2021 from "../ui/ProfessionModal2021";
 
-const Header = ({ language = "GE", setLanguage }) => {
+const Header = ({ language = "GE", setLanguage, page }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isProfessionModal2021Open, setIsProfessionModal2021Open] = useState(false);
+  const [isProfessionModal2021Open, setIsProfessionModal2021Open] =
+    useState(false);
+
+  const getTitle = () => {
+    if (page === "search") {
+      return language === "GE"
+        ? "ხელფასები პროფესიების მიხედვით - 2021 - ISCO8"
+        : "SALARY BY OCCUPATION - 2021 - ISCO8";
+    }
+    return language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator";
+  };
 
   const toggleLanguage = () => {
     setLanguage(language === "GE" ? "EN" : "GE");
@@ -23,7 +33,8 @@ const Header = ({ language = "GE", setLanguage }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         language={language}
-      />      <ProfessionModal2021
+      />{" "}
+      <ProfessionModal2021
         isOpen={isProfessionModal2021Open}
         onClose={() => setIsProfessionModal2021Open(false)}
         language={language}
@@ -50,8 +61,9 @@ const Header = ({ language = "GE", setLanguage }) => {
 
         {/* Title */}
         <div className="flex-1 flex justify-center">
+          {" "}
           <h1 className="text-lg md:text-2xl font-semibold text-white text-center transition-colors duration-300">
-            {language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator"}
+            {getTitle()}
           </h1>
         </div>
 
@@ -95,48 +107,49 @@ const Header = ({ language = "GE", setLanguage }) => {
                 {language === "GE" ? "English" : "ქართული"}
               </span>
             </button>
-          </div>
-
-          {/* Profession Buttons */}
-          <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
-            <button
-              onClick={() => setIsProfessionModal2021Open(true)}
-              className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
-            >
-              {language === "GE" ? (
-                <>
-                  ხელფასები პროფესიების
-                  <br />
-                  მიხედვით - 2021 - ISCO08
-                </>
-              ) : (
-                <>
-                  Salaries by Profession
-                  <br />
-                  2021 - ISCO08
-                </>
-              )}
-            </button>
-            <button
-              className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
-              data-toggle="modal"
-              data-target="#modalProfession"
-            >
-              {language === "GE" ? (
-                <>
-                  ხელფასები პროფესიების
-                  <br />
-                  მიხედვით - 2017 - ISCO88
-                </>
-              ) : (
-                <>
-                  Salaries by Profession
-                  <br />
-                  2017 - ISCO88
-                </>
-              )}
-            </button>
-          </div>
+          </div>{" "}
+          {/* Profession Buttons - Only show on home page */}
+          {!page && (
+            <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+              <button
+                onClick={() => setIsProfessionModal2021Open(true)}
+                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
+              >
+                {language === "GE" ? (
+                  <>
+                    ხელფასები პროფესიების
+                    <br />
+                    მიხედვით - 2021 - ISCO08
+                  </>
+                ) : (
+                  <>
+                    Salaries by Profession
+                    <br />
+                    2021 - ISCO08
+                  </>
+                )}
+              </button>
+              <button
+                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
+                data-toggle="modal"
+                data-target="#modalProfession"
+              >
+                {language === "GE" ? (
+                  <>
+                    ხელფასები პროფესიების
+                    <br />
+                    მიხედვით - 2017 - ISCO88
+                  </>
+                ) : (
+                  <>
+                    Salaries by Profession
+                    <br />
+                    2017 - ISCO88
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </header>
     </>
