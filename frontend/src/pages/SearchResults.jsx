@@ -266,7 +266,7 @@ const SearchResults = ({ language, setLanguage }) => {
                       !selectedGender ||
                       (!selectedCategory && !selectedSubcategory)
                     }
-                    className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="submitProf2 px-6 py-2 bg-white-500 text-[#6cd0d9] rounded-md hover:text-[#fff] hover:bg-[#6cd0d9] disabled:cursor-not-allowed"
                   >
                     {language === "GE" ? "ძებნა" : "Search"}
                   </button>

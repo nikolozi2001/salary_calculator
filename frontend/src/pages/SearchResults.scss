@@ -1,3 +1,6 @@
+@use "../styles/_variables.scss" as *;
+@use "../styles/_fonts.scss" as *;
+
 // SearchResults styles
 .search-results {
   &__container {
@@ -100,4 +103,16 @@
   padding-top: 15px;
   font-family: DejaVu-Sans;
   font-size: 16px;
+}
+
+.submitProf2 {
+  border: 1px solid #6cd0d9 !important;
+  border-radius: 20px;
+  border-color: #6cd0d9 !important;
+  font-family: $font-bpg-nino;
+  font-size: 18px;
+}
+
+.submitProf2:focus {
+  outline: none;
 }
