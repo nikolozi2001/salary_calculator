@@ -22,7 +22,7 @@ import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
 import informationIcon from "../assets/icons/information.png";
-import professionalIcon from "../assets/icons/professional.png";
+import professionalIcon from "/src/assets/icons/professional.png";
 import administrativeIcon from "../assets/icons/Administrative.png";
 import artsIcon from "../assets/icons/arts.png";
 import otherIcon from "../assets/icons/other.png";

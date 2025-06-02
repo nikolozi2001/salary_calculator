@@ -32,7 +32,7 @@ const customStyles = {
     backgroundColor: state.isSelected
       ? "#007bff"
       : state.isFocused
-      ? "#dcfce7"
+      ? "#007bff"
       : "white",
     color: state.isSelected ? "white" : "#374151",
     "&:hover": {
@@ -213,7 +213,10 @@ const SearchResults = ({ language, setLanguage }) => {
                             label:
                               categories.find(
                                 (c) => c.code === selectedCategory
-                              )?.name || "",
+                              )?.name ||
+                              (language === "GE"
+                                ? "ISC08 - 1 დონე"
+                                : "ISC08 - Level 1"),
                           }
                         : null
                     }
@@ -254,7 +257,10 @@ const SearchResults = ({ language, setLanguage }) => {
                             label:
                               subcategories.find(
                                 (s) => s.code === selectedSubcategory
-                              )?.name || "",
+                              )?.name ||
+                              (language === "GE"
+                                ? "ISC08 - 2 დონე"
+                                : "ISC08 - Level 2"),
                           }
                         : null
                     }
