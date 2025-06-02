@@ -50,9 +50,8 @@ const SearchResults = ({ language, setLanguage }) => {
     selectedCategory: initialCategory,
     selectedSubcategory: initialSubcategory,
     year = 2021,
-    language: locationLanguage,
   } = location.state || {};
-  
+
   // Determine which API to use based on year
   const api = year === 2021 ? isco08Api : isco88Api;
   const [categories, setCategories] = useState([]);
@@ -88,7 +87,8 @@ const SearchResults = ({ language, setLanguage }) => {
     }
   };
 
-  useEffect(() => {    const loadCategories = async () => {
+  useEffect(() => {
+    const loadCategories = async () => {
       try {
         const isEnglish = language === "EN";
         const data = await api.getAll(isEnglish);
@@ -96,11 +96,13 @@ const SearchResults = ({ language, setLanguage }) => {
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
-    };    loadCategories();
+    };
+    loadCategories();
   }, [language, api]);
 
   useEffect(() => {
-    const loadSubcategories = async () => {      try {
+    const loadSubcategories = async () => {
+      try {
         setLoadingSubcategories(true);
         const isEnglish = language === "EN";
         const data = await api.getAllLevel2(isEnglish);
@@ -111,9 +113,9 @@ const SearchResults = ({ language, setLanguage }) => {
       } finally {
         setLoadingSubcategories(false);
       }
-    };    loadSubcategories();
+    };
+    loadSubcategories();
   }, [language, api]);
-
   const handleSearch = async () => {
     if (!selectedGender || (!selectedCategory && !selectedSubcategory)) {
       return;
@@ -121,18 +123,30 @@ const SearchResults = ({ language, setLanguage }) => {
 
     try {
       setLoading(true);
-      const isEnglish = language === "EN";      let data;
+      // Fetch both language versions
+      let geData, enData;
       if (selectedSubcategory && selectedSubcategory !== "0") {
         // Use level2 endpoint for subcategories
-        data = await api.getByLevel2Code(selectedSubcategory, isEnglish);
+        [geData, enData] = await Promise.all([
+          api.getByLevel2Code(selectedSubcategory, false),
+          api.getByLevel2Code(selectedSubcategory, true),
+        ]);
       } else if (selectedCategory && selectedCategory !== "0") {
         // Use regular endpoint for main categories
-        data = await api.getByCode(selectedCategory, isEnglish);
+        [geData, enData] = await Promise.all([
+          api.getByCode(selectedCategory, false),
+          api.getByCode(selectedCategory, true),
+        ]);
       } else {
         return;
       }
 
-      setSalaryData(data);
+      setSalaryData({
+        ...geData,
+        name_ge: geData.name,
+        name_en: enData.name,
+        name: language === "EN" ? enData.name : geData.name,
+      });
     } catch (error) {
       console.error("Error fetching salary data:", error);
       setSalaryData(null);
@@ -236,8 +250,11 @@ const SearchResults = ({ language, setLanguage }) => {
                               categories.find(
                                 (c) => c.code === selectedCategory
                               )?.name ||
-                              (language === "GE"                                ? `ISCO${year === 2021 ? '08' : '88'} - 1 დონე`
-                                : `ISCO${year === 2021 ? '08' : '88'} - Level 1`),
+                              (language === "GE"
+                                ? `ISCO${year === 2021 ? "08" : "88"} - 1 დონე`
+                                : `ISCO${
+                                    year === 2021 ? "08" : "88"
+                                  } - Level 1`),
                           }
                         : null
                     }
@@ -250,7 +267,9 @@ const SearchResults = ({ language, setLanguage }) => {
                     isClearable
                     isSearchable
                     placeholder={
-                      language === "GE" ? `ISCO${year === 2021 ? '08' : '88'} - 1 დონე` : `ISCO${year === 2021 ? '08' : '88'} - Level 1`
+                      language === "GE"
+                        ? `ISCO${year === 2021 ? "08" : "88"} - 1 დონე`
+                        : `ISCO${year === 2021 ? "08" : "88"} - Level 1`
                     }
                   />
                 </div>
@@ -279,8 +298,11 @@ const SearchResults = ({ language, setLanguage }) => {
                               subcategories.find(
                                 (s) => s.code === selectedSubcategory
                               )?.name ||
-                              (language === "GE"                                ? `ISCO${year === 2021 ? '08' : '88'} - 2 დონე`
-                                : `ISCO${year === 2021 ? '08' : '88'} - Level 2`),
+                              (language === "GE"
+                                ? `ISCO${year === 2021 ? "08" : "88"} - 2 დონე`
+                                : `ISCO${
+                                    year === 2021 ? "08" : "88"
+                                  } - Level 2`),
                           }
                         : null
                     }
@@ -297,7 +319,9 @@ const SearchResults = ({ language, setLanguage }) => {
                     isClearable
                     isSearchable
                     placeholder={
-                      language === "GE" ? `ISCO${year === 2021 ? '08' : '88'} - 2 დონე` : `ISCO${year === 2021 ? '08' : '88'} - Level 2`
+                      language === "GE"
+                        ? `ISCO${year === 2021 ? "08" : "88"} - 2 დონე`
+                        : `ISCO${year === 2021 ? "08" : "88"} - Level 2`
                     }
                   />
                 </div>
@@ -344,9 +368,11 @@ const SearchResults = ({ language, setLanguage }) => {
                               ? "დაკავებული თანამდებობა/პოზიცია"
                               : "Position/Occupation"}
                           </b>
-                        </div>
+                        </div>{" "}
                         <div className="text-gray-700 resultOccupation float-right">
-                          {salaryData.name}
+                          {language === "EN"
+                            ? salaryData.name_en
+                            : salaryData.name_ge}
                         </div>
                       </div>
                     </div>
