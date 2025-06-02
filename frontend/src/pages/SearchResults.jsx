@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import { isco08Api } from "../services/api";
+import { isco08Api, isco88Api } from "../services/api";
 import Gender from "../components/ui/Gender";
 import iconBoth from "../assets/icons/iconBoth.png";
 import f1Icon from "../assets/icons/f1.png";
@@ -49,7 +49,12 @@ const SearchResults = ({ language, setLanguage }) => {
   const {
     selectedCategory: initialCategory,
     selectedSubcategory: initialSubcategory,
+    year = 2021,
+    language: locationLanguage,
   } = location.state || {};
+  
+  // Determine which API to use based on year
+  const api = year === 2021 ? isco08Api : isco88Api;
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
@@ -83,26 +88,22 @@ const SearchResults = ({ language, setLanguage }) => {
     }
   };
 
-  useEffect(() => {
-    const loadCategories = async () => {
+  useEffect(() => {    const loadCategories = async () => {
       try {
         const isEnglish = language === "EN";
-        const data = await isco08Api.getAll(isEnglish);
+        const data = await api.getAll(isEnglish);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
-    };
-
-    loadCategories();
-  }, [language]);
+    };    loadCategories();
+  }, [language, api]);
 
   useEffect(() => {
-    const loadSubcategories = async () => {
-      try {
+    const loadSubcategories = async () => {      try {
         setLoadingSubcategories(true);
         const isEnglish = language === "EN";
-        const data = await isco08Api.getAllLevel2(isEnglish);
+        const data = await api.getAllLevel2(isEnglish);
         setSubcategories(data);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
@@ -110,10 +111,8 @@ const SearchResults = ({ language, setLanguage }) => {
       } finally {
         setLoadingSubcategories(false);
       }
-    };
-
-    loadSubcategories();
-  }, [language]);
+    };    loadSubcategories();
+  }, [language, api]);
 
   const handleSearch = async () => {
     if (!selectedGender || (!selectedCategory && !selectedSubcategory)) {
@@ -122,15 +121,13 @@ const SearchResults = ({ language, setLanguage }) => {
 
     try {
       setLoading(true);
-      const isEnglish = language === "EN";
-
-      let data;
+      const isEnglish = language === "EN";      let data;
       if (selectedSubcategory && selectedSubcategory !== "0") {
         // Use level2 endpoint for subcategories
-        data = await isco08Api.getByLevel2Code(selectedSubcategory, isEnglish);
+        data = await api.getByLevel2Code(selectedSubcategory, isEnglish);
       } else if (selectedCategory && selectedCategory !== "0") {
         // Use regular endpoint for main categories
-        data = await isco08Api.getByCode(selectedCategory, isEnglish);
+        data = await api.getByCode(selectedCategory, isEnglish);
       } else {
         return;
       }
@@ -239,9 +236,8 @@ const SearchResults = ({ language, setLanguage }) => {
                               categories.find(
                                 (c) => c.code === selectedCategory
                               )?.name ||
-                              (language === "GE"
-                                ? "ISC08 - 1 დონე"
-                                : "ISC08 - Level 1"),
+                              (language === "GE"                                ? `ISCO${year === 2021 ? '08' : '88'} - 1 დონე`
+                                : `ISCO${year === 2021 ? '08' : '88'} - Level 1`),
                           }
                         : null
                     }
@@ -254,7 +250,7 @@ const SearchResults = ({ language, setLanguage }) => {
                     isClearable
                     isSearchable
                     placeholder={
-                      language === "GE" ? "ISCO 1 დონე" : "ISCO Level 1"
+                      language === "GE" ? `ISCO${year === 2021 ? '08' : '88'} - 1 დონე` : `ISCO${year === 2021 ? '08' : '88'} - Level 1`
                     }
                   />
                 </div>
@@ -283,9 +279,8 @@ const SearchResults = ({ language, setLanguage }) => {
                               subcategories.find(
                                 (s) => s.code === selectedSubcategory
                               )?.name ||
-                              (language === "GE"
-                                ? "ISC08 - 2 დონე"
-                                : "ISC08 - Level 2"),
+                              (language === "GE"                                ? `ISCO${year === 2021 ? '08' : '88'} - 2 დონე`
+                                : `ISCO${year === 2021 ? '08' : '88'} - Level 2`),
                           }
                         : null
                     }
@@ -302,7 +297,7 @@ const SearchResults = ({ language, setLanguage }) => {
                     isClearable
                     isSearchable
                     placeholder={
-                      language === "GE" ? "ISCO 2 დონე" : "ISCO Level 2"
+                      language === "GE" ? `ISCO${year === 2021 ? '08' : '88'} - 2 დონე` : `ISCO${year === 2021 ? '08' : '88'} - Level 2`
                     }
                   />
                 </div>
