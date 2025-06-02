@@ -313,7 +313,7 @@ const SearchResults = ({ language, setLanguage }) => {
                     {/* Position Title Column */}
                     <div className="col-span-5">
                       <div className="text-right pr-4">
-                        <div className="mb-2 resultTitle text-base">
+                        <div className="mb-2 resultTitle text-base font-bold">
                           <b>
                             {language === "GE"
                               ? "დაკავებული თანამდებობა/პოზიცია"
@@ -325,17 +325,17 @@ const SearchResults = ({ language, setLanguage }) => {
                         </div>
                       </div>
                     </div>
-                    {/* Gender Specific Salary */}
+                    {/* Gender Specific Salary */}{" "}
                     <div className="col-span-5 pt-1">
-                      <div className="flex">
-                        <div className="w-5/12">
+                      <div className="flex items-center h-full">
+                        <div className="w-5/12 flex items-center justify-center">
                           <img
                             src={selectedGender === "male" ? mrIcon : frIcon}
                             alt={selectedGender === "male" ? "Male" : "Female"}
                             className="w-20 h-22"
                           />
                         </div>
-                        <div className="w-5/12">
+                        <div className="w-5/12 flex flex-col justify-center">
                           <div className="font-bold text-5xl resultValue font-bpg-nino text-[#148CCD]">
                             {selectedGender === "male"
                               ? salaryData.male
@@ -345,8 +345,8 @@ const SearchResults = ({ language, setLanguage }) => {
                             {language === "GE" ? "ლარი" : "GEL"}
                           </div>
                         </div>
-                        <div className="w-2/12">
-                          <div className="h-full w-0.5 mx-auto bg-[#148CCD]"></div>
+                        <div className="w-2/12 flex items-center justify-center h-full">
+                          <div className="h-full w-0.5 bg-[#148CCD]"></div>
                         </div>
                       </div>
                     </div>{" "}
