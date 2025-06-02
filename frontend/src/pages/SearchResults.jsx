@@ -356,9 +356,9 @@ const SearchResults = ({ language, setLanguage }) => {
                         <img
                           src={iconBoth}
                           alt="Total"
-                          className="totalGender w-8"
+                          className="totalGender"
                         />{" "}
-                        <div className="text-center absolute bottom-1">
+                        <div className="text-center absolute bottom-2">
                           <div className="flex items-center justify-center gap-2">
                             <div className="font-bpg-nino resultTotalValue">
                               {salaryData.total}

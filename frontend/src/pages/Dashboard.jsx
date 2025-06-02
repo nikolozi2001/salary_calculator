@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import georgiaMap from "../assets/svg/georgia.svg";
 import circleMap from "../assets/svg/circle.svg";
-import Activity from "./ui/Activity";
-import Gender from "./ui/Gender";
-import Note from "./ui/Note";
+import Activity from "../components/ui/Activity";
+import Gender from "../components/ui/Gender";
+import Note from "../components/ui/Note";
 import { dataApi, activityApi } from "../services/api";
 
 // Import all activity icons
