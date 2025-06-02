@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import Header from "../components/header/Header";
@@ -115,7 +115,11 @@ const SearchResults = ({ language, setLanguage }) => {
     loadSubcategories();
   }, [language]);
 
-  const handleSearch = useCallback(async () => {
+  const handleSearch = async () => {
+    if (!selectedGender || (!selectedCategory && !selectedSubcategory)) {
+      return;
+    }
+
     try {
       setLoading(true);
       const isEnglish = language === "EN";
@@ -138,15 +142,13 @@ const SearchResults = ({ language, setLanguage }) => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory, selectedSubcategory, language]);
+  };
+
+  // Cleanup tooltips
   useEffect(() => {
-    if (selectedGender && (selectedCategory || selectedSubcategory)) {
-      handleSearch();
-    }
-    // Clean up any stray tooltips
     const tooltips = document.querySelectorAll(".map-tooltip");
     tooltips.forEach((tooltip) => tooltip.remove());
-  }, [selectedGender, selectedCategory, selectedSubcategory, handleSearch]);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
