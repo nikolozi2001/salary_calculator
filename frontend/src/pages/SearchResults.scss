@@ -1,0 +1,91 @@
+// SearchResults styles
+.search-results {
+  &__container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__main {
+    flex-grow: 1;
+    container: mx-auto;
+    padding: 2rem 1rem;
+  }
+
+  // Gender selection styles
+  &__gender-selection {
+    margin-bottom: 1.5rem;
+
+    img {
+      transition: transform 0.2s;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // Select styles
+  &__select-container {
+    margin-bottom: 1.5rem;
+  }
+
+  // Results styles
+  &__results {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    min-height: 227px;
+    padding: 1.5rem;
+
+    .loading-spinner {
+      border-color: #007bff;
+    }
+
+    .result-value {
+      color: #148ccd;
+      font-family: "BPG Nino Mtavruli", sans-serif;
+    }
+
+    .result-currency {
+      color: #148ccd;
+      font-family: "BPG Nino Mtavruli", sans-serif;
+    }
+  }
+}
+
+// Animations
+.chooseGenderAnimation,
+.chooseOccupationAnimation {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultValue {
+  line-height: 1.1;
+}
+
+.totalGender {
+  width: 100px;
+}
+
+.resultTotalValue {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: white;
+}
+
+.resultTotalCur {
+  font-size: 18px;
+  line-height: 0.9;
+  color: white;
+}

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/header/Header";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/footer/Footer";
-import SearchResults from "./components/ui/SearchResults";
+import SearchResults from "./pages/SearchResults";
 import "./App.css";
 
 function App() {

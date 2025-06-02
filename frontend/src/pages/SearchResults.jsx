@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Select from "react-select";
-import Header from "../header/Header";
-import Footer from "../footer/Footer";
-import { isco08Api } from "../../services/api";
-import Gender from "./Gender";
-import iconBoth from "../../assets/icons/iconBoth.png";
-import f1Icon from "../../assets/icons/f1.png";
-import f2Icon from "../../assets/icons/f2.png";
-import m1Icon from "../../assets/icons/m1.png";
-import m2Icon from "../../assets/icons/m2.png";
+import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
+import { isco08Api } from "../services/api";
+import Gender from "../components/ui/Gender";
+import iconBoth from "../assets/icons/iconBoth.png";
+import f1Icon from "../assets/icons/f1.png";
+import f2Icon from "../assets/icons/f2.png";
+import m1Icon from "../assets/icons/m1.png";
+import m2Icon from "../assets/icons/m2.png";
+import frIcon from "../assets/icons/222.png";
+import mrIcon from "../assets/icons/111.png";
+import "./SearchResults.scss";
 
 // Custom styles for react-select
 const customStyles = {
@@ -281,9 +284,10 @@ const SearchResults = ({ language, setLanguage }) => {
         <div className="flex justify-center">
           <div
             className="w-full max-w-5xl border"
-            style={{ border: "1px solid #dee2e6!important",
-              borderRadius: "0.5rem"
-             }}
+            style={{
+              border: "1px solid #dee2e6!important",
+              borderRadius: "0.5rem",
+            }}
           >
             {" "}
             <div className="rounded-lg p-6 min-h-[227px]">
@@ -299,7 +303,7 @@ const SearchResults = ({ language, setLanguage }) => {
                 </div>
               ) : !salaryData || !(selectedCategory || selectedSubcategory) ? (
                 <div className="flex flex-col space-y-2">
-                  <span className="chooseOccupationAnimation text-center opacity-100">
+                  <span className="chooseOccupationAnimation text-center opacity-100 font-bpg-nino text-2xl">
                     {language === "GE" ? "აირჩიეთ პოზიცია" : "Choose Position"}
                   </span>
                 </div>
@@ -321,47 +325,47 @@ const SearchResults = ({ language, setLanguage }) => {
                         </div>
                       </div>
                     </div>
-
                     {/* Gender Specific Salary */}
                     <div className="col-span-5 pt-1">
                       <div className="flex">
                         <div className="w-5/12">
                           <img
-                            src={selectedGender === "male" ? m2Icon : f2Icon}
+                            src={selectedGender === "male" ? mrIcon : frIcon}
                             alt={selectedGender === "male" ? "Male" : "Female"}
-                            className="w-16 h-16"
+                            className="w-20 h-22"
                           />
                         </div>
                         <div className="w-5/12">
-                          <div className="font-bold text-2xl resultValue">
+                          <div className="font-bold text-5xl resultValue font-bpg-nino text-[#148CCD]">
                             {selectedGender === "male"
                               ? salaryData.male
                               : salaryData.female}
                           </div>
-                          <div className="text-sm resultCur">
+                          <div className="resultCur text-4xl font-bpg-nino text-[#148CCD]">
                             {language === "GE" ? "ლარი" : "GEL"}
                           </div>
                         </div>
                         <div className="w-2/12">
-                          <div className="h-full w-1 mx-auto bg-gray-200"></div>
+                          <div className="h-full w-0.5 mx-auto bg-[#148CCD]"></div>
                         </div>
                       </div>
-                    </div>
-
+                    </div>{" "}
                     {/* Total Column */}
                     <div className="col-span-2 pt-2">
-                      <div className="flex flex-col items-center">
+                      <div className="flex flex-col items-center relative">
                         <img
                           src={iconBoth}
                           alt="Total"
-                          className="totalGender w-8 mb-2"
-                        />
-                        <div className="text-center">
-                          <div className="resultTotalValue font-bold">
-                            {salaryData.total}
-                          </div>
-                          <div className="resultTotalCur text-sm">
-                            {language === "GE" ? "ლარი" : "GEL"}
+                          className="totalGender w-8"
+                        />{" "}
+                        <div className="text-center absolute bottom-1">
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="font-bpg-nino resultTotalValue">
+                              {salaryData.total}
+                            </div>
+                            <div className="font-bpg-nino resultTotalCur">
+                              {language === "GE" ? "ლარი" : "GEL"}
+                            </div>
                           </div>
                         </div>
                       </div>
