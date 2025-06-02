@@ -7,11 +7,14 @@ import britishFlag from "../../assets/images/british-flag.png";
 import headerBg from "../../assets/images/header-bg.jpg";
 import InfoModal from "../ui/InfoModal";
 import ProfessionModal2021 from "../ui/ProfessionModal2021";
+import ProfessionModal2017 from "../ui/ProfessionModal2017";
 
 const Header = ({ language = "GE", setLanguage, page }) => {
   const fontClass = language === "GE" ? "font-bpg-nino" : "font-poppins";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfessionModal2021Open, setIsProfessionModal2021Open] =
+    useState(false);
+  const [isProfessionModal2017Open, setIsProfessionModal2017Open] =
     useState(false);
 
   const getTitle = () => {
@@ -29,14 +32,21 @@ const Header = ({ language = "GE", setLanguage, page }) => {
 
   return (
     <>
+      {" "}
       <InfoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         language={language}
-      />{" "}
+      />
       <ProfessionModal2021
         isOpen={isProfessionModal2021Open}
         onClose={() => setIsProfessionModal2021Open(false)}
+        language={language}
+        initialCode={0}
+      />
+      <ProfessionModal2017
+        isOpen={isProfessionModal2017Open}
+        onClose={() => setIsProfessionModal2017Open(false)}
         language={language}
         initialCode={0}
       />
@@ -128,11 +138,10 @@ const Header = ({ language = "GE", setLanguage, page }) => {
                     2021 - ISCO08
                   </>
                 )}
-              </button>
+              </button>{" "}
               <button
+                onClick={() => setIsProfessionModal2017Open(true)}
                 className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
-                data-toggle="modal"
-                data-target="#modalProfession"
               >
                 {language === "GE" ? (
                   <>

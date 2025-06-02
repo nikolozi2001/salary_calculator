@@ -248,6 +248,49 @@ export const isco08Api = {
   },
 };
 
+// ISCO-88 (2017) API methods
+export const isco88Api = {
+  getAll: async (isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco88?lang=${isEnglish ? 'en' : 'ge'}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch ISCO-88 data:', error);
+      throw error;
+    }
+  },
+
+  getAllLevel2: async (isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco88/level2?lang=${isEnglish ? 'en' : 'ge'}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch ISCO-88 level 2 data:', error);
+      throw error;
+    }
+  },
+
+  getByCode: async (code, isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco88/code/${code}?lang=${isEnglish ? 'en' : 'ge'}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch ISCO-88 data for code ${code}:`, error);
+      throw error;
+    }
+  },
+
+  getLevel2ByParent: async (parentCode, isEnglish = false) => {
+    try {
+      const response = await api.get(`/isco88/level2/parent/${parentCode}?lang=${isEnglish ? 'en' : 'ge'}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch ISCO-88 subcategories for parent ${parentCode}:`, error);
+      throw error;
+    }
+  }
+};
+
 // Function to test database connection
 export const testDbConnection = async () => {
   try {
@@ -262,5 +305,6 @@ export const testDbConnection = async () => {
 export default {
   dataApi,
   activityApi,
-  isco08Api
+  isco08Api,
+  isco88Api
 };
