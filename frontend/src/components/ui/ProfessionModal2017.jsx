@@ -198,14 +198,14 @@ const ProfessionModal2017 = ({ isOpen, onClose, language, initialCode }) => {
                   const subcategoryName = subcategories.find(
                     (sub) => sub.code === selectedSubcategory
                   )?.name;
-                  navigate("/search-results", {
+                  navigate("/search-results?year=2017", {
                     state: {
                       selectedCategory,
                       selectedSubcategory,
                       categoryName,
                       subcategoryName,
                       language,
-                      year: 2017
+                      year: 2017,
                     },
                   });
                   onClose();

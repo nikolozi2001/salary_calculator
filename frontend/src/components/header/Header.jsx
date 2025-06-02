@@ -16,12 +16,29 @@ const Header = ({ language = "GE", setLanguage, page }) => {
     useState(false);
   const [isProfessionModal2017Open, setIsProfessionModal2017Open] =
     useState(false);
-
   const getTitle = () => {
     if (page === "search") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const year = searchParams.get("year");
+
+      if (year === "2017") {
+        return language === "GE"
+          ? "ხელფასები პროფესიების მიხედვით - 2017 - ISCO88"
+          : "SALARY BY OCCUPATION - 2017 - ISCO88";
+      }
       return language === "GE"
-        ? "ხელფასები პროფესიების მიხედვით - 2021 - ISCO8"
-        : "SALARY BY OCCUPATION - 2021 - ISCO8";
+        ? "ხელფასები პროფესიების მიხედვით - 2021 - ISCO08"
+        : "SALARY BY OCCUPATION - 2021 - ISCO08";
+    }
+    if (isProfessionModal2021Open) {
+      return language === "GE"
+        ? "ხელფასები პროფესიების მიხედვით - 2021 - ISCO08"
+        : "SALARY BY OCCUPATION - 2021 - ISCO08";
+    }
+    if (isProfessionModal2017Open) {
+      return language === "GE"
+        ? "ხელფასები პროფესიების მიხედვით - 2017 - ISCO88"
+        : "SALARY BY OCCUPATION - 2017 - ISCO88";
     }
     return language === "GE" ? "ხელფასების კალკულატორი" : "Salary Calculator";
   };
