@@ -3,11 +3,16 @@ import { pool } from "../config/connection.js";
 
 const router = express.Router();
 
+// Helper function to get table name based on language
+const getTableName = (baseTable, lang) => {
+  return lang.toLowerCase() === "en" ? `${baseTable}eng` : baseTable;
+};
+
 // Get all ISCO08 professions (with language support)
 router.get("/", async (req, res) => {
   try {
     const { lang = "ge" } = req.query;
-    const tableName = lang.toLowerCase() === "en" ? "isco08eng" : "isco08";
+    const tableName = getTableName("isco08", lang);
 
     const connection = await pool.getConnection();
     const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
@@ -23,7 +28,7 @@ router.get("/", async (req, res) => {
 router.get("/level2", async (req, res) => {
   try {
     const { lang = "ge" } = req.query;
-    const tableName = lang.toLowerCase() === "en" ? "isco08_2eng" : "isco08_2";
+    const tableName = getTableName("isco08_2", lang);
 
     const connection = await pool.getConnection();
     const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
@@ -39,7 +44,7 @@ router.get("/level2", async (req, res) => {
 router.get("/level2/parent/:code", async (req, res) => {
   try {
     const { lang = "ge" } = req.query;
-    const tableName = lang.toLowerCase() === "en" ? "isco08_2eng" : "isco08_2";
+    const tableName = getTableName("isco08_2", lang);
     const parentCode = req.params.code;
 
     const connection = await pool.getConnection();
@@ -66,14 +71,10 @@ router.get("/code/:code", async (req, res) => {
   try {
     const { lang = "ge" } = req.query;
     const code = req.params.code;
-    let tableName;
-
+    
     // If code is 2 digits, it's a level 2 category
-    if (code.length === 2) {
-      tableName = lang.toLowerCase() === "en" ? "isco08_2eng" : "isco08_2";
-    } else {
-      tableName = lang.toLowerCase() === "en" ? "isco08eng" : "isco08";
-    }
+    const baseTable = code.length === 2 ? "isco08_2" : "isco08";
+    const tableName = getTableName(baseTable, lang);
 
     const connection = await pool.getConnection();
     const [rows] = await connection.query(
@@ -88,8 +89,8 @@ router.get("/code/:code", async (req, res) => {
       res.json(rows[0]);
     }
   } catch (error) {
-    console.error("Error fetching ISCO08 data by code:", error);
-    res.status(500).json({ error: "Failed to fetch ISCO08 data" });
+    console.error("Error fetching ISCO08 profession:", error);
+    res.status(500).json({ error: "Failed to fetch ISCO08 profession" });
   }
 });
 

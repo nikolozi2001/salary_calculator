@@ -64,13 +64,16 @@ export const dataApi = {
       throw error;
     }
   },
- 
+
   getDataByYearAndRegion: async (year, regionId) => {
     try {
       const response = await api.get(`/data/${year}/${regionId}`);
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch data for year ${year} and region ${regionId}:`, error);
+      console.error(
+        `Failed to fetch data for year ${year} and region ${regionId}:`,
+        error
+      );
       throw error;
     }
   },
@@ -80,19 +83,23 @@ export const dataApi = {
       const response = await api.get(`/data/${year}/${regionId}/${business}`);
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch data for year ${year}, region ${regionId}, and business ${business}:`, error);
+      console.error(
+        `Failed to fetch data for year ${year}, region ${regionId}, and business ${business}:`,
+        error
+      );
       throw error;
     }
-  },  getTotalSalary: async (year, regionId, business) => {
+  },
+  getTotalSalary: async (year, regionId, business) => {
     try {
       // Handle default parameter values based on which parameters are provided
       let resolvedRegionId = regionId;
       let resolvedBusiness = business;
-      
+
       // If only year is provided, use default values for Georgia (All) and All Activities
       if (year && !regionId && !business) {
         resolvedRegionId = "0"; // Georgia (All)
-        resolvedBusiness = "AA";  // All Activities
+        resolvedBusiness = "AA"; // All Activities
       }
       // If year and region are provided but no business, use All Activities as default
       else if (year && regionId && !business) {
@@ -102,29 +109,37 @@ export const dataApi = {
       else if (year && !regionId && business) {
         resolvedRegionId = "0"; // Georgia (All)
       }
-      
+
       // Make the API request with resolved parameters
-      const response = await api.get(`/data/total/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}`);
+      const response = await api.get(
+        `/data/total/${year}/${resolvedRegionId || "0"}/${
+          resolvedBusiness || "AA"
+        }`
+      );
       return response.data.total;
     } catch (error) {
-      console.error(`Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`, error);      throw error;
+      console.error(
+        `Failed to fetch total salary for year ${year}, region ${regionId}, and business ${business}:`,
+        error
+      );
+      throw error;
     }
   },
-    getGenderSalary: async (year, regionId, business, gender) => {
+  getGenderSalary: async (year, regionId, business, gender) => {
     try {
       // Validate gender parameter
-      if (gender !== 'male' && gender !== 'female') {
+      if (gender !== "male" && gender !== "female") {
         throw new Error('Invalid gender parameter. Use "male" or "female".');
       }
-      
+
       // Handle default parameter values based on which parameters are provided
       let resolvedRegionId = regionId;
       let resolvedBusiness = business;
-      
+
       // If only year is provided, use default values for Georgia (All) and All Activities
       if (year && !regionId && !business) {
         resolvedRegionId = "0"; // Georgia (All)
-        resolvedBusiness = "AA";  // All Activities
+        resolvedBusiness = "AA"; // All Activities
       }
       // If year and region are provided but no business, use All Activities as default
       else if (year && regionId && !business) {
@@ -134,12 +149,19 @@ export const dataApi = {
       else if (year && !regionId && business) {
         resolvedRegionId = "0"; // Georgia (All)
       }
-      
+
       // Make the API request with resolved parameters
-      const response = await api.get(`/data/gender/${year}/${resolvedRegionId || "0"}/${resolvedBusiness || "AA"}/${gender}`);
+      const response = await api.get(
+        `/data/gender/${year}/${resolvedRegionId || "0"}/${
+          resolvedBusiness || "AA"
+        }/${gender}`
+      );
       return response.data[gender];
     } catch (error) {
-      console.error(`Failed to fetch ${gender} salary data for year ${year}, region ${regionId}, and business ${business}:`, error);
+      console.error(
+        `Failed to fetch ${gender} salary data for year ${year}, region ${regionId}, and business ${business}:`,
+        error
+      );
       throw error;
     }
   },
@@ -165,7 +187,7 @@ export const activityApi = {
       console.error(`Failed to fetch activity with id ${id}:`, error);
       throw error;
     }
-  }
+  },
 };
 
 // ISCO08 API methods
@@ -173,7 +195,7 @@ export const isco08Api = {
   getAll: async (isEnglish = false) => {
     try {
       const response = await api.get("/isco08", {
-        params: { lang: isEnglish ? 'eng' : '' }
+        params: { lang: isEnglish ? "en" : "ge" },
       });
       return response.data;
     } catch (error) {
@@ -185,7 +207,7 @@ export const isco08Api = {
   getAllLevel2: async (isEnglish = false) => {
     try {
       const response = await api.get("/isco08/level2", {
-        params: { lang: isEnglish ? 'eng' : '' }
+        params: { lang: isEnglish ? "en" : "ge" },
       });
       return response.data;
     } catch (error) {
@@ -197,52 +219,44 @@ export const isco08Api = {
   getLevel2ByParent: async (parentCode, isEnglish = false) => {
     try {
       const response = await api.get(`/isco08/level2/parent/${parentCode}`, {
-        params: { lang: isEnglish ? 'eng' : '' }
+        params: { lang: isEnglish ? "en" : "ge" },
       });
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch ISCO08 level 2 categories for parent ${parentCode}:`, error);
+      console.error(
+        `Failed to fetch ISCO08 level 2 categories for parent ${parentCode}:`,
+        error
+      );
       throw error;
     }
   },
 
-  getByCode: async (code) => {
+  getByCode: async (code, isEnglish = false) => {
     try {
-      const response = await api.get(`/isco08/code/${code}`);
+      const response = await api.get(`/isco08/code/${code}`, {
+        params: { lang: isEnglish ? "en" : "ge" },
+      });
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch ISCO08 category with code ${code}:`, error);
+      console.error(
+        `Failed to fetch ISCO08 category with code ${code}:`,
+        error
+      );
       throw error;
     }
   },
 
-  getGenderStatistics: async () => {
-    try {
-      const response = await api.get('/isco08/statistics/gender');
-      return response.data;
-    } catch (error) {
-      console.error("Failed to fetch ISCO08 gender statistics:", error);
-      throw error;
-    }
-  },
-
-  searchProfessions: async (query) => {
-    try {
-      const response = await api.get(`/isco08/search`, { params: { query } });
-      return response.data;
-    } catch (error) {
-      console.error("Failed to search ISCO08 professions:", error);
-      throw error;
-    }
-  },
   getByLevel2Code: async (code, isEnglish = false) => {
     try {
       const response = await api.get(`/isco08/code/${code}`, {
-        params: { lang: isEnglish ? 'eng' : '' }
+        params: { lang: isEnglish ? "en" : "ge" },
       });
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch ISCO08 level 2 category with code ${code}:`, error);
+      console.error(
+        `Failed to fetch ISCO08 level 2 category with code ${code}:`,
+        error
+      );
       throw error;
     }
   },
@@ -252,27 +266,31 @@ export const isco08Api = {
 export const isco88Api = {
   getAll: async (isEnglish = false) => {
     try {
-      const response = await api.get(`/isco88?lang=${isEnglish ? 'en' : 'ge'}`);
+      const response = await api.get(`/isco88?lang=${isEnglish ? "en" : "ge"}`);
       return response.data;
     } catch (error) {
-      console.error('Failed to fetch ISCO-88 data:', error);
+      console.error("Failed to fetch ISCO-88 data:", error);
       throw error;
     }
   },
 
   getAllLevel2: async (isEnglish = false) => {
     try {
-      const response = await api.get(`/isco88/level2?lang=${isEnglish ? 'en' : 'ge'}`);
+      const response = await api.get(
+        `/isco88/level2?lang=${isEnglish ? "en" : "ge"}`
+      );
       return response.data;
     } catch (error) {
-      console.error('Failed to fetch ISCO-88 level 2 data:', error);
+      console.error("Failed to fetch ISCO-88 level 2 data:", error);
       throw error;
     }
   },
 
   getByCode: async (code, isEnglish = false) => {
     try {
-      const response = await api.get(`/isco88/code/${code}?lang=${isEnglish ? 'en' : 'ge'}`);
+      const response = await api.get(
+        `/isco88/code/${code}?lang=${isEnglish ? "en" : "ge"}`
+      );
       return response.data;
     } catch (error) {
       console.error(`Failed to fetch ISCO-88 data for code ${code}:`, error);
@@ -282,13 +300,18 @@ export const isco88Api = {
 
   getLevel2ByParent: async (parentCode, isEnglish = false) => {
     try {
-      const response = await api.get(`/isco88/level2/parent/${parentCode}?lang=${isEnglish ? 'en' : 'ge'}`);
+      const response = await api.get(
+        `/isco88/level2/parent/${parentCode}?lang=${isEnglish ? "en" : "ge"}`
+      );
       return response.data;
     } catch (error) {
-      console.error(`Failed to fetch ISCO-88 subcategories for parent ${parentCode}:`, error);
+      console.error(
+        `Failed to fetch ISCO-88 subcategories for parent ${parentCode}:`,
+        error
+      );
       throw error;
     }
-  }
+  },
 };
 
 // Function to test database connection
@@ -306,5 +329,5 @@ export default {
   dataApi,
   activityApi,
   isco08Api,
-  isco88Api
+  isco88Api,
 };
