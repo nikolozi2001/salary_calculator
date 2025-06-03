@@ -1,6 +1,7 @@
 module.exports = {
   apps: [{
     name: 'salary-calculator-api',
+    namespace: 'sallarium',
     script: 'server.js',
     instances: 'max',
     exec_mode: 'cluster',
