@@ -408,6 +408,7 @@ const Dashboard = ({ language = "GE" }) => {
             }
             #georgia-map-container svg path.zoomed {
               opacity: 1 !important;
+              stroke: white !important;
               stroke-width: 0.5 !important;
             }
             #georgia-map-container svg path:not(.zoomed).region-hidden {
@@ -432,7 +433,7 @@ const Dashboard = ({ language = "GE" }) => {
             .map-tooltip {
               position: fixed;
               padding: 8px 12px;
-              background: rgba(0, 0, 0, 0.8);
+              background: #37c8f5;
               color: white;
               border-radius: 4px;
               font-size: 14px;
@@ -440,7 +441,6 @@ const Dashboard = ({ language = "GE" }) => {
               opacity: 0;
               transition: opacity 0.2s;
               z-index: 1000;
-              border-top: 6px solid #37c8f5;
             }
             .map-tooltip.visible {
               opacity: 1;
@@ -463,9 +463,10 @@ const Dashboard = ({ language = "GE" }) => {
               path.setAttribute("fill", regionData[id].color);
               path.style.fill = regionData[id].color + " !important";
 
-              const title = path.querySelector("title");
-              if (title) {
-                title.textContent = regionData[id].nameGe;
+              // Remove title elements to prevent default tooltips
+              const titles = path.getElementsByTagName("title");
+              while (titles.length > 0) {
+                titles[0].remove();
               }
 
               // Add region labels
