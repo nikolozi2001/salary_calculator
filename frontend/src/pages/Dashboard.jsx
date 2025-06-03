@@ -753,11 +753,12 @@ const Dashboard = ({ language = "GE" }) => {
 
             {/* Year and Gender Selection Row */}
             <div className="grid grid-cols-8 gap-3">
-              {/* Year Selector */}
+              {/* Year Selector */}{" "}
               <div className="col-span-8 md:col-span-4">
                 <div className="flex justify-center items-center">
                   <div
                     id="circle-svg-container"
+                    data-language={language.toLowerCase()}
                     className="w-[220px] h-[220px] transition-all duration-300 ease-in-out"
                   ></div>
                 </div>
