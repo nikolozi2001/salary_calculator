@@ -6,7 +6,7 @@ import Gender from "../components/ui/Gender";
 import Note from "../components/ui/Note";
 import { dataApi, activityApi } from "../services/api";
 
-import professionalIcon from "../assets/icons/professional.png";
+import professionalIcon from "../assets/icons/Prof.png";
 import administrativeIcon from "../assets/icons/Administrative.png";
 import artsIcon from "../assets/icons/Arts.png";
 import otherIcon from "../assets/icons/Other.png";
