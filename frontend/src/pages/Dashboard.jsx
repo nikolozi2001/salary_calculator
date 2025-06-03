@@ -115,6 +115,7 @@ const Dashboard = ({ language = "GE" }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [totalSalary, setTotalSalary] = useState(null);
   const [error, setError] = useState(null);
+  const [zoomedRegion, setZoomedRegion] = useState(null);
 
   // Function to clear all selections
   const clearAllSelections = () => {
@@ -123,6 +124,7 @@ const Dashboard = ({ language = "GE" }) => {
     setSelectedYear(null);
     setSelectedGender(null);
     setTotalSalary(null);
+    setZoomedRegion(null);
   };
 
   // Fetch activities from API
@@ -158,16 +160,25 @@ const Dashboard = ({ language = "GE" }) => {
     },
     [activities]
   );
-
   // Reference to the SVG element
   const svgRef = useRef(null);
-  // Function to handle region click - updates with numerical ID from mapping
-  const handleRegionClick = useCallback((id) => {
-    setSelectedRegion((prev) => {
-      const numericId = regionIdMap[id];
-      return prev === numericId ? null : numericId;
-    });
+
+  // Function to toggle region zoom
+  const toggleRegionZoom = useCallback((id) => {
+    setZoomedRegion((current) => (current === id ? null : id));
   }, []);
+
+  // Function to handle region click - updates with numerical ID from mapping
+  const handleRegionClick = useCallback(
+    (id) => {
+      setSelectedRegion((prev) => {
+        const numericId = regionIdMap[id];
+        return prev === numericId ? null : numericId;
+      });
+      toggleRegionZoom(id);
+    },
+    [toggleRegionZoom]
+  );
 
   // Function to handle region hover - still using the GE-XX format for hovering
   const handleRegionHover = (id) => setHoveredRegion(id);
@@ -176,21 +187,23 @@ const Dashboard = ({ language = "GE" }) => {
   const handleActivitySelect = (activity) => {
     setSelectedActivity(selectedActivity === activity ? null : activity);
   };
+
   // Function to handle year selection with toggle capability
   const handleYearSelect = useCallback((year) => {
     setSelectedYear((prev) => (prev === year ? null : year));
   }, []);
+
   // Function to handle gender selection with toggle capability
   const handleGenderSelect = (gender) => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
 
   // Helper function to get GE-XX code from a numeric region ID
-  const getGeCodeFromRegionId = (numericId) => {
+  const getGeCodeFromRegionId = useCallback((numericId) => {
     return Object.keys(regionIdMap).find(
       (key) => regionIdMap[key] === numericId
     );
-  };
+  }, []);
   // Effect to automatically update salary data when selections change
   useEffect(() => {
     const updateSalaryInfo = async () => {
@@ -363,7 +376,6 @@ const Dashboard = ({ language = "GE" }) => {
         svgRef.current = svgElement;
 
         if (svgElement) {
-          // Set SVG attributes
           svgElement.setAttribute("width", "100%");
           svgElement.setAttribute("height", "100%");
           svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
@@ -372,12 +384,14 @@ const Dashboard = ({ language = "GE" }) => {
             const bbox = svgElement.getBBox();
             const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
             svgElement.setAttribute("viewBox", viewBox);
-          } // Add styles
+          }
+
+          // Add styles with zoom transitions
           const style = document.createElement("style");
           style.textContent = `
             #georgia-map-container svg path {
               stroke: white;
-              stroke-width: 0.5 ;
+              stroke-width: 0.5;
               cursor: pointer !important;
               opacity: 0.9 !important;
               filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05)) !important;
@@ -392,8 +406,15 @@ const Dashboard = ({ language = "GE" }) => {
               stroke: white !important;
               filter: brightness(1.05) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1)) !important;
             }
-    
-              #georgia-map-container svg .region-label {
+            #georgia-map-container svg path.zoomed {
+              opacity: 1 !important;
+              stroke-width: 0.5 !important;
+            }
+            #georgia-map-container svg path:not(.zoomed).region-hidden {
+              opacity: 0 !important;
+              pointer-events: none !important;
+            }
+            #georgia-map-container svg .region-label {
               font-family: 'FiraGO', sans-serif !important;
               font-size: 11px !important;
               font-weight: 500 !important;
@@ -405,36 +426,20 @@ const Dashboard = ({ language = "GE" }) => {
               text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2) !important;
             }
             #georgia-map-container svg path:hover + .region-label,
-            #georgia-map-container svg path.selected + .region-label {
+            #georgia-map-container svg path.zoomed + .region-label {
               opacity: 0 !important;
             }
             .map-tooltip {
               position: fixed;
-              background: #37c8f5;
+              padding: 8px 12px;
+              background: rgba(0, 0, 0, 0.8);
               color: white;
-              padding: 8px 16px;
-              border-radius: 8px;
+              border-radius: 4px;
               font-size: 14px;
-              font-family: 'FiraGO', sans-serif;
-              font-weight: 500;
               pointer-events: none;
               opacity: 0;
-              transition: opacity 0.2s ease;
+              transition: opacity 0.2s;
               z-index: 1000;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              white-space: nowrap;
-              transform: translate(-50%, -100%);
-            }
-            .map-tooltip::after {
-              content: '';
-              position: absolute;
-              bottom: -5px;
-              left: 50%;
-              transform: translateX(-50%);
-              width: 0;
-              height: 0;
-              border-left: 6px solid transparent;
-              border-right: 6px solid transparent;
               border-top: 6px solid #37c8f5;
             }
             .map-tooltip.visible {
@@ -526,53 +531,45 @@ const Dashboard = ({ language = "GE" }) => {
     };
   }, [handleRegionClick, language]); // Added language dependency
 
-  // Effect to update selected/hovered state
+  // Effect to update selected/hovered/zoomed state
   useEffect(() => {
-    if (!svgRef.current) return; // Find the GE-XX code that corresponds to the selected region number
+    if (!svgRef.current) return;
     const selectedGeCode = getGeCodeFromRegionId(selectedRegion);
-
     const paths = svgRef.current.querySelectorAll("path");
+
     paths.forEach((path) => {
-      const id = path.getAttribute("id");
-      if (!id || !regionData[id]) return;
+      const pathId = path.getAttribute("id");
+      if (pathId) {
+        // Handle selection highlighting
+        path.classList.toggle("selected", pathId === selectedGeCode);
 
-      // Handle selected state
-      if (id === selectedGeCode) {
-        path.classList.add("selected");
-        // For additional specificity, add inline style as well
-        path.style.fill = regionData[id].color + " !important"; // Maintain original color
-        path.style.strokeWidth = "1.5px";
-        path.style.stroke = "white";
-        path.style.filter = "drop-shadow(0 4px 3px rgb(0 0 0 / 0.1))";
-        path.style.opacity = "1";
-        path.style.transform = "translateY(-2px)";
-      } else {
-        path.classList.remove("selected");
-        // Reset inline styles when not selected, but maintain color
-        path.style.fill = regionData[id].color + " !important";
-        path.style.strokeWidth = "0.5px";
-        path.style.stroke = "white";
-        path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
-        path.style.opacity = "0.9";
-        path.style.transform = "";
-      }
+        // Handle zoom state
+        path.classList.toggle("zoomed", pathId === zoomedRegion);
+        path.classList.toggle(
+          "region-hidden",
+          zoomedRegion !== null && pathId !== zoomedRegion
+        );
 
-      // Handle hover state
-      if (id === hoveredRegion) {
-        path.style.filter =
-          "brightness(1.1) saturate(1.2) drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))";
-        path.style.transform = "translateY(-1px)";
-        path.style.opacity = "1";
-        path.style.strokeWidth = "1px";
-      } else if (id !== selectedRegion) {
-        // Only remove these styles if not the selected region
-        path.style.filter = "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))";
-        path.style.transform = "";
-        path.style.opacity = "0.9";
-        path.style.strokeWidth = "0.5px";
+        // Zoom functionality
+        if (pathId === zoomedRegion) {
+          const bbox = path.getBBox();
+          // Add padding to the zoomed view
+          const padding = 20;
+          const viewBox = `${bbox.x - padding} ${bbox.y - padding} ${
+            bbox.width + padding * 2
+          } ${bbox.height + padding * 2}`;
+          svgRef.current.setAttribute("viewBox", viewBox);
+        } else if (!zoomedRegion) {
+          // Reset to original viewBox when no region is zoomed
+          const fullBbox = svgRef.current.getBBox();
+          svgRef.current.setAttribute(
+            "viewBox",
+            `${fullBbox.x} ${fullBbox.y} ${fullBbox.width} ${fullBbox.height}`
+          );
+        }
       }
     });
-  }, [selectedRegion, hoveredRegion]);
+  }, [selectedRegion, hoveredRegion, zoomedRegion, getGeCodeFromRegionId]);
 
   // Effect to handle SVG loading and manipulation
   useEffect(() => {
