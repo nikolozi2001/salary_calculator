@@ -8,8 +8,8 @@ import { dataApi, activityApi } from "../services/api";
 
 import professionalIcon from "../assets/icons/professional.png";
 import administrativeIcon from "../assets/icons/Administrative.png";
-import artsIcon from "../assets/icons/arts.png";
-import otherIcon from "../assets/icons/other.png";
+import artsIcon from "../assets/icons/Arts.png";
+import otherIcon from "../assets/icons/Other.png";
 
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
