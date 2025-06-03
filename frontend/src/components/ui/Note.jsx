@@ -11,6 +11,7 @@ const Note = ({
   activitySectors,
   regionData,
   getGeCodeFromRegionId,
+  onClear,
 }) => {
   const noteStyle = {
     backgroundImage: 'url("/src/assets/images/note.png")',
@@ -28,6 +29,7 @@ const Note = ({
     flexDirection: "column",
     justifyContent: "center",
     padding: "2rem",
+    position: "relative",
   };
 
   const getActivityName = (activityName) => {
@@ -155,17 +157,17 @@ const Note = ({
                   {selectedYear}
                 </p>
                 <p>
-                {language === "GE" ? (
-                  <span>
-                    {" "}
-                    <strong>საქმიანობის სახე:</strong> {activityDisplay}
-                  </span>
-                ) : (
-                  <span>
-                    <strong>Business sector:</strong> {activityDisplay}
-                  </span>
-                )}
-              </p>
+                  {language === "GE" ? (
+                    <span>
+                      {" "}
+                      <strong>საქმიანობის სახე:</strong> {activityDisplay}
+                    </span>
+                  ) : (
+                    <span>
+                      <strong>Business sector:</strong> {activityDisplay}
+                    </span>
+                  )}
+                </p>
                 {selectedGender && (
                   <p>
                     <strong>{language === "GE" ? "სქესი" : "Gender"}:</strong>{" "}
@@ -218,6 +220,31 @@ const Note = ({
   return (
     <div className="col-span-8 md:col-span-4">
       <div style={noteStyle}>
+        {(selectedYear ||
+          selectedRegion ||
+          selectedActivity ||
+          selectedGender) && (
+          <button
+            onClick={onClear}
+            className="absolute top-12 right-4 p-2"
+            title={language === "GE" ? "გასუფთავება" : "Clear"}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-[#0090d6] hover:text-[#C85861]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
         <div className="text-center">{renderContent()}</div>
       </div>
     </div>

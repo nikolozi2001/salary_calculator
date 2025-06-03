@@ -116,6 +116,15 @@ const Dashboard = ({ language = "GE" }) => {
   const [totalSalary, setTotalSalary] = useState(null);
   const [error, setError] = useState(null);
 
+  // Function to clear all selections
+  const clearAllSelections = () => {
+    setSelectedRegion(null);
+    setSelectedActivity(null);
+    setSelectedYear(null);
+    setSelectedGender(null);
+    setTotalSalary(null);
+  };
+
   // Fetch activities from API
   useEffect(() => {
     const fetchActivities = async () => {
@@ -748,6 +757,7 @@ const Dashboard = ({ language = "GE" }) => {
                 activitySectors={activities}
                 regionData={regionData}
                 getGeCodeFromRegionId={getGeCodeFromRegionId}
+                onClear={clearAllSelections}
               />
             </div>
 
