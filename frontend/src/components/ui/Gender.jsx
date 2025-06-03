@@ -87,7 +87,7 @@ const GenderItem = ({ gender, icon, label, color, isSelected, onSelect }) => (
 // Main Gender selection component
 const Gender = ({ language, selectedGender, handleGenderSelect }) => {
   return (
-    <div className="col-span-12 md:col-span-6 md:offset-1 mt-5 rounded-2xl">
+    <div className="col-span-12 md:col-span-6 md:offset-1 mt-20 rounded-2xl">
       <div className="flex justify-center">
         <div className="w-full">
           <div className="text-center mb-3">

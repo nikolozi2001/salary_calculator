@@ -769,7 +769,7 @@ const Dashboard = ({ language = "GE" }) => {
                   <div
                     id="circle-svg-container"
                     data-language={language.toLowerCase()}
-                    className="w-[220px] h-[220px] transition-all duration-300 ease-in-out"
+                    className="w-[290px] h-[290px] transition-all duration-300 ease-in-out"
                   ></div>
                 </div>
               </div>
