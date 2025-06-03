@@ -6,6 +6,11 @@ import Gender from "../components/ui/Gender";
 import Note from "../components/ui/Note";
 import { dataApi, activityApi } from "../services/api";
 
+import professionalIcon from "../assets/icons/professional.png";
+import administrativeIcon from "../assets/icons/Administrative.png";
+import artsIcon from "../assets/icons/arts.png";
+import otherIcon from "../assets/icons/other.png";
+
 // Import all activity icons
 import educationIcon from "../assets/icons/education.png";
 import manufacturingIcon from "../assets/icons/manufacturing.png";
@@ -22,10 +27,6 @@ import transportIcon from "../assets/icons/transport.png";
 import healthIcon from "../assets/icons/health.png";
 import waterIcon from "../assets/icons/water.png";
 import informationIcon from "../assets/icons/information.png";
-import professionalIcon from "/src/assets/icons/professional.png";
-import administrativeIcon from "../assets/icons/Administrative.png";
-import artsIcon from "../assets/icons/arts.png";
-import otherIcon from "../assets/icons/other.png";
 
 // Create an icon map
 const iconMap = {
@@ -395,6 +396,8 @@ const Dashboard = ({ language = "GE" }) => {
               cursor: pointer !important;
               opacity: 0.9 !important;
               filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05)) !important;
+              transition: all 0.5s ease-in-out !important;
+              transform-origin: center;
             }
             #georgia-map-container svg path[id="GE-AB"],
             #georgia-map-container svg path[id="GE-TS"] {
