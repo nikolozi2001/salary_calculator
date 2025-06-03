@@ -2,8 +2,7 @@ import axios from "axios";
 
 // Create an axios instance with default configuration
 const api = axios.create({
-  // baseURL: "http://localhost:8000/api",
-  baseURL: "http://192.168.1.27:8000/api/",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -25,27 +24,47 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     return response;
-  },
-  (error) => {
+  },  (error) => {
     // Handle common errors
     const { response } = error;
 
+    // Create a standardized error object
+    const errorObject = {
+      message: '',
+      status: response?.status || 'network_error',
+      timestamp: new Date().toISOString(),
+      path: response?.config?.url || '',
+      details: response?.data?.error || error.message
+    };
+
     if (!response) {
-      console.error("Network error: Please check your connection");
-      // You could dispatch to a notification system here
+      errorObject.message = "Network error: Please check your connection";
+      if (!import.meta.env.PROD) {
+        console.error(errorObject);
+      }
     } else {
       switch (response.status) {
         case 401:
-          console.error("Unauthorized access");
+          errorObject.message = "Unauthorized access";
+          break;
+        case 403:
+          errorObject.message = "Access forbidden";
           break;
         case 404:
-          console.error("Resource not found");
+          errorObject.message = "Resource not found";
+          break;
+        case 429:
+          errorObject.message = "Too many requests, please try again later";
           break;
         case 500:
-          console.error("Server error");
+          errorObject.message = "Internal server error";
           break;
         default:
-          console.error(`Error: ${response.statusText}`);
+          errorObject.message = `Error: ${response.statusText || 'Unknown error'}`;
+      }
+      
+      if (!import.meta.env.PROD) {
+        console.error(errorObject);
       }
     }
 
