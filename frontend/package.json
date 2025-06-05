@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "copy-fonts": "cp -r node_modules/bpg-nino-mtavruli/css public/fonts/bpg-nino-mtavruli/ && cp -r node_modules/bpg-nino-mtavruli/fonts public/fonts/bpg-nino-mtavruli/",
+    "build": "npm run copy-fonts && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
