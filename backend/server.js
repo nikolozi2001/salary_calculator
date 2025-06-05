@@ -1,12 +1,12 @@
-import express from 'express';
-import cors from 'cors';
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
 
-import dataRoutes from './routes/data.js';
-import activityRoutes from './routes/activity.js';
-import isco08Routes from './routes/isco08.js';
-import isco88Routes from './routes/isco88.js';
+const dataRoutes = require('./routes/data');
+const activityRoutes = require('./routes/activity');
+const isco08Routes = require('./routes/isco08');
+const isco88Routes = require('./routes/isco88');
 
 
 // Load environment variables

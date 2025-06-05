@@ -1,6 +1,6 @@
-import express from 'express';
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+const express = require('express');
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -152,4 +152,4 @@ router.get('/gender/:year/:region/:business/:gender', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

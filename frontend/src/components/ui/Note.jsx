@@ -1,4 +1,5 @@
 import React from "react";
+import noteBackground from "../../assets/images/note.png";
 
 // Note component to display salary information based on selected parameters
 const Note = ({
@@ -14,7 +15,7 @@ const Note = ({
   onClear,
 }) => {
   const noteStyle = {
-    backgroundImage: 'url("/src/assets/images/note.png")',
+    backgroundImage: `url(${noteBackground})`,
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
