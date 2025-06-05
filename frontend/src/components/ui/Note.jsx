@@ -20,8 +20,8 @@ const Note = ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     fontFamily: "BPG Nino Mtavruli",
-    fontSize: "18px",
-    lineHeight: "25px",
+    fontSize: window.innerWidth < 640 ? "14px" : "18px",
+    lineHeight: window.innerWidth < 640 ? "20px" : "25px",
     fontWeight: 400,
     letterSpacing: "normal",
     color: "#0090D6",
@@ -29,7 +29,7 @@ const Note = ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: "2rem",
+    padding: window.innerWidth < 640 ? "1rem" : "2rem",
     position: "relative",
   };
 
@@ -72,11 +72,11 @@ const Note = ({
                     : "Male"}
                 </p>
               )}
-              <p className="mt-8">
+              <p className="mt-4 sm:mt-8">
                 {language === "GE"
                   ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
                   : "BY THE SELECTED CRITERIA THE AVERAGE SALARY IS: "}
-                <strong className="text-2xl">
+                <strong className="text-xl sm:text-2xl">
                   {totalSalary.toLocaleString()}
                 </strong>
                 {language === "GE" ? " ლარს" : " GEL"}
@@ -122,11 +122,11 @@ const Note = ({
                     : "Male"}
                 </p>
               )}
-              <p className="mt-8">
+              <p className="mt-4 sm:mt-8">
                 {language === "GE"
                   ? `არჩეული პარამეტრებით საშუალო ხელფასი შეადგენს: `
                   : "BY THE SELECTED CRITERIA THE AVERAGE SALARY IS: "}
-                <strong className="text-2xl">
+                <strong className="text-xl sm:text-2xl">
                   {totalSalary.toLocaleString()}
                 </strong>
                 {language === "GE" ? " ლარს" : " GEL"}
@@ -220,19 +220,19 @@ const Note = ({
 
   return (
     <div className="col-span-8 md:col-span-4">
-      <div style={noteStyle}>
+      <div style={noteStyle} className="min-h-[300px] sm:min-h-0">
         {(selectedYear ||
           selectedRegion ||
           selectedActivity ||
           selectedGender) && (
           <button
             onClick={onClear}
-            className="absolute top-12 right-4 p-2"
+            className="absolute top-8 sm:top-12 right-2 sm:right-4 p-2"
             title={language === "GE" ? "გასუფთავება" : "Clear"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-[#0090d6] hover:text-[#C85861]"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-[#0090d6] hover:text-[#C85861]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -246,7 +246,9 @@ const Note = ({
             </svg>
           </button>
         )}
-        <div className="text-center">{renderContent()}</div>
+        <div className="text-center">
+          <div className="text-sm sm:text-base">{renderContent()}</div>
+        </div>
       </div>
     </div>
   );

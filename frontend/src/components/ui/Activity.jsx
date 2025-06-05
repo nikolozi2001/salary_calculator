@@ -4,7 +4,8 @@ const ActivityItem = ({ activity, isSelected, onSelect, language }) => (
   <div
     onClick={() =>
       onSelect(language === "GE" ? activity.name_ge : activity.name_en)
-    }    className={`workListElement clearfix border p-5 cursor-pointer transition-colors ${
+    }
+    className={`workListElement clearfix border p-3 sm:p-5 cursor-pointer transition-colors ${
       isSelected ? "bg-[#C85861] text-white" : "hover:bg-[#0090D6]/5"
     }`}
     data-id={activity.id}
@@ -12,12 +13,13 @@ const ActivityItem = ({ activity, isSelected, onSelect, language }) => (
     <img
       src={activity.icon}
       alt={language === "GE" ? activity.name_ge : activity.name_en}
-      className="float-left mr-3 w-12 h-12 object-contain"
-    />    <div
-      className="pt-2"
+      className="float-left mr-2 sm:mr-3 w-8 h-8 sm:w-12 sm:h-12 object-contain"
+    />
+    <div
+      className="pt-1 sm:pt-2"
       style={{
-        fontSize: "12.8px",
-        lineHeight: "19.2px",
+        fontSize: window.innerWidth < 640 ? "11px" : "12.8px",
+        lineHeight: window.innerWidth < 640 ? "16px" : "19.2px",
         fontWeight: 400,
         letterSpacing: "normal",
         color: isSelected ? "#fff" : "#0090D6",
@@ -42,12 +44,12 @@ const Activity = ({
   );
 
   return (
-    <div className="rounded-lg p-4 col-span-12 md:col-span-4">
+    <div className="rounded-lg p-2 sm:p-4 col-span-12 md:col-span-4">
       <div
-        className="workListHead p-2 text-center mb-4"
+        className="workListHead p-2 text-center mb-2 sm:mb-4"
         style={{
           fontFamily: "BPG Nino Mtavruli",
-          fontSize: "24px",
+          fontSize: window.innerWidth < 640 ? "20px" : "24px",
           transition: "0.6s",
           color: "#0090D6",
         }}
@@ -55,7 +57,7 @@ const Activity = ({
         {language === "GE" ? "აირჩიეთ საქმიანობის სახე" : "Choose Activity"}
       </div>
 
-      <div className="businessScroll overflow-y-auto max-h-[500px] border border-[#0090D6]/20 rounded">
+      <div className="businessScroll overflow-y-auto max-h-[calc(100vh-380px)] sm:max-h-[500px] border border-[#0090D6]/20 rounded mb-16 sm:mb-0">
         {sortedActivities.map((activity) => (
           <ActivityItem
             key={activity.id}

@@ -727,23 +727,23 @@ const Dashboard = ({ language = "GE" }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-80px)] p-2 font-sans overflow-hidden flex flex-col">
-      <div className="h-full container mx-auto px-2">
-        {/* Main Content - Compact Layout with card design */}{" "}
-        <div className="grid grid-cols-12 gap-3">
+    <div className="min-h-[calc(100vh-80px)] h-full p-2 font-sans overflow-y-auto pb-24 sm:pb-2">
+      <div className="container mx-auto px-2 sm:px-4 mb-16 sm:mb-0">
+        {/* Main Content - Compact Layout with card design */}
+        <div className="grid grid-cols-12 gap-2 sm:gap-3">
           {/* Left Side Content */}
-          <div className="col-span-12 md:col-span-8">
+          <div className="col-span-12 lg:col-span-8 overflow-y-auto">
             {/* Map and Note Section */}
-            <div className="grid grid-cols-8 gap-3 mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-8 gap-2 sm:gap-3 mb-2 sm:mb-3">
               {/* Map */}
-              <div className="rounded-2xl p-2 col-span-8 md:col-span-4">
-                <h2 className="sections-header">
+              <div className="rounded-2xl p-2 col-span-1 sm:col-span-8 md:col-span-4 h-auto">
+                <h2 className="sections-header text-base sm:text-lg">
                   {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
                 </h2>
                 <div className="relative overflow-hidden rounded-xl group p-1">
                   <div
                     id="georgia-map-container"
-                    className="w-full h-[35vh]"
+                    className="w-full h-[25vh] sm:h-[35vh]"
                   ></div>
                 </div>
               </div>
@@ -763,19 +763,19 @@ const Dashboard = ({ language = "GE" }) => {
             </div>
 
             {/* Year and Gender Selection Row */}
-            <div className="grid grid-cols-8 gap-3">
-              {/* Year Selector */}{" "}
-              <div className="col-span-8 md:col-span-4">
+            <div className="grid grid-cols-1 sm:grid-cols-8 gap-2 sm:gap-3">
+              {/* Year Selector */}
+              <div className="col-span-1 sm:col-span-8 md:col-span-4">
                 <div className="flex justify-center items-center">
                   <div
                     id="circle-svg-container"
                     data-language={language.toLowerCase()}
-                    className="w-[290px] h-[290px] transition-all duration-300 ease-in-out"
+                    className="w-[250px] h-[250px] sm:w-[290px] sm:h-[290px] transition-all duration-300 ease-in-out"
                   ></div>
                 </div>
               </div>
               {/* Gender Selector */}
-              <div className="col-span-8 md:col-span-4">
+              <div className="col-span-1 sm:col-span-8 md:col-span-4">
                 <Gender
                   language={language}
                   selectedGender={selectedGender}
@@ -787,7 +787,7 @@ const Dashboard = ({ language = "GE" }) => {
           </div>
 
           {/* Right Side - Activity Selection */}
-          <div className="col-span-12 md:col-span-4 h-full">
+          <div className="col-span-12 lg:col-span-4 h-auto mt-2 sm:mt-0 overflow-y-auto">
             <Activity
               language={language}
               selectedActivity={selectedActivity}
@@ -799,11 +799,11 @@ const Dashboard = ({ language = "GE" }) => {
         </div>{" "}
         {/* Error display */}
         {error && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 p-3 bg-red-50 text-red-600 text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn">
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-3 bg-red-50 text-red-600 text-xs sm:text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn max-w-[90%] sm:max-w-none mx-2">
             <div className="flex items-center justify-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-red-500"
+                className="h-4 w-4 sm:h-5 sm:w-5 text-red-500"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
