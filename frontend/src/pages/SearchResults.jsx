@@ -25,7 +25,7 @@ const customStyles = {
       borderColor: "#007bff",
     },
     fontFamily: "BPG Nino Mtavruli",
-    fontSize: "22px",
+    fontSize: window.innerWidth < 640 ? "16px" : "22px",
   }),
   option: (provided, state) => ({
     ...provided,
@@ -163,13 +163,13 @@ const SearchResults = ({ language, setLanguage }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header language={language} setLanguage={setLanguage} page="search" />
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <Header language={language} setLanguage={setLanguage} page="search" />{" "}
+      <main className="flex-grow container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         {" "}
         {/* First Row - Gender Selection */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4 sm:mb-6">
           <div className="w-full max-w-5xl">
-            <div className="rounded-lg p-6 relative">
+            <div className="rounded-lg p-3 sm:p-6 relative">
               {selectedGender && (
                 <button
                   onClick={() => {
@@ -194,8 +194,8 @@ const SearchResults = ({ language, setLanguage }) => {
                     />
                   </svg>
                 </button>
-              )}
-              <div className="flex justify-center space-x-8">
+              )}{" "}
+              <div className="flex justify-center space-x-4 sm:space-x-8">
                 <button
                   onClick={() => handleGenderSelect("female")}
                   onMouseEnter={(e) =>
@@ -210,7 +210,7 @@ const SearchResults = ({ language, setLanguage }) => {
                   <img
                     src={selectedGender === "female" ? f2Icon : f1Icon}
                     alt="Female"
-                    className="w-24 h-30"
+                    className="w-24 h-30 sm:w-24 sm:h-30"
                   />
                 </button>
                 <button
@@ -227,7 +227,7 @@ const SearchResults = ({ language, setLanguage }) => {
                   <img
                     src={selectedGender === "male" ? m2Icon : m1Icon}
                     alt="Male"
-                    className="w-24 h-30"
+                    className="w-24 h-30 sm:w-24 sm:h-30"
                   />
                 </button>
               </div>
@@ -235,10 +235,10 @@ const SearchResults = ({ language, setLanguage }) => {
           </div>
         </div>
         {/* Second Row - ISCO Selection */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4 sm:mb-6">
           <div className="w-full max-w-5xl">
-            <div className="rounded-lg p-6">
-              <div className="grid grid-cols-5 gap-4">
+            <div className="rounded-lg p-3 sm:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 sm:gap-4">
                 <div className="col-span-2">
                   <Select
                     styles={customStyles}
@@ -339,7 +339,7 @@ const SearchResults = ({ language, setLanguage }) => {
             }}
           >
             {" "}
-            <div className="rounded-lg p-6 min-h-[227px]">
+            <div className="rounded-lg p-3 sm:p-6 min-h-[227px]">
               {loading ? (
                 <div className="flex justify-center items-center h-[200px]">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
@@ -358,11 +358,11 @@ const SearchResults = ({ language, setLanguage }) => {
                 </div>
               ) : (
                 <div className="relative">
-                  <div className="grid grid-cols-12 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4">
                     {/* Position Title Column */}
-                    <div className="col-span-5">
-                      <div className="text-right pr-4">
-                        <div className="mb-2 resultTitle text-base font-bold">
+                    <div className="col-span-1 sm:col-span-5">
+                      <div className="text-center sm:text-right sm:pr-4">
+                        <div className="mb-2 resultTitle text-sm sm:text-base font-bold">
                           <b>
                             {language === "GE"
                               ? "დაკავებული თანამდებობა/პოზიცია"
@@ -375,7 +375,7 @@ const SearchResults = ({ language, setLanguage }) => {
                             : salaryData.name_ge}
                         </div>
                       </div>
-                    </div>
+                    </div>{" "}
                     {/* Gender Specific Salary */}{" "}
                     <div className="col-span-5 pt-1">
                       <div className="flex items-center h-full">
@@ -383,16 +383,17 @@ const SearchResults = ({ language, setLanguage }) => {
                           <img
                             src={selectedGender === "male" ? mrIcon : frIcon}
                             alt={selectedGender === "male" ? "Male" : "Female"}
-                            className="w-20 h-22"
+                            className="w-16 h-18 sm:w-20 sm:h-22"
                           />
                         </div>
                         <div className="w-5/12 flex flex-col justify-center">
-                          <div className="font-bold text-5xl resultValue font-bpg-nino text-[#148CCD]">
+                          {" "}
+                          <div className="font-bold text-3xl sm:text-5xl resultValue font-bpg-nino text-[#148CCD]">
                             {selectedGender === "male"
                               ? salaryData.male
                               : salaryData.female}
                           </div>
-                          <div className="resultCur text-4xl font-bpg-nino text-[#148CCD]">
+                          <div className="resultCur text-2xl sm:text-4xl font-bpg-nino text-[#148CCD]">
                             {language === "GE" ? "ლარი" : "GEL"}
                           </div>
                         </div>
@@ -428,7 +429,6 @@ const SearchResults = ({ language, setLanguage }) => {
           </div>
         </div>
       </main>
-
       <Footer language={language} />
     </div>
   );
