@@ -725,11 +725,10 @@ const Dashboard = ({ language = "GE" }) => {
       setError("Failed to fetch salary data. Please try again.");
     }
   };
-
   return (
-    <div className="min-h-[calc(100vh-80px)] h-full p-2 font-sans overflow-y-auto pb-24 sm:pb-2">
-      <div className="container mx-auto px-2 sm:px-4 mb-16 sm:mb-0">
-        {/* Main Content - Compact Layout with card design */}
+    <div className="h-full p-2 font-sans overflow-y-auto">
+      <div className="container mx-auto px-2 sm:px-4 pb-16">
+        {/* Main Content - Compact Layout with card design */}{" "}
         <div className="grid grid-cols-12 gap-2 sm:gap-3">
           {/* Left Side Content */}
           <div className="col-span-12 lg:col-span-8 overflow-y-auto">
@@ -737,13 +736,13 @@ const Dashboard = ({ language = "GE" }) => {
             <div className="grid grid-cols-1 sm:grid-cols-8 gap-2 sm:gap-3 mb-2 sm:mb-3">
               {/* Map */}
               <div className="rounded-2xl p-2 col-span-1 sm:col-span-8 md:col-span-4 h-auto">
-                <h2 className="sections-header text-base sm:text-lg">
+                <h2 className="sections-header text-sm xs:text-base sm:text-lg">
                   {language === "GE" ? "აირჩიეთ რეგიონი" : "Choose Region"}
                 </h2>
                 <div className="relative overflow-hidden rounded-xl group p-1">
                   <div
                     id="georgia-map-container"
-                    className="w-full h-[25vh] sm:h-[35vh]"
+                    className="w-full h-[30vh] xs:h-[35vh] sm:h-[40vh]"
                   ></div>
                 </div>
               </div>
@@ -767,10 +766,11 @@ const Dashboard = ({ language = "GE" }) => {
               {/* Year Selector */}
               <div className="col-span-1 sm:col-span-8 md:col-span-4">
                 <div className="flex justify-center items-center">
+                  {" "}
                   <div
                     id="circle-svg-container"
                     data-language={language.toLowerCase()}
-                    className="w-[250px] h-[250px] sm:w-[290px] sm:h-[290px] transition-all duration-300 ease-in-out"
+                    className="w-[200px] h-[200px] xs:w-[230px] xs:h-[230px] sm:w-[270px] sm:h-[270px] md:w-[290px] md:h-[290px] transition-all duration-300 ease-in-out"
                   ></div>
                 </div>
               </div>

@@ -8,15 +8,14 @@ import "./App.css";
 
 function App() {
   const [language, setLanguage] = useState("GE");
-  return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+  return (    <div className="min-h-screen flex flex-col bg-gray-50">
       <Routes>
         <Route
           path="/"
           element={
             <>
               <Header language={language} setLanguage={setLanguage} />
-              <main className="flex-1 min-h-0">
+              <main className="flex-1 relative">
                 <Dashboard language={language} />
               </main>
               <Footer language={language} />
