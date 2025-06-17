@@ -2,6 +2,8 @@ const express = require('express');
 const sql = require('mssql');
 const dns = require('dns').promises;
 const net = require('net');
+const os = require('os');
+const { checkConnection } = require('../config/connection');
 
 const router = express.Router();
 
@@ -26,15 +28,37 @@ const isPortOpen = (host, port) => {
     });
 };
 
-// Diagnostic route
+// Function to get network interfaces
+const getNetworkInfo = () => {
+    const interfaces = os.networkInterfaces();
+    const networkInfo = {};
+    
+    for (const [name, addresses] of Object.entries(interfaces)) {
+        networkInfo[name] = addresses.map(addr => ({
+            address: addr.address,
+            family: addr.family,
+            internal: addr.internal
+        }));
+    }
+    
+    return networkInfo;
+};
+
+// Full diagnostic route
 router.get('/', async (req, res) => {
     const results = {
         timestamp: new Date().toISOString(),
         environment: {
             nodeVersion: process.version,
             platform: process.platform,
+            arch: process.arch,
             env: process.env.NODE_ENV,
-            processUser: process.env.USERNAME || process.env.USER
+            processUser: process.env.USERNAME || process.env.USER,
+            memoryUsage: process.memoryUsage(),
+            uptime: process.uptime(),
+            cwd: process.cwd(),
+            hostname: os.hostname(),
+            networkInterfaces: getNetworkInfo()
         },
         database: {
             host: process.env.DB_HOST,
@@ -48,67 +72,65 @@ router.get('/', async (req, res) => {
     try {
         // DNS lookup
         try {
-            const dnsResult = await dns.lookup(process.env.DB_HOST);
             results.checks.dns = {
-                success: true,
-                ip: dnsResult.address
+                status: 'checking',
+                details: {}
             };
-        } catch (err) {
+            const dnsLookup = await dns.lookup(process.env.DB_HOST);
             results.checks.dns = {
-                success: false,
-                error: err.message
+                status: 'success',
+                details: {
+                    ip: dnsLookup.address,
+                    family: dnsLookup.family
+                }
+            };
+        } catch (error) {
+            results.checks.dns = {
+                status: 'failed',
+                error: error.message
             };
         }
 
         // Port check
         try {
-            const port = parseInt(process.env.DB_PORT) || 1433;
-            const isOpen = await isPortOpen(process.env.DB_HOST, port);
             results.checks.port = {
-                success: isOpen,
-                port: port
+                status: 'checking'
             };
-        } catch (err) {
+            const portOpen = await isPortOpen(process.env.DB_HOST, process.env.DB_PORT || 1433);
             results.checks.port = {
-                success: false,
-                error: err.message
-            };
-        }
-
-        // SQL Server connection test
-        try {
-            const config = {
-                server: process.env.DB_HOST,
-                database: process.env.DB_DATABASE,
-                user: process.env.DB_USER,
-                password: process.env.DB_PASSWORD,
-                options: {
-                    encrypt: false,
-                    trustServerCertificate: true,
-                    port: parseInt(process.env.DB_PORT) || 1433
+                status: portOpen ? 'success' : 'failed',
+                details: {
+                    port: process.env.DB_PORT || 1433,
+                    isOpen: portOpen
                 }
             };
-
-            const pool = await sql.connect(config);
-            const result = await pool.request().query('SELECT @@VERSION as version, SYSTEM_USER as currentUser, @@SERVERNAME as serverName');
-            await pool.close();
-
-            results.checks.sqlServer = {
-                success: true,
-                version: result.recordset[0].version,
-                currentUser: result.recordset[0].currentUser,
-                serverName: result.recordset[0].serverName
-            };
-        } catch (err) {
-            results.checks.sqlServer = {
-                success: false,
-                error: err.message,
-                code: err.code
+        } catch (error) {
+            results.checks.port = {
+                status: 'failed',
+                error: error.message
             };
         }
 
-    } catch (err) {
-        results.error = err.message;
+        // Database connection check
+        try {
+            results.checks.database = {
+                status: 'checking'
+            };
+            const dbStatus = await checkConnection();
+            results.checks.database = {
+                status: dbStatus.connected ? 'success' : 'failed',
+                details: dbStatus
+            };
+        } catch (error) {
+            results.checks.database = {
+                status: 'failed',
+                error: error.message,
+                code: error.code
+            };
+        }
+
+    } catch (error) {
+        results.error = error.message;
     }
 
     res.json(results);
