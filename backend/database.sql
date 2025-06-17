@@ -1,48 +1,63 @@
 -- Create database if not exists
-CREATE DATABASE IF NOT EXISTS salary_calculator;
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'salary_calculator')
+BEGIN
+    CREATE DATABASE salary_calculator;
+END
+GO
 
--- Use the database
 USE salary_calculator;
+GO
+
+-- Create data table
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[data]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[data] (
+        [id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        [year] INT NULL,
+        [region] INT NULL,
+        [business] NVARCHAR(256) NULL,
+        [total] INT NULL,
+        [female] INT NULL,
+        [male] INT NULL
+    );
+END
 
 
-CREATE TABLE IF NOT EXISTS `data` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `year` int(11) DEFAULT NULL,
-  `region` int(11) DEFAULT NULL,
-  `business` varchar(256) DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
-  `female` int(11) DEFAULT NULL,
-  `male` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3393 DEFAULT CHARSET=utf8
+-- Create activity table
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[activity]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[activity] (
+        [id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        [name_ge] NVARCHAR(250) NOT NULL,
+        [name_en] NVARCHAR(250) NOT NULL,
+        [icon] NVARCHAR(250) NOT NULL,
+        [orderby] INT NULL
+    );
+END
 
 
-CREATE TABLE IF NOT EXISTS `activity` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_ge` varchar(250) NOT NULL,
-  `name_en` varchar(250) NOT NULL,
-  `icon` varchar(250) NOT NULL,
-  `orderby` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
+-- Create isco08_2 table
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[isco08_2]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[isco08_2] (
+        [id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        [code] INT NOT NULL,
+        [name] NVARCHAR(256) NOT NULL,
+        [total] INT NOT NULL,
+        [female] INT NOT NULL,
+        [male] INT NOT NULL
+    );
+END
 
-
-CREATE TABLE IF NOT EXISTS `isco08_2` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` int(11) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `total` int(11) NOT NULL,
-  `female` int(11) NOT NULL,
-  `male` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `isco08_2eng` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` int(11) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `total` int(11) NOT NULL,
-  `female` int(11) NOT NULL,
-  `male` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+-- Create isco08_2eng table
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[isco08_2eng]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[isco08_2eng] (
+        [id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        [code] INT NOT NULL,
+        [name] NVARCHAR(256) NOT NULL,
+        [total] INT NOT NULL,
+        [female] INT NOT NULL,
+        [male] INT NOT NULL
+    );
+END
