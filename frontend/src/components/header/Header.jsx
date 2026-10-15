@@ -68,7 +68,7 @@ const Header = ({ language = "GE", setLanguage, page }) => {
         initialCode={0}
       />
       <header
-        className={`sticky top-0 z-50 shadow-md px-2 md:px-8 py-2 md:py-5 flex flex-col md:flex-row items-center gap-2 md:gap-4 ${fontClass}`}
+        className={`md:sticky md:top-0 z-50 shadow-md px-3 md:px-8 py-2 md:py-5 flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-2 md:gap-4 ${fontClass}`}
         style={{
           backgroundImage: `url(${headerBg})`,
           backgroundSize: "cover",
@@ -76,7 +76,7 @@ const Header = ({ language = "GE", setLanguage, page }) => {
         }}
       >
         {/* Logo with Link to Home */}
-        <div className="flex items-center">
+        <div className="flex items-center shrink-0">
           <Link to="/" aria-label="Home">
             <img
               src={language === "GE" ? sakstatLogoGe : sakstatLogoEn}
@@ -87,17 +87,16 @@ const Header = ({ language = "GE", setLanguage, page }) => {
         </div>
 
         {/* Title */}
-        <div className="flex-1 flex justify-center">
-          {" "}
-          <h1 className="text-lg md:text-2xl font-semibold text-white text-center transition-colors duration-300">
+        <div className="flex-1 min-w-0 flex justify-center">
+          <h1 className="text-sm xs:text-base md:text-2xl font-semibold text-white text-center transition-colors duration-300">
             {getTitle()}
           </h1>
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col items-center md:items-end gap-2 md:gap-3 w-full md:w-auto">
+        <div className="contents md:flex md:flex-col md:items-end md:gap-3">
           {/* Language Toggle and Info */}
-          <div className="flex items-center justify-center md:justify-end gap-2 w-full md:w-auto">
+          <div className="flex items-center justify-end gap-2 shrink-0">
             <button
               onClick={() => setIsModalOpen(true)}
               className="text-white hover:text-gray-200 transition-colors"
@@ -120,9 +119,7 @@ const Header = ({ language = "GE", setLanguage, page }) => {
             </button>
             <button
               onClick={toggleLanguage}
-              className={`flex items-center gap-2 px-2 md:px-3 py-1 md:py-2 rounded-md transition-all duration-300 ${
-                language === "GE" ? "bg-gray-400" : "bg-gray-400"
-              } hover:bg-gray-400/50 hover:shadow-sm`}
+              className="flex items-center gap-2 px-2 md:px-3 py-1 md:py-2 rounded-md border border-white/30 bg-white/15 hover:bg-white/25 transition-colors duration-300"
               aria-label="Toggle language"
             >
               <img
@@ -130,17 +127,17 @@ const Header = ({ language = "GE", setLanguage, page }) => {
                 alt="Language flag"
                 className="h-5 w-5 md:h-6 md:w-6"
               />
-              <span className="text-xs md:text-sm text-white">
+              <span className="hidden xs:inline text-xs md:text-sm text-white">
                 {language === "GE" ? "English" : "ქართული"}
               </span>
             </button>
           </div>{" "}
           {/* Profession Buttons - Only show on home page */}
           {!page && (
-            <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+            <div className="grid grid-cols-2 md:flex gap-2 w-full md:w-auto">
               <button
                 onClick={() => setIsProfessionModal2021Open(true)}
-                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
+                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-[11px] leading-4 md:text-sm md:leading-5 border border-white/30 bg-white/15 hover:bg-white/25 text-white rounded-md transition-colors duration-300 md:min-w-[200px]"
               >
                 {language === "GE" ? (
                   <>
@@ -158,7 +155,7 @@ const Header = ({ language = "GE", setLanguage, page }) => {
               </button>{" "}
               <button
                 onClick={() => setIsProfessionModal2017Open(true)}
-                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm bg-gray-400 hover:bg-gray-400/50 text-white rounded-md shadow-sm transition-all duration-300 hover:shadow md:min-w-[200px]"
+                className="whitespace-normal text-left px-2 md:px-3 py-1 md:py-2 text-[11px] leading-4 md:text-sm md:leading-5 border border-white/30 bg-white/15 hover:bg-white/25 text-white rounded-md transition-colors duration-300 md:min-w-[200px]"
               >
                 {language === "GE" ? (
                   <>

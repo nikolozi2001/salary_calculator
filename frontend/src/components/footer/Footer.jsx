@@ -7,7 +7,10 @@ const Footer = ({ language = "GE" }) => {
     <footer className="footer">
       <div className="footer-content">
         <p className="footer-text">
-          {language === "GE" ? `საქსტატი ${currentYear}` : `Geostat ${currentYear}`}
+          © {currentYear}{" "}
+          <a href="https://www.geostat.ge" target="_blank" rel="noopener noreferrer">
+            {language === "GE" ? "საქსტატი" : "Geostat"}
+          </a>
         </p>
       </div>
     </footer>

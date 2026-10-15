@@ -87,7 +87,7 @@ const GenderItem = ({ gender, icon, label, color, isSelected, onSelect }) => (
 // Main Gender selection component
 const Gender = ({ language, selectedGender, handleGenderSelect }) => {
   return (
-    <div className="col-span-12 md:col-span-6 md:offset-1 mt-20 rounded-2xl">
+    <div className="col-span-12 md:col-span-6 md:offset-1 mt-6 md:mt-20 rounded-2xl">
       <div className="flex justify-center">
         <div className="w-full">
           <div className="text-center mb-3">
@@ -96,37 +96,63 @@ const Gender = ({ language, selectedGender, handleGenderSelect }) => {
             </span>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
-            <div              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+          <div className="flex justify-center gap-4 sm:gap-8">
+            <div
+              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
                 selectedGender === "female"
-                  ? "bg-[#C85861] bg-opacity-10 border-[#C85861] shadow-md"
-                  : "hover:bg-[#C85861] hover:bg-opacity-10 hover:border-[#C85861]"
+                  ? "bg-selected/10 border-selected shadow-md"
+                  : "hover:bg-brand/5 hover:border-brand"
               }`}
               onClick={() => handleGenderSelect("female")}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selectedGender === "female"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleGenderSelect("female");
+                }
+              }}
             >
               <div className="flex justify-center">
                 <img
                   src={femaleIcon}
-                  alt="Female"
+                  alt=""
                   className="w-20 h-20 object-contain transition-transform duration-300 hover:scale-110"
                 />
               </div>
+              <p className="mt-1 text-center text-sm font-bpg-nino text-brand-dark">
+                {language === "GE" ? "ქალი" : "Female"}
+              </p>
             </div>
 
-            <div              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+            <div
+              className={`border p-3 rounded-lg cursor-pointer transition-all duration-300 ${
                 selectedGender === "male"
-                  ? "bg-[#C85861] bg-opacity-10 border-[#C85861] shadow-md"
-                  : "hover:bg-[#C85861] hover:bg-opacity-10 hover:border-[#C85861]"
+                  ? "bg-selected/10 border-selected shadow-md"
+                  : "hover:bg-brand/5 hover:border-brand"
               }`}
               onClick={() => handleGenderSelect("male")}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selectedGender === "male"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleGenderSelect("male");
+                }
+              }}
             >
               <div className="flex justify-center">
                 <img
                   src={maleIcon}
-                  alt="Male"
+                  alt=""
                   className="w-20 h-20 object-contain transition-transform duration-300 hover:scale-110"
                 />
               </div>
+              <p className="mt-1 text-center text-sm font-bpg-nino text-brand-dark">
+                {language === "GE" ? "კაცი" : "Male"}
+              </p>
             </div>
           </div>
         </div>
