@@ -3,8 +3,9 @@ import georgiaMap from "../assets/svg/georgia.svg";
 import circleMap from "../assets/svg/circle.svg";
 import Activity from "../components/ui/Activity";
 import Gender from "../components/ui/Gender";
-import Note from "../components/ui/Note";
+import Note, { ResultBar } from "../components/ui/Note";
 import { dataApi, activityApi } from "../services/api";
+import { colors } from "../styles/colors";
 
 import professionalIcon from "../assets/icons/Prof.png";
 import administrativeIcon from "../assets/icons/Administrative.png";
@@ -172,6 +173,7 @@ const Dashboard = ({ language = "GE" }) => {
   // Function to handle region click - updates with numerical ID from mapping
   const handleRegionClick = useCallback(
     (id) => {
+      if (!regionIdMap[id]) return;
       setSelectedRegion((prev) => {
         const numericId = regionIdMap[id];
         return prev === numericId ? null : numericId;
@@ -381,11 +383,13 @@ const Dashboard = ({ language = "GE" }) => {
           svgElement.setAttribute("height", "100%");
           svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-          if (!svgElement.getAttribute("viewBox")) {
-            const bbox = svgElement.getBBox();
-            const viewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
-            svgElement.setAttribute("viewBox", viewBox);
-          }
+          // Fit the viewBox to the drawn map so the container's aspect ratio
+          // matches it without empty bands above and below
+          const bbox = svgElement.getBBox();
+          svgElement.setAttribute(
+            "viewBox",
+            `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`
+          );
 
           // Add styles with zoom transitions
           const style = document.createElement("style");
@@ -413,6 +417,13 @@ const Dashboard = ({ language = "GE" }) => {
               opacity: 1 !important;
               stroke: white !important;
               stroke-width: 0.5 !important;
+            }
+            #georgia-map-container svg path.selected {
+              opacity: 1 !important;
+              stroke: #005a8c !important;
+              stroke-width: 2 !important;
+              stroke-linejoin: round;
+              filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.25)) !important;
             }
             #georgia-map-container svg path:not(.zoomed).region-hidden {
               opacity: 0 !important;
@@ -597,10 +608,44 @@ const Dashboard = ({ language = "GE" }) => {
           const style = document.createElement("style");
           style.textContent = `
             path.activeYear {
-              fill: #C85861 !important;
+              fill: ${colors.selected} !important;
             }
           `;
           circleSvg.appendChild(style);
+
+          // Replace the "select year" prompt with the selected year
+          if (selectedYear) {
+            circleSvg
+              .querySelectorAll(".text-en, .text-ge")
+              .forEach((text) => text.remove());
+            const svgNs = "http://www.w3.org/2000/svg";
+            const yearText = document.createElementNS(svgNs, "text");
+            yearText.setAttribute("x", "50%");
+            yearText.setAttribute("y", "47%");
+            yearText.setAttribute("text-anchor", "middle");
+            yearText.setAttribute("dominant-baseline", "middle");
+            yearText.setAttribute("font-size", "48");
+            yearText.setAttribute("font-weight", "bold");
+            yearText.setAttribute("fill", "#005a8c");
+            yearText.setAttribute("class", "font-bpg-nino");
+            yearText.textContent = selectedYear;
+            circleSvg.appendChild(yearText);
+            [
+              ["text-ge", "არჩეული წელი"],
+              ["text-en", "SELECTED YEAR"],
+            ].forEach(([cls, label]) => {
+              const caption = document.createElementNS(svgNs, "text");
+              caption.setAttribute("x", "50%");
+              caption.setAttribute("y", "61%");
+              caption.setAttribute("text-anchor", "middle");
+              caption.setAttribute("dominant-baseline", "middle");
+              caption.setAttribute("font-size", "13");
+              caption.setAttribute("fill", "#005a8c");
+              caption.setAttribute("class", `${cls} font-bpg-nino`);
+              caption.textContent = label;
+              circleSvg.appendChild(caption);
+            });
+          }
 
           // Add click handlers for year selection
           const paths = circleSvg.querySelectorAll("path[data-year]");
@@ -727,7 +772,7 @@ const Dashboard = ({ language = "GE" }) => {
   };
   return (
     <div className="h-full p-2 font-sans overflow-y-auto">
-      <div className="container mx-auto px-2 sm:px-4 pb-16">
+      <div className="container mx-auto px-2 sm:px-4">
         {/* Main Content - Compact Layout with card design */}{" "}
         <div className="grid grid-cols-12 gap-2 sm:gap-3">
           {/* Left Side Content */}
@@ -742,7 +787,7 @@ const Dashboard = ({ language = "GE" }) => {
                 <div className="relative overflow-hidden rounded-xl group p-1">
                   <div
                     id="georgia-map-container"
-                    className="w-full h-[30vh] xs:h-[35vh] sm:h-[40vh]"
+                    className="w-full aspect-[17/9]"
                   ></div>
                 </div>
               </div>
@@ -796,7 +841,19 @@ const Dashboard = ({ language = "GE" }) => {
               handleActivitySelect={handleActivitySelect}
             />
           </div>
-        </div>{" "}
+        </div>
+        <ResultBar
+          language={language}
+          selectedYear={selectedYear}
+          selectedRegion={selectedRegion}
+          selectedActivity={selectedActivity}
+          selectedGender={selectedGender}
+          totalSalary={totalSalary}
+          activitySectors={activities}
+          regionData={regionData}
+          getGeCodeFromRegionId={getGeCodeFromRegionId}
+          onClear={clearAllSelections}
+        />
         {/* Error display */}
         {error && (
           <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-3 bg-red-50 text-red-600 text-xs sm:text-sm text-center rounded-xl shadow-sm border border-red-100 animate-fadeIn max-w-[90%] sm:max-w-none mx-2">
